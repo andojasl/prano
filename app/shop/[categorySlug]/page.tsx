@@ -1,0 +1,167 @@
+import React from 'react';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import Product from "../../../components/product";
+
+
+import { createPatternLayout, layoutConfig } from '../../../lib/shop/shopLayout';
+
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+interface Product {
+  id: string;
+  image: string;
+  hover_image: string | null;
+  title: string;
+  slug: string;
+  price: number;
+  category: number;
+  description: string | null;
+  ready: boolean | null;
+  available_sizes: any;
+  images: string[] | null;
+  categories?: {
+    slug: string;
+  };
+}
+
+interface PageProps {
+  params: Promise<{
+    categorySlug: string;
+  }>;
+}
+
+export default async function CategoryPage({ params }: PageProps) {
+  const resolvedParams = await params;
+  const { categorySlug } = resolvedParams;
+  
+  // Fetch data from separate API routes
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  
+  const [categoriesResponse, productsResponse] = await Promise.all([
+    fetch(`${baseUrl}/api/categories`, { cache: 'no-store' }),
+    fetch(`${baseUrl}/api/products?category=${categorySlug}`, { cache: 'no-store' })
+  ]);
+  
+  if (!categoriesResponse.ok || !productsResponse.ok) {
+    console.error('Failed to fetch data');
+    notFound();
+  }
+  
+  const { categories: categoriesWithAll } = await categoriesResponse.json();
+  const { products: filteredProducts } = await productsResponse.json();
+
+  // Find the current category
+  const currentCategory = categoriesWithAll.find((cat: Category) => cat.slug === categorySlug);
+  
+  if (!currentCategory) {
+    notFound();
+  }
+
+  const layoutPattern = createPatternLayout(filteredProducts, layoutConfig);
+
+
+  return (
+    <div className="min-h-screen bg-white">
+      
+      {/* Navigation & Filters */}
+      <section className="w-full py-6 border-b border-gray-200">
+        <div className="mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+            
+            {/* Category Filter */}
+            <div className="flex flex-wrap gap-4">
+              {categoriesWithAll.map((category: Category) => (
+                <Link
+                  key={category.slug}
+                  href={`/shop/${category.slug}`}
+                  className={`px-6 py-3 font-headline rounded-lg text-sm tracking-wider border border-black hover:bg-black hover:text-white transition-all duration-300 ${
+                    category.slug === categorySlug ? 'bg-black text-white' : ''
+                  }`}
+                >
+                  {category.name}
+                </Link>
+              ))}
+            </div>
+
+            {/* Sort & Filter Options */}
+            <div className="flex gap-4">
+              <select className="px-4 py-2 border border-gray-300 font-headline rounded-lg text-sm">
+                <option>Sort by: Featured</option>
+                <option>Sort by: Price (Low to High)</option>
+                <option>Sort by: Price (High to Low)</option>
+                <option>Sort by: Name (A-Z)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Products Grid */}
+      <section className="w-full py-16">
+        <div className="mx-auto px-6">
+          
+          {/* Category Title */}
+          <div className="text-center mb-12">
+
+            {categorySlug !== 'all' && (
+              <p className="text-gray-600 font-text">
+                {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'} found
+              </p>
+            )}
+          </div>
+
+          {filteredProducts.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-gray-600 font-text text-lg mb-6">
+                No products found in this category.
+              </p>
+              <Link 
+                href="/shop/all"
+                className="px-6 py-3 font-headline rounded-lg text-sm tracking-wider border border-black hover:bg-black hover:text-white transition-all duration-300"
+              >
+                View All Products
+              </Link>
+            </div>
+          ) : (
+            <div 
+              className="grid gap-8"
+              style={{
+                gridTemplateColumns: `repeat(${layoutConfig.rows[0].split(' ').length}, 1fr)`,
+                gridTemplateRows: `repeat(${layoutConfig.rows.length}, auto)`,
+              }}
+            >
+              {layoutPattern.map((item, index) => (
+                <div
+                  key={index}
+                  style={{
+                    gridColumn: item.gridColumn,
+                    gridRow: item.gridRow,
+                  }}
+                  className={item.type === 'spacer' ? 'opacity-0 pointer-events-none' : ''}
+                >
+                                      {item.type === 'product' && (
+                      <Product
+                        displayImage={item.product.image}
+                        hoverImage={item.product.hover_image}
+                        title={item.product.title}
+                        slug={item.product.slug}
+                        categorySlug={item.product.categories?.slug || categorySlug}
+                        price={item.product.price.toString()}
+                        width={layoutConfig.productSize.width}
+                        height={layoutConfig.productSize.height}
+                      />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
+  );
+} 
