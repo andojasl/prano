@@ -82,10 +82,31 @@ export default function ProductPage({ params }: PageProps) {
           console.error('Error fetching product:', error);
           setProduct(null);
         } else {
+          // Combine all available images into one array
+          const allImages: string[] = [];
+          
+          // Add images from the images array if it exists and has content
+          if (data.images && Array.isArray(data.images) && data.images.length > 0) {
+            allImages.push(...data.images);
+          } else {
+            // Fallback: use image and hover_image if images array is empty/null
+            if (data.image) {
+              allImages.push(data.image);
+            }
+            if (data.hover_image && data.hover_image !== data.image) {
+              allImages.push(data.hover_image);
+            }
+          }
+          
+          // Fallback to default images if no images found
+          if (allImages.length === 0) {
+            allImages.push("/product-square.png", "/image-hover.png");
+          }
+
           // Process the product data
           const processedProduct: Product = {
             ...data,
-            images: data.images || [data.image || "/product-square.png", data.hover_image || "/image-hover.png"],
+            images: allImages,
             availableSizes: data.availableSizes || ["15", "16", "17", "18", "19", "20", "21", "22", "23", "24"]
           };
           setProduct(processedProduct);

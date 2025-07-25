@@ -22,9 +22,7 @@ export default function Product({displayImage, hoverImage, title, slug, category
   return (
     <Link 
       href={productUrl}
-      className="rounded-lg relative overflow-hidden cursor-pointer transition-all duration-300 aspect-square block"
-      style={{ width: `${width * 4}px`, height: `${height * 4}px` }}
-      // Note: Tailwind's "64" = 16rem = 256px, so multiply by 4 to convert
+      className="rounded-lg relative overflow-hidden cursor-pointer transition-all duration-300 aspect-square block w-full"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

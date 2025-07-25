@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import Product from "../../../components/product";
 
 
-import { createPatternLayout, layoutConfig } from '../../../lib/shop/shopLayout';
+import { createPatternLayout, layoutConfigs } from '../../../lib/shop/shopLayout';
 
 interface Category {
   id: string;
@@ -62,7 +62,10 @@ export default async function CategoryPage({ params }: PageProps) {
     notFound();
   }
 
-  const layoutPattern = createPatternLayout(filteredProducts, layoutConfig);
+  // Create layouts for different screen sizes
+  const desktopLayout = createPatternLayout(filteredProducts, layoutConfigs.desktop);
+  const tabletLayout = createPatternLayout(filteredProducts, layoutConfigs.tablet);
+  const mobileLayout = createPatternLayout(filteredProducts, layoutConfigs.mobile);
 
 
   return (
@@ -127,38 +130,94 @@ export default async function CategoryPage({ params }: PageProps) {
                 View All Products
               </Link>
             </div>
-          ) : (
-            <div 
-              className="grid gap-8"
-              style={{
-                gridTemplateColumns: `repeat(${layoutConfig.rows[0].split(' ').length}, 1fr)`,
-                gridTemplateRows: `repeat(${layoutConfig.rows.length}, auto)`,
-              }}
-            >
-              {layoutPattern.map((item, index) => (
-                <div
-                  key={index}
-                  style={{
-                    gridColumn: item.gridColumn,
-                    gridRow: item.gridRow,
-                  }}
-                  className={item.type === 'spacer' ? 'opacity-0 pointer-events-none' : ''}
-                >
-                                      {item.type === 'product' && (
-                      <Product
-                        displayImage={item.product.image}
-                        hoverImage={item.product.hover_image}
-                        title={item.product.title}
-                        slug={item.product.slug}
-                        categorySlug={item.product.categories?.slug || categorySlug}
-                        price={item.product.price.toString()}
-                        width={layoutConfig.productSize.width}
-                        height={layoutConfig.productSize.height}
-                      />
-                  )}
-                </div>
-              ))}
-            </div>
+                    ) : (
+            <>
+              {/* Desktop Layout (4 columns) */}
+              <div 
+                className="hidden lg:grid gap-8"
+                style={{
+                  gridTemplateColumns: `repeat(${layoutConfigs.desktop.columns}, 1fr)`,
+                  gridTemplateRows: `repeat(${Math.ceil(desktopLayout.length / layoutConfigs.desktop.columns)}, auto)`,
+                }}
+              >
+                {desktopLayout.map((item, index) => (
+                  <div
+                    key={`desktop-${index}`}
+                    style={{
+                      gridColumn: item.gridColumn,
+                      gridRow: item.gridRow,
+                    }}
+                    className={item.type === 'spacer' ? 'opacity-0 pointer-events-none' : ''}
+                  >
+                    {item.type === 'product' && (
+                        <Product
+                          displayImage={item.product.image}
+                          hoverImage={item.product.hover_image}
+                          title={item.product.title}
+                          slug={item.product.slug}
+                          categorySlug={item.product.categories?.slug || categorySlug}
+                          price={item.product.price.toString()}
+                          width={layoutConfigs.desktop.productSize.width}
+                          height={layoutConfigs.desktop.productSize.height}
+                        />
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Tablet Layout (2 columns) */}
+              <div 
+                className="hidden md:grid lg:hidden gap-6"
+                style={{
+                  gridTemplateColumns: `repeat(${layoutConfigs.tablet.columns}, 1fr)`,
+                  gridTemplateRows: `repeat(${Math.ceil(tabletLayout.length / layoutConfigs.tablet.columns)}, auto)`,
+                }}
+              >
+                {tabletLayout.map((item, index) => (
+                  <div
+                    key={`tablet-${index}`}
+                    style={{
+                      gridColumn: item.gridColumn,
+                      gridRow: item.gridRow,
+                    }}
+                    className={item.type === 'spacer' ? 'opacity-0 pointer-events-none' : ''}
+                  >
+                    {item.type === 'product' && (
+                        <Product
+                          displayImage={item.product.image}
+                          hoverImage={item.product.hover_image}
+                          title={item.product.title}
+                          slug={item.product.slug}
+                          categorySlug={item.product.categories?.slug || categorySlug}
+                          price={item.product.price.toString()}
+                          width={layoutConfigs.tablet.productSize.width}
+                          height={layoutConfigs.tablet.productSize.height}
+                        />
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Mobile Layout (1 column) */}
+              <div className="grid md:hidden gap-4 grid-cols-1">
+                {mobileLayout.map((item, index) => (
+                  <div key={`mobile-${index}`}>
+                    {item.type === 'product' && (
+                        <Product
+                          displayImage={item.product.image}
+                          hoverImage={item.product.hover_image}
+                          title={item.product.title}
+                          slug={item.product.slug}
+                          categorySlug={item.product.categories?.slug || categorySlug}
+                          price={item.product.price.toString()}
+                          width={layoutConfigs.mobile.productSize.width}
+                          height={layoutConfigs.mobile.productSize.height}
+                        />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </div>
       </section>

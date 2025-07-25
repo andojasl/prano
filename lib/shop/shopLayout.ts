@@ -16,22 +16,58 @@ interface Product {
 }
 
 // Layout configuration using pattern-based system
-export const layoutConfig = {
-  rows: [
-    'S P P S', 
-    'P S P P', 
-    'S P P S', 
-    'P P S P', 
-  ],
-  
-  productSize: {
-    width: 80, 
-    height: 48, 
+export const layoutConfigs = {
+  // Desktop layout (4 columns)
+  desktop: {
+    rows: [
+      'S P P S', 
+      'P S P P', 
+      'S P P S', 
+      'P P S P', 
+    ],
+    productSize: {
+      width: 80, 
+      height: 48, 
+    },
+    fixedGap: 30, 
+    betweenRows: 16,
+    columns: 4,
   },
   
-  fixedGap: 30, 
-  betweenRows: 16,      
+  // Tablet layout (2 columns)
+  tablet: {
+    rows: [
+      'P P',
+      'S P',
+      'P S',
+      'P P',
+      'P S',
+      'P P',
+    ],
+    productSize: {
+      width: 80, 
+      height: 48, 
+    },
+    fixedGap: 24, 
+    betweenRows: 16,
+    columns: 2,
+  },
+  
+  // Mobile layout (1 column)
+  mobile: {
+    rows: ['P'], // This will be repeated for each product
+    productSize: {
+      width: 80, 
+      height: 48, 
+    },
+    fixedGap: 16, 
+    betweenRows: 16,
+    columns: 1,
+  }
 };
+
+// Backward compatibility
+export const layoutConfig = layoutConfigs.desktop;
 
 
 
@@ -39,8 +75,22 @@ export const createPatternLayout = (products: Product[], config: typeof layoutCo
   const layout: any[] = [];
   let productIndex = 0;
   
-  for (let rowIndex = 0; rowIndex < config.rows.length; rowIndex++) {
-    const rowPattern = config.rows[rowIndex].split(' ');
+  // For mobile layout, create a simple single-column layout
+  if (config.columns === 1) {
+    return products.map((product, index) => ({
+      type: 'product',
+      product,
+      gridColumn: 1,
+      gridRow: index + 1,
+    }));
+  }
+  
+  // For desktop and tablet layouts, use the pattern system
+  const maxRows = Math.ceil(products.length / config.columns) + config.rows.length;
+  
+  for (let rowIndex = 0; rowIndex < maxRows && productIndex < products.length; rowIndex++) {
+    const patternRowIndex = rowIndex % config.rows.length;
+    const rowPattern = config.rows[patternRowIndex].split(' ');
     
     for (let colIndex = 0; colIndex < rowPattern.length; colIndex++) {
       const cellType = rowPattern[colIndex];
