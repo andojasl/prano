@@ -42,6 +42,7 @@ export default function ProductPage({ params }: PageProps) {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
 
   // Resolve params
@@ -107,8 +108,10 @@ export default function ProductPage({ params }: PageProps) {
           const processedProduct: Product = {
             ...data,
             images: allImages,
-            availableSizes: data.availableSizes || ["15", "16", "17", "18", "19", "20", "21", "22", "23", "24"]
+            availableSizes: data.available_sizes || data.availableSizes
           };
+          
+          console.log('Available sizes:', data.available_sizes, data.availableSizes); // Debug log
           setProduct(processedProduct);
         }
       } catch (error) {
@@ -149,10 +152,10 @@ export default function ProductPage({ params }: PageProps) {
     <div className="min-h-screen bg-white">
       {/* Main product content */}
       <div className="max-w-7xl mx-auto px-8 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-7 gap-16">
           
           {/* Product Images */}
-          <div className="space-y-4">
+          <div className="space-y-4 lg:col-span-4">
             <div className="aspect-square bg-gray-50 rounded-lg overflow-hidden">
               <Image
                 src={product.images[selectedImage]}
@@ -188,10 +191,10 @@ export default function ProductPage({ params }: PageProps) {
           </div>
 
           {/* Product Information */}
-          <div className="space-y-8">
+          <div className="space-y-4 lg:col-span-3">
             
             {/* Title */}
-            <h1 className="text-3xl font-headline tracking-wide">
+            <h1 className="text-xl font-headline tracking-wide mb-12">
               {product.title}
             </h1>
 
@@ -223,26 +226,31 @@ export default function ProductPage({ params }: PageProps) {
             )}
 
             {/* Pricing */}
-            <div className="space-y-2">
-              {product.fromPrice && (
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-600">From Price</span>
-                  <span className="text-sm font-medium">{product.fromPrice}</span>
-                </div>
-              )}
               <div className="flex items-center space-x-2">
                 <span className="text-sm text-gray-600">Price</span>
-                <span className="text-lg font-medium">{product.price}</span>
+                <span className="text-sm font-medium">{product.price} €</span>
               </div>
-            </div>
 
-            {/* Product Details */}
+            {/* Size Selection */}
             {product.availableSizes && product.availableSizes.length > 0 && (
               <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-600">Ring size:</span>
-                  <span className="text-sm font-medium">{product.availableSizes.join("   ")}</span>
-                </div>
+                <span className="text-sm flex flex-row items-center text-gray-600">Avalable sizes:
+                  <div className="pl-3">
+                  {product.availableSizes.map((size: string) => (
+                    <button
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      className={`px-3 py-2 text-sm font-medium transition-all duration-200 hover:underline ${
+                        selectedSize === size
+                          ? 'underline text-black'
+                          : 'text-gray-700 hover:text-black'
+                      }`}
+                      >
+                        {size}
+                      </button>
+                  ))}
+                    </div>
+                </span>
               </div>
             )}
 
@@ -255,11 +263,8 @@ export default function ProductPage({ params }: PageProps) {
 
             {/* Action Buttons */}
             <div className="space-y-4 pt-4">
-              <button className="w-full py-3 px-6 bg-black text-white font-headline text-sm tracking-wider hover:bg-gray-800 transition-colors duration-300">
+              <button className="w-full py-3 rounded-lg px-6 bg-black text-white font-headline text-sm tracking-wider hover:bg-gray-800 transition-colors duration-300">
                 Add to cart
-              </button>
-              <button className="w-full py-3 px-6 border border-gray-300 text-black font-headline text-sm tracking-wider hover:bg-gray-50 transition-colors duration-300">
-                Enquire
               </button>
             </div>
 
@@ -288,13 +293,6 @@ export default function ProductPage({ params }: PageProps) {
             </div>
 
          </div>
-        </div>
-      </div>
-
-      {/* Cart indicator */}
-      <div className="fixed bottom-8 right-8">
-        <div className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center font-headline text-sm">
-          0
         </div>
       </div>
     </div>
