@@ -22,7 +22,7 @@ export default function Product({displayImage, hoverImage, title, slug, category
   return (
     <Link 
       href={productUrl}
-      className="rounded-lg relative overflow-hidden cursor-pointer transition-all duration-300 aspect-[2/1] block w-full"
+      className="rounded-lg relative overflow-hidden cursor-pointer transition-all duration-300 aspect-[1.5/1] block w-full"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -34,9 +34,9 @@ export default function Product({displayImage, hoverImage, title, slug, category
         className="object-cover transition-all duration-300"
       />
       {isHovered && (
-        <div className="absolute inset-0 bg-black/40 flex flex-row items-center justify-between px-4 transition-all duration-300">
-          <h3 className="text-white text-xl font-bold mb-2">{title}</h3>
-          <p className="text-white text-lg font-semibold">{price} €</p>
+        <div className="absolute inset-0 bg-black/40 flex flex-row items-center gap-4 px-4 transition-all duration-300">
+          <h3 className="text-white text-m font-argesta flex-1">{title}</h3>
+          <p className="text-white text-m font-argesta whitespace-nowrap flex-shrink-0">{price} €</p>
         </div>
       )}
     </Link>

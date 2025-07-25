@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+
 interface SortDropdownProps {
   currentSort: string;
   categorySlug: string;
@@ -44,7 +45,7 @@ export default function SortDropdown({ currentSort, categorySlug }: SortDropdown
       >
         <span className="font-argesta">{currentOption.label}</span>
         <svg
-          className={`w-4 h-4 transition-transform font-argesta ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-4 h-4 transition-transform text-gray-500 ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
