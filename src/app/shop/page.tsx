@@ -1,4 +1,5 @@
 import Product from "../components/product";
+import { createClient } from '@/utils/supabase/server';
 
 // Sample product data - replace with your actual product data
 const products = [
@@ -76,41 +77,23 @@ const products = [
   },
 ];
 
-const categories = [
-  { id: "all", name: "All" },
-  { id: "rings", name: "Rings" },
-  { id: "necklaces", name: "Necklaces" },
-  { id: "earrings", name: "Earrings" },
-  { id: "bracelets", name: "Bracelets" },
-];
-
 // Layout configuration using pattern-based system
 const layoutConfig = {
-  // Each row has 4 slots. Use patterns to define what goes in each slot:
-  // 'P' = Product, 'S' = Space (empty slot)
-  // Examples:
-  // 'P P P P' = 4 products side by side
-  // 'S P S P' = space, product, space, product  
-  // 'P S P P' = product, space, product, product
   rows: [
-    'S P P S',  // space, product, product, space (centered 2 products)
-    'P S P P',  // product, space, product, product 
-    'S S P S',  // space, space, product, space (centered 1 product)
-    'P P S P',  // product, product, space, product
+    'S P P S', 
+    'P S P P', 
+    'S S P S', 
+    'P P S P', 
   ],
   
-  // Fixed product size
   productSize: {
-    width: 80,  // Base product width in Tailwind units
-    height: 48, // Base product height in Tailwind units
+    width: 80, 
+    height: 48, 
   },
   
-  // Fixed gap between all products (always 30px)
-  fixedGap: 30, // 30px gap between products
-  
-  // General spacing
-  betweenRows: 16,       // Space between rows (mb-16)
-  containerPadding: 14,  // Side padding (px-14)
+  fixedGap: 30, 
+  betweenRows: 16,      
+  containerPadding: 14, 
 };
 
 // Function to create pattern-based layout
@@ -121,7 +104,7 @@ const createPatternLayout = (products: any[], config: typeof layoutConfig) => {
   
   while (productIndex < products.length) {
     const pattern = config.rows[rowPatternIndex % config.rows.length];
-    const slots = pattern.split(' '); // ['P', 'S', 'P', 'P']
+    const slots = pattern.split(' '); 
     
     const rowProducts = [];
     const positions = [];
@@ -131,9 +114,8 @@ const createPatternLayout = (products: any[], config: typeof layoutConfig) => {
       const slot = slots[slotIndex];
       
       if (slot === 'P' && productIndex < products.length) {
-        // Place a product in this slot
         rowProducts.push(products[productIndex]);
-        positions.push(slotIndex); // Slot 0, 1, 2, or 3
+        positions.push(slotIndex); 
         productIndex++;
       } else if (slot === 'S') {
         // Empty space slot - do nothing
@@ -152,8 +134,34 @@ const createPatternLayout = (products: any[], config: typeof layoutConfig) => {
   return layout;
 };
 
-export default function Shop() {
+export default async function Shop() {
+  // Fetch categories from Supabase (Server Component)
+  const supabase = await createClient();
+  const { data: categories, error } = await supabase
+    .from('categories')
+    .select('id, name, slug')
+    .order('name');
+
+  // Fallback categories if Supabase fails
+  const displayCategories = categories || [
+    { id: "all", name: "All", slug: "all" },
+    { id: "rings", name: "Rings", slug: "rings" },
+    { id: "necklaces", name: "Necklaces", slug: "necklaces" },
+    { id: "earrings", name: "Earrings", slug: "earrings" },
+    { id: "bracelets", name: "Bracelets", slug: "bracelets" },
+  ];
+
+  // Add "All" category if not present
+  const categoriesWithAll = [
+    { id: "all", name: "All", slug: "all" },
+    ...displayCategories.filter(cat => cat.slug !== "all")
+  ];
+
   const layoutPattern = createPatternLayout(products, layoutConfig);
+
+  if (error) {
+    console.error('Error fetching categories:', error);
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -165,7 +173,7 @@ export default function Shop() {
             
             {/* Category Filter */}
             <div className="flex flex-wrap gap-4">
-              {categories.map((category) => (
+              {categoriesWithAll.map((category) => (
                 <button
                   key={category.id}
                   className="px-6 py-3 font-headline rounded-lg text-sm tracking-wider border border-black hover:bg-black hover:text-white transition-all duration-300 first:bg-black first:text-white"
@@ -197,12 +205,11 @@ export default function Shop() {
           {layoutPattern.map((row, rowIndex) => (
             <div
               key={rowIndex}
-              className={`relative ${
-                rowIndex < layoutPattern.length - 1 ? `mb-${layoutConfig.betweenRows}` : ''
-              }`}
+              className="relative"
               style={{ 
                 height: `${layoutConfig.productSize.height * 4}px`,
-                width: '100%'
+                width: '100%',
+                marginBottom: rowIndex < layoutPattern.length - 1 ? `${layoutConfig.betweenRows}px` : '0'
               }}
             >
               {row.products.map((product, productIndex) => (
