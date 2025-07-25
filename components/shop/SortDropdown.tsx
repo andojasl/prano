@@ -40,7 +40,7 @@ export default function SortDropdown({ currentSort, categorySlug }: SortDropdown
     <div className="relative font-argesta">
       {/* Dropdown Button */}
       <button
-        className="flex items-center justify-between w-64 px-4 py-2 text-sm font-argesta bg-white border border-gray-300 rounded-lg hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200"
+        className="flex items-center gap-2 justify-between w-56 md:w-auto px-4 py-2 text-sm font-argesta bg-white border border-gray-300 rounded-lg hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="font-argesta">{currentOption.label}</span>

@@ -34,7 +34,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full fixed top-0 bg-white/90 backdrop-blur-md px-6 sm:px-14 pt-8 pb-6 flex flex-col gap-2 z-50" style={{ boxShadow: '0 4px 32px rgba(0,0,0,0.04)' }}>
+    <header className="w-full fixed top-0 bg-white/90 backdrop-blur-md px-4 md:px-16 sm:px-14 pt-8 pb-6 flex flex-col gap-2 z-50" style={{ boxShadow: '0 4px 32px rgba(0,0,0,0.04)' }}>
       <div className="flex items-center justify-between w-full">
         {/* Desktop Nav */}
         <nav className="hidden sm:flex gap-10 items-center">
@@ -48,26 +48,10 @@ export default function Header() {
         {/* Desktop Right */}
         <div className="hidden sm:flex gap-10 text-black items-center">
           <a className="text-base font-serif" href="#about">ABOUT</a>
-          {!loading && user && (
-            <Link href="/dashboard" className="text-base font-serif hover:text-gray-600 transition-colors">
-              DASHBOARD
-            </Link>
-          )}
           <div className="flex items-center gap-2">
             <Image src="/cart.svg" alt="Cart" width={32} height={32} />
           </div>
-          <div className="flex items-center gap-2">
-            {!loading && user ? (
-              <Link href="/dashboard">
-                <Image src="/account.svg" alt="Account" width={24} height={24} />
-              </Link>
-            ) : (
-              <Link href="/auth/login">
-                <Image src="/account.svg" alt="Account" width={24} height={24} />
-              </Link>
-            )}
-          </div>
-        </div>
+       </div>
         {/* Hamburger for mobile */}
         <button
           className="sm:hidden flex flex-col justify-center items-center w-10 h-10"
@@ -85,15 +69,8 @@ export default function Header() {
           <Link href="/shop" className="text-lg font-serif" onClick={() => setMenuOpen(false)}>SHOP</Link>
           <a className="text-lg font-serif" href="#custom" onClick={() => setMenuOpen(false)}>CUSTOM ORDER</a>
           <a className="text-lg font-serif" href="#about" onClick={() => setMenuOpen(false)}>ABOUT</a>
-          {!loading && user && (
-            <Link href="/dashboard" className="text-lg font-serif" onClick={() => setMenuOpen(false)}>
-              DASHBOARD
-            </Link>
-          )}
           <a className="text-lg font-serif" href="#cart" onClick={() => setMenuOpen(false)}>CART</a>
-          <span className="text-lg font-serif flex items-center gap-2">LT
-            <Image src="/lt-flag.png" alt="Flag" width={24} height={24} className="items-center w-6 h-6" />
-          </span>
+
         </nav>
       )}
     </header>

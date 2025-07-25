@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Product from "../../../components/product";
 import SortDropdown from "../../../components/shop/SortDropdown";
+import CategoryFilter from "../../../components/shop/CategoryFilter";
 
 import { createPatternLayout, layoutConfigs } from '../../../lib/shop/shopLayout';
 
@@ -99,25 +100,13 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       {/* Navigation & Filters */}
       <section className="w-full py-6 border-b border-gray-200">
         <div className="mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex flex-row justify-between items-center gap-8">
             
             {/* Category Filter */}
-            <div className="flex flex-wrap gap-4">
-              {categoriesWithAll.map((category: Category) => (
-                <Link
-                  key={category.slug}
-                  href={`/shop/${category.slug}`}
-                  className={`px-6 pl-0 py-3 font-headline text-sm tracking-wider hover:underline transition-all duration-300 ${
-                    category.slug === categorySlug ? 'text-black underline' : ''
-                  }`}
-                >
-                  {category.name}
-                </Link>
-              ))}
-            </div>
+            <CategoryFilter categories={categoriesWithAll} currentCategory={categorySlug} />
 
             {/* Sort & Filter Options */}
-            <div className="flex font-argesta gap-4">
+            <div className="flex w-full font-argesta gap-2 justify-end md:justify-end">
               <SortDropdown currentSort={sort} categorySlug={categorySlug} />
             </div>
           </div>
