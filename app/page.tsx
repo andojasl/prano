@@ -1,6 +1,20 @@
 import Image from "next/image";
 import Product from "../components/product";
 
+interface ProductData {
+  id: string;
+  image: string;
+  hover_image: string | null;
+  title: string;
+  slug: string;
+  price: number;
+  category: number;
+  description: string | null;
+  categories: {
+    slug: string;
+  };
+}
+
 function Landing() {
   return (
     <div
@@ -14,22 +28,123 @@ function Landing() {
   );
 }
 
-function NewArrivals() {
+async function NewArrivals() {
+  // Fetch latest products
+  let products: ProductData[] = [];
+  
+  try {
+    // Use direct server-side call for better reliability
+    const { createClient } = await import('@/lib/supabase/server');
+    const supabase = await createClient();
+    
+         const { data: productData, error } = await supabase
+       .from('products')
+       .select(`
+         id, 
+         image, 
+         hover_image, 
+         title, 
+         slug, 
+         price, 
+         category, 
+         description,
+         categories!inner(slug)
+       `)
+       .order('id', { ascending: false })
+       .limit(3);
+
+     if (error) {
+       console.error('Error fetching latest products:', error);
+     } else {
+       // Transform the data to match our interface
+       products = (productData || []).map(product => ({
+         ...product,
+         categories: Array.isArray(product.categories) ? product.categories[0] : product.categories
+       }));
+     }
+  } catch (error) {
+    console.error('Failed to fetch latest products:', error);
+  }
+
+  // Layout variations for visual appeal (similar to original hardcoded layout)
+  const layoutVariations = [
+    { width: 96, height: 48, justify: 'justify-end' },
+    { width: 112, height: 56, justify: '' },
+    { width: 104, height: 48, justify: 'justify-end' },
+  ];
+
+
+
   return (
     <section className="w-full max-w-5xl flex flex-row max-h-screen items-center py-16 px-14 justify-between">
       <div className="flex left-0 flex-col gap-6">
-        <h2 className="text-3xl font-serif">NEW ARRIVALS</h2>
-        <a href="#shop" className="text-base font-serif underline">View shop</a>
+        <h2 className="text-3xl font-defonte">NEW ARRIVALS</h2>
+        <a href="/shop" className="text-base font-serif underline">View shop</a>
       </div>
-      <div className="flex flex-col gap-8 overflow-x-auto max-w-4xl ">
-        {/* Product cards placeholders */}
-       <div className="flex flex-row gap-4 justify-end">
-        <Product displayImage="/product-square.png" hoverImage="/image-hover.png" title="Product 1" price="600" width={96}  height={48} />
-        </div>
-        <Product displayImage="/product-square.png" hoverImage="/image-hover.png" title="Product 2" price="59" width={112}  height={56} />
-       <div className="flex flex-row gap-4 justify-end">
-        <Product displayImage="/product-square.png" hoverImage="/image-hover.png" title="Product 3" price="200" width={104}  height={48} />
-        </div>
+      <div className="flex flex-col gap-8 max-w-4xl">
+        {products.length > 0 ? (
+          <>
+            {/* Product 1 - Right aligned */}
+            <div className="flex flex-row gap-4 justify-end">
+              <div className="w-80">
+                <Product
+                  displayImage={products[0].image}
+                  hoverImage={products[0].hover_image || undefined}
+                  title={products[0].title}
+                  slug={products[0].slug}
+                  categorySlug={products[0].categories?.slug || 'all'}
+                  price={products[0].price.toString()}
+                  width={96}
+                  height={48}
+                />
+              </div>
+            </div>
+            
+            {/* Product 2 - Center */}
+            {products[1] && (
+              <div className="w-96">
+                <Product
+                  displayImage={products[1].image}
+                  hoverImage={products[1].hover_image || undefined}
+                  title={products[1].title}
+                  slug={products[1].slug}
+                  categorySlug={products[1].categories?.slug || 'all'}
+                  price={products[1].price.toString()}
+                  width={112}
+                  height={56}
+                />
+              </div>
+            )}
+            
+            {/* Product 3 - Right aligned */}
+            {products[2] && (
+              <div className="flex flex-row gap-4 justify-end">
+                <div className="w-72">
+                  <Product
+                    displayImage={products[2].image}
+                    hoverImage={products[2].hover_image || undefined}
+                    title={products[2].title}
+                    slug={products[2].slug}
+                    categorySlug={products[2].categories?.slug || 'all'}
+                    price={products[2].price.toString()}
+                    width={104}
+                    height={48}
+                  />
+                </div>
+              </div>
+            )}
+          </>
+        ) : (
+          // Fallback content if no products are found
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-row gap-4 justify-end">
+              <div className="w-80 h-80">
+                <Product displayImage="/product-square.png" hoverImage="/image-hover.png" title="Sample Product" slug="sample" categorySlug="all" price="299" width={96} height={48} />
+              </div>
+            </div>
+            <p className="text-sm text-gray-500">No products found. Using sample data.</p>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -69,7 +184,7 @@ function AboutPrano() {
     </section>
   );
 }
-export default function Home() {
+export default async function Home() {
   return (
     <div className="flex flex-col min-h-screen items-center w-full bg-white">
       <Landing />

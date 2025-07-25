@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Product from "../../../components/product";
-
+import SortDropdown from "../../../components/shop/SortDropdown";
 
 import { createPatternLayout, layoutConfigs } from '../../../lib/shop/shopLayout';
 
@@ -33,11 +33,16 @@ interface PageProps {
   params: Promise<{
     categorySlug: string;
   }>;
+  searchParams: Promise<{
+    sort?: string;
+  }>;
 }
 
-export default async function CategoryPage({ params }: PageProps) {
+export default async function CategoryPage({ params, searchParams }: PageProps) {
   const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
   const { categorySlug } = resolvedParams;
+  const { sort = 'default' } = resolvedSearchParams;
   
   // Fetch data from separate API routes
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
@@ -53,7 +58,28 @@ export default async function CategoryPage({ params }: PageProps) {
   }
   
   const { categories: categoriesWithAll } = await categoriesResponse.json();
-  const { products: filteredProducts } = await productsResponse.json();
+  const { products: rawProducts } = await productsResponse.json();
+
+  // Sort products based on the sort parameter
+  let filteredProducts = [...rawProducts];
+  
+  switch (sort) {
+    case 'price-low-high':
+      filteredProducts.sort((a, b) => a.price - b.price);
+      break;
+    case 'price-high-low':
+      filteredProducts.sort((a, b) => b.price - a.price);
+      break;
+    case 'name-a-z':
+      filteredProducts.sort((a, b) => a.title.localeCompare(b.title));
+      break;
+    case 'name-z-a':
+      filteredProducts.sort((a, b) => b.title.localeCompare(a.title));
+      break;
+    default:
+      // Keep original order
+      break;
+  }
 
   // Find the current category
   const currentCategory = categoriesWithAll.find((cat: Category) => cat.slug === categorySlug);
@@ -66,7 +92,6 @@ export default async function CategoryPage({ params }: PageProps) {
   const desktopLayout = createPatternLayout(filteredProducts, layoutConfigs.desktop);
   const tabletLayout = createPatternLayout(filteredProducts, layoutConfigs.tablet);
   const mobileLayout = createPatternLayout(filteredProducts, layoutConfigs.mobile);
-
 
   return (
     <div className="min-h-screen bg-white">
@@ -82,8 +107,8 @@ export default async function CategoryPage({ params }: PageProps) {
                 <Link
                   key={category.slug}
                   href={`/shop/${category.slug}`}
-                  className={`px-6 py-3 font-headline rounded-lg text-sm tracking-wider border border-black hover:bg-black hover:text-white transition-all duration-300 ${
-                    category.slug === categorySlug ? 'bg-black text-white' : ''
+                  className={`px-6 pl-0 py-3 font-headline text-sm tracking-wider hover:underline transition-all duration-300 ${
+                    category.slug === categorySlug ? 'text-black underline' : ''
                   }`}
                 >
                   {category.name}
@@ -92,28 +117,30 @@ export default async function CategoryPage({ params }: PageProps) {
             </div>
 
             {/* Sort & Filter Options */}
-            <div className="flex gap-4">
-              <select className="px-4 py-2 border border-gray-300 font-headline rounded-lg text-sm">
-                <option>Sort by: Featured</option>
-                <option>Sort by: Price (Low to High)</option>
-                <option>Sort by: Price (High to Low)</option>
-                <option>Sort by: Name (A-Z)</option>
-              </select>
+            <div className="flex font-argesta gap-4">
+              <SortDropdown currentSort={sort} categorySlug={categorySlug} />
             </div>
           </div>
         </div>
       </section>
 
       {/* Products Grid */}
-      <section className="w-full py-16">
-        <div className="mx-auto px-6">
+      <section className="w-full py-4">
+        <div className="mx-auto">
           
           {/* Category Title */}
-          <div className="text-center mb-12">
-
+          <div className="text-left mb-4">
             {categorySlug !== 'all' && (
-              <p className="text-gray-600 font-text">
+              <p className="text-gray-600 text-argesta">
                 {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'} found
+                {sort !== 'default' && (
+                  <span className="ml-2">
+                    • Sorted by {sort === 'price-low-high' ? 'Price (Low to High)' : 
+                               sort === 'price-high-low' ? 'Price (High to Low)' :
+                               sort === 'name-a-z' ? 'Name (A-Z)' :
+                               sort === 'name-z-a' ? 'Name (Z-A)' : 'Default'}
+                  </span>
+                )}
               </p>
             )}
           </div>
@@ -130,7 +157,7 @@ export default async function CategoryPage({ params }: PageProps) {
                 View All Products
               </Link>
             </div>
-                    ) : (
+          ) : (
             <>
               {/* Desktop Layout (4 columns) */}
               <div 
@@ -150,16 +177,16 @@ export default async function CategoryPage({ params }: PageProps) {
                     className={item.type === 'spacer' ? 'opacity-0 pointer-events-none' : ''}
                   >
                     {item.type === 'product' && (
-                        <Product
-                          displayImage={item.product.image}
-                          hoverImage={item.product.hover_image}
-                          title={item.product.title}
-                          slug={item.product.slug}
-                          categorySlug={item.product.categories?.slug || categorySlug}
-                          price={item.product.price.toString()}
-                          width={layoutConfigs.desktop.productSize.width}
-                          height={layoutConfigs.desktop.productSize.height}
-                        />
+                      <Product
+                        displayImage={item.product.image}
+                        hoverImage={item.product.hover_image}
+                        title={item.product.title}
+                        slug={item.product.slug}
+                        categorySlug={item.product.categories?.slug || categorySlug}
+                        price={item.product.price.toString()}
+                        width={layoutConfigs.desktop.productSize.width}
+                        height={layoutConfigs.desktop.productSize.height}
+                      />
                     )}
                   </div>
                 ))}
@@ -183,16 +210,16 @@ export default async function CategoryPage({ params }: PageProps) {
                     className={item.type === 'spacer' ? 'opacity-0 pointer-events-none' : ''}
                   >
                     {item.type === 'product' && (
-                        <Product
-                          displayImage={item.product.image}
-                          hoverImage={item.product.hover_image}
-                          title={item.product.title}
-                          slug={item.product.slug}
-                          categorySlug={item.product.categories?.slug || categorySlug}
-                          price={item.product.price.toString()}
-                          width={layoutConfigs.tablet.productSize.width}
-                          height={layoutConfigs.tablet.productSize.height}
-                        />
+                      <Product
+                        displayImage={item.product.image}
+                        hoverImage={item.product.hover_image}
+                        title={item.product.title}
+                        slug={item.product.slug}
+                        categorySlug={item.product.categories?.slug || categorySlug}
+                        price={item.product.price.toString()}
+                        width={layoutConfigs.tablet.productSize.width}
+                        height={layoutConfigs.tablet.productSize.height}
+                      />
                     )}
                   </div>
                 ))}
@@ -203,16 +230,16 @@ export default async function CategoryPage({ params }: PageProps) {
                 {mobileLayout.map((item, index) => (
                   <div key={`mobile-${index}`}>
                     {item.type === 'product' && (
-                        <Product
-                          displayImage={item.product.image}
-                          hoverImage={item.product.hover_image}
-                          title={item.product.title}
-                          slug={item.product.slug}
-                          categorySlug={item.product.categories?.slug || categorySlug}
-                          price={item.product.price.toString()}
-                          width={layoutConfigs.mobile.productSize.width}
-                          height={layoutConfigs.mobile.productSize.height}
-                        />
+                      <Product
+                        displayImage={item.product.image}
+                        hoverImage={item.product.hover_image}
+                        title={item.product.title}
+                        slug={item.product.slug}
+                        categorySlug={item.product.categories?.slug || categorySlug}
+                        price={item.product.price.toString()}
+                        width={layoutConfigs.mobile.productSize.width}
+                        height={layoutConfigs.mobile.productSize.height}
+                      />
                     )}
                   </div>
                 ))}

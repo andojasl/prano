@@ -10,6 +10,17 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'sans': ['var(--font-argesta)', 'system-ui', 'sans-serif'],
+        'serif': ['var(--font-defonte-heading)', 'Georgia', 'serif'],
+        'heading': ['var(--font-defonte-heading)', 'serif'],
+        'display': ['var(--font-argesta-display)', 'serif'],
+        // Custom font classes
+        'defonte': ['var(--font-defonte-heading)', 'serif'],
+        'argesta': ['var(--font-argesta)', 'system-ui', 'sans-serif'],
+        'argesta-display': ['var(--font-argesta-display)', 'serif'],
+        'argesta-headline': ['var(--font-argesta-headline)', 'serif'],
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

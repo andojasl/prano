@@ -22,7 +22,7 @@ export default function Product({displayImage, hoverImage, title, slug, category
   return (
     <Link 
       href={productUrl}
-      className="rounded-lg relative overflow-hidden cursor-pointer transition-all duration-300 aspect-square block w-full"
+      className="rounded-lg relative overflow-hidden cursor-pointer transition-all duration-300 aspect-[2/1] block w-full"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
