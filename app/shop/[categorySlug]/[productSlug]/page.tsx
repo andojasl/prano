@@ -271,8 +271,9 @@ export default function ProductPage({ params }: PageProps) {
                 price: parseFloat(product.price),
                 image: product.images[0],
                 size: selectedSize || undefined,
-              })} className="w-full py-3 rounded-lg px-6 bg-black text-white font-headline text-sm tracking-wider hover:bg-gray-800 transition-colors duration-300">
+              })} className="w-full py-3 rounded-lg px-6 bg-black text-white font-headline text-sm tracking-wider hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center flex-row gap-2">
                 Add to cart
+                <Image src="/add-to-cart.svg" alt="Add to cart" width={32} height={32} className="brightness-0 invert" />
               </button>
             </div>
 

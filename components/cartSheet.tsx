@@ -7,17 +7,24 @@ import { Button } from "./ui/button";
 
 export function CartSheet() {
     const items = useCartStore((state) => state.items);
+    const totalItems = useCartStore(state => state.totalItems)
     const totalPrice = useCartStore(state => state.totalPrice)
     const updateQuantity = useCartStore(state => state.updateQuantity)
     const updateQuantityWithSize = useCartStore(state => state.updateQuantityWithSize)
+    const clearCart = useCartStore(state => state.clearCart)
     console.log(items.map(item => item.size).join(', '))
 
     return (
         <Sheet >
             <SheetTitle hidden>Cart</SheetTitle>
             <SheetTrigger asChild>
-                <Button variant="ghost">
+                <Button variant="ghost" className="relative">
                     <Image src="/cart.svg" alt="Cart" width={32} height={32} />
+                    {totalItems > 0 && (
+                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                            {totalItems > 99 ? '99+' : totalItems}
+                        </span>
+                    )}
                 </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[400px] px-6 py-12 sm:w-[500px]">
@@ -34,17 +41,19 @@ export function CartSheet() {
                                     </div>
                                 )}
                                 <div className="pl-6 flex flex-col w-full gap-0">
-                                    <p className="font-medium">{item.name}</p>
-                                    <p>{item.price}€</p>
+                                    <div className="flex flex-row justify-between">
+                                        <p className="font-medium text-xs">{item.name}</p>
+                                        <p className="text-xs">{item.price}€</p>
+                                    </div>
                                     {item.size && (
                                         <div>
-                                            <p className="text-sm text-gray-500">Size: {item.size}</p>
-                                            <p className="text-sm items-center flex flex-row gap-2 text-gray-500">Qty: {item.quantity}
+                                            <p className="text-xs text-gray-500">Size: {item.size}</p>
+                                            <p className="text-xs items-center flex flex-row gap-2 text-gray-500">Qty: {item.quantity}
                                                 <Button variant="ghost" size="icon" onClick={() => updateQuantityWithSize(item.id, item.quantity - 1, item.size!)}>
-                                                    <Image src="/minus.svg" alt="-" width={16} height={16} />
+                                                    <Image src="/minus.svg" alt="-" width={12} height={12} />
                                                 </Button>
                                                 <Button variant="ghost" size="icon" onClick={() => updateQuantityWithSize(item.id, item.quantity + 1, item.size!)}>
-                                                    <Image src="/plus.svg" alt="+" width={16} height={16} />
+                                                    <Image src="/plus.svg" alt="+" width={12} height={12} />
                                                 </Button>
                                             </p>
                                         </div>
@@ -52,12 +61,12 @@ export function CartSheet() {
                                     }
                                     {
                                         !item.size && (
-                                            <p className="text-sm items-center flex flex-row gap-2 text-gray-500">Qty: {item.quantity}
+                                            <p className="text-xs items-center flex flex-row gap-2 text-gray-500">Qty: {item.quantity}
                                                 <Button variant="ghost" size="icon" onClick={() => updateQuantity(item.id, item.quantity - 1)}>
-                                                    <Image src="/minus.svg" alt="-" width={16} height={16} />
+                                                    <Image src="/minus.svg" alt="-" width={12} height={12} />
                                                 </Button>
                                                 <Button variant="ghost" size="icon" onClick={() => updateQuantity(item.id, item.quantity + 1)}>
-                                                    <Image src="/plus.svg" alt="+" width={16} height={16} />
+                                                    <Image src="/plus.svg" alt="+" width={12} height={12} />
                                                 </Button>
                                             </p>
                                         )
@@ -68,10 +77,26 @@ export function CartSheet() {
                         ))}
                     </ul>
                 )}
+                {items.length > 0 && (
+                    <div className="flex flex-row justify-end w-full">
+                        <Button variant="ghost" onClick={() => clearCart()} className=" hover:underline">Clear cart</Button>
+                    </div>
+                )}
                 <div className="flex flex-row absolute bottom-6 left-6 right-6 gap-4">
                     <div className="flex flex-col gap-2 w-full">
-                        <p className="text-m">Total: {totalPrice}€</p>
-                        <Button className="w-full">Checkout</Button>
+                       
+                        <div className="flex flex-row justify-between">
+                        <p className="text-m">Total: 
+                            </p>
+                            <p>{totalPrice}€</p>
+                            </div>
+                        {items.length > 0 && (
+                            <Button className="w-full">Checkout</Button>
+                        )}{
+                            items.length === 0 && (
+                                <Button className="w-full" variant="inactive">Checkout</Button>
+                            )
+                        }
                     </div>
                 </div>
             </SheetContent>
