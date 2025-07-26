@@ -286,11 +286,15 @@ export default function ProductPage({ params }: PageProps) {
                     className="w-full py-4 flex justify-between items-center text-left text-sm text-gray-600 hover:text-black transition-colors duration-200"
                   >
                     <span>{section.title}</span>
-                    <span className={`transform transition-transform duration-200 ${
-                      expandedSections.includes(section.id) ? 'rotate-180' : ''
-                    }`}>
-                      ↓
-                    </span>
+                    <Image 
+                      src="/arrow-down.svg" 
+                      alt="Arrow" 
+                      width={16} 
+                      height={10}
+                      className={`transform transition-transform duration-200 ${
+                        expandedSections.includes(section.id) ? 'rotate-180' : ''
+                      }`}
+                    />
                   </button>
                   {expandedSections.includes(section.id) && (
                     <div className="pb-4">
