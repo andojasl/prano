@@ -1,4 +1,5 @@
 'use client';
+import useCartStore from '@/app/store/cartStore';
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -44,6 +45,7 @@ export default function ProductPage({ params }: PageProps) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
+  const addItem = useCartStore(state => state.addItem)
 
   // Resolve params
   useEffect(() => {
@@ -263,8 +265,15 @@ export default function ProductPage({ params }: PageProps) {
 
             {/* Action Buttons */}
             <div className="space-y-4 pt-4">
-              <button className="w-full py-3 rounded-lg px-6 bg-black text-white font-headline text-sm tracking-wider hover:bg-gray-800 transition-colors duration-300">
+              <button onClick={() => addItem({
+                id: product.id.toString(),
+                name: product.title,
+                price: parseFloat(product.price),
+                image: product.images[0],
+                size: selectedSize || undefined,
+              })} className="w-full py-3 rounded-lg px-6 bg-black text-white font-headline text-sm tracking-wider hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center flex-row gap-2">
                 Add to cart
+                <Image src="/add-to-cart.svg" alt="Add to cart" width={32} height={32} className="brightness-0 invert" />
               </button>
             </div>
 
