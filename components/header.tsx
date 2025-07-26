@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { User } from "@supabase/supabase-js";
 import Link from "next/link";
+import { CartSheet } from "./cartSheet";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -12,7 +13,7 @@ export default function Header() {
 
   useEffect(() => {
     const supabase = createClient();
-    
+
     // Get initial user
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -49,9 +50,9 @@ export default function Header() {
         <div className="hidden sm:flex gap-10 text-black items-center">
           <a className="text-base font-serif" href="#about">ABOUT</a>
           <div className="flex items-center gap-2">
-            <Image src="/cart.svg" alt="Cart" width={32} height={32} />
+            <CartSheet />
           </div>
-       </div>
+        </div>
         {/* Hamburger for mobile */}
         <button
           className="sm:hidden flex flex-col justify-center items-center w-10 h-10"
