@@ -59,7 +59,7 @@ const useCartStore = create<CartStore>((set, get) => ({
       totalPrice: newItems.reduce((sum, i) => sum + (i.price * i.quantity), 0)
     }
   }),
-   updateQuantity: (id, quantity) => set((state) => {
+  updateQuantity: (id, quantity) => set((state) => {
     if (quantity <= 0) {
       const newItems = state.items.filter(item => item.id !== id)
       return {
