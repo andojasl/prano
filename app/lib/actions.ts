@@ -31,7 +31,7 @@ const ProductSchema = z.object({
   
   images: z.string().optional(), // Will be converted to array
   
-  available_sizes: z.string().optional(), // Will be converted to array
+  sizes: z.string().optional(), // JSON string of size/quantity pairs
 })
 
 export type State = {
@@ -47,7 +47,7 @@ export type State = {
     care_details?: string[]
     deliver_details?: string[]
     images?: string[]
-    available_sizes?: string[]
+    sizes?: string[]
   }
   message?: string | null
 }
@@ -66,7 +66,7 @@ export async function createProduct(prevState: State, formData: FormData): Promi
     care_details: formData.get('care_details'),
     deliver_details: formData.get('deliver_details'),
     images: formData.get('images'),
-    available_sizes: formData.get('available_sizes'),
+    sizes: formData.get('sizes'),
   })
 
   // If form validation fails, return errors early
@@ -89,20 +89,27 @@ export async function createProduct(prevState: State, formData: FormData): Promi
     material_details, 
     care_details, 
     deliver_details, 
-    images, 
-    available_sizes 
+    images,
+    sizes 
   } = validatedFields.data
 
   // Generate slug from title
   const slug = title.replace(/\s+/g, "-").toLowerCase();
 
+  // Parse sizes JSON if provided
+  let sizesData: Array<{size: string, quantity: number}> = [];
+  if (sizes && sizes.trim()) {
+    try {
+      const parsedSizes = JSON.parse(sizes);
+      sizesData = parsedSizes.filter((s: any) => s.size && s.size.trim());
+    } catch (error) {
+      console.error('Failed to parse sizes data:', error);
+    }
+  }
+
   // Convert comma-separated strings to arrays
   const imagesArray = images && images.trim() 
     ? images.split(',').map(img => img.trim()).filter(img => img.length > 0)
-    : null
-
-  const sizesArray = available_sizes && available_sizes.trim()
-    ? available_sizes.split(',').map(size => size.trim()).filter(size => size.length > 0)
     : null
 
   try {
@@ -116,8 +123,8 @@ export async function createProduct(prevState: State, formData: FormData): Promi
       }
     }
 
-    // Insert product into database
-    const { error } = await supabase
+    // Insert product into database and get the ID
+    const { data: productData, error: productError } = await supabase
       .from('products')
       .insert({
         title,
@@ -132,21 +139,22 @@ export async function createProduct(prevState: State, formData: FormData): Promi
         deliver_details: deliver_details || null,
         images: imagesArray,
         slug,
-        available_sizes: sizesArray,
       })
+      .select('id')
+      .single()
 
-    if (error) {
-      console.error('Database error:', error)
+    if (productError) {
+      console.error('Database error:', productError)
       
       // Handle specific database errors
-      if (error.code === '23505') {
-        if (error.message.includes('title')) {
+      if (productError.code === '23505') {
+        if (productError.message.includes('title')) {
           return {
             errors: { title: ['A product with this title already exists.'] },
             message: 'Failed to create product.',
           }
         }
-        if (error.message.includes('slug')) {
+        if (productError.message.includes('slug')) {
           return {
             errors: { title: ['A product with this title already exists (slug conflict).'] },
             message: 'Failed to create product.',
@@ -156,6 +164,28 @@ export async function createProduct(prevState: State, formData: FormData): Promi
       
       return {
         message: 'Database Error: Failed to create product.',
+      }
+    }
+
+    // Insert sizes into the sizes table if we have any
+    if (sizesData.length > 0 && productData?.id) {
+      const sizesToInsert = sizesData.map(sizeItem => ({
+        product_id: productData.id,
+        size: sizeItem.size,
+        quantity: sizeItem.quantity || 0,
+      }));
+
+      const { error: sizesError } = await supabase
+        .from('sizes')
+        .insert(sizesToInsert);
+
+      if (sizesError) {
+        console.error('Error inserting sizes:', sizesError);
+        // Note: Product was created successfully, but sizes failed
+        // We could decide to rollback or just log the error
+        return {
+          message: 'Product created but failed to save sizes. Please edit the product to add sizes.',
+        }
       }
     }
 

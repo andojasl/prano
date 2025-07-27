@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export function LogoutButton() {
   const router = useRouter();
@@ -10,8 +11,11 @@ export function LogoutButton() {
   const logout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/auth/login");
+    router.push("/");
   };
 
-  return <Button onClick={logout}>Logout</Button>;
+  return <Button onClick={logout}>
+    <Image src="/account.svg" alt="Logo" className="invert" width={24} height={24} />
+    Logout
+  </Button>;
 }

@@ -43,11 +43,14 @@ export default function Header() {
           <a className="text-base text-black font-serif" href="#custom">CUSTOM ORDER</a>
         </nav>
         {/* Logo */}
-        <div className="flex items-center justify-center">
+        <div className="flex items-center absolute left-1/2 -translate-x-1/2 justify-center">
           <Link href="/"><Image src="/logo-prano.svg" alt="Logo" width={40} height={56} /></Link>
         </div>
         {/* Desktop Right */}
         <div className="hidden sm:flex gap-10 text-black items-center">
+          {user && (
+            <Link href="/dashboard" className="text-base font-serif">DASHBOARD</Link>
+          )}
           <a className="text-base font-serif" href="#about">ABOUT</a>
           <div className="flex items-center gap-2">
             <CartSheet />

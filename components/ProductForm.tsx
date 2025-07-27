@@ -7,6 +7,7 @@ import { createProduct, State } from "@/app/lib/actions";
 import { useActionState, useState } from "react";
 import FileUpload from "./FileUpload";
 import MultiImageUpload from "./MultiImageUpload";
+import SizeManager from "./SizeManager";
 
 interface Category {
   id: number;
@@ -20,12 +21,34 @@ export default function ProductForm({ categories }: { categories: Category[] }) 
   const [mainImage, setMainImage] = useState('');
   const [hoverImage, setHoverImage] = useState('');
   const [additionalImages, setAdditionalImages] = useState<string[]>([]);
+  const [sizes, setSizes] = useState<any[]>([]);
 
   const handleSubmit = (formData: FormData) => {
     if (!mainImage) {
       alert('Please upload a main image before submitting the form.');
       return;
     }
+    
+    // Additional client-side validation
+    const title = formData.get('title') as string;
+    const price = formData.get('price') as string;
+    const category = formData.get('category') as string;
+    
+    if (!title?.trim()) {
+      alert('Please enter a product title.');
+      return;
+    }
+    
+    if (!price?.trim()) {
+      alert('Please enter a product price.');
+      return;
+    }
+    
+    if (!category) {
+      alert('Please select a category.');
+      return;
+    }
+    
     formAction(formData);
   };
 
@@ -78,13 +101,14 @@ export default function ProductForm({ categories }: { categories: Category[] }) 
           </div>
         </div>
 
+        <div className="flex flex-col gap-4">
         {/* Category */}
         <div>
           <Label htmlFor="category">Category*</Label>
           <select
             id="category"
             name="category"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 px-2 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             aria-describedby="category-error"
           >
             <option value="">Select a category</option>
@@ -104,6 +128,46 @@ export default function ProductForm({ categories }: { categories: Category[] }) 
           </div>
         </div>
 
+      {/* Description */}
+      <div>
+        <Label htmlFor="description">Description</Label>
+        <textarea
+          id="description"
+          name="description"
+          rows={3}
+          className="mt-1 block w-full h-64 rounded-md border px-2 py-2 shadow-sm focus:border-black focus:ring-black sm:text-sm"
+          placeholder="Product description..."
+          aria-describedby="description-error"
+        />
+        <div id="description-error" aria-live="polite" aria-atomic="true">
+          {state.errors?.description &&
+            state.errors.description.map((error: string) => (
+              <p className="mt-2 text-sm text-red-500" key={error}>
+                {error}
+              </p>
+            ))}
+        </div>
+      </div>
+
+             {/* Available Sizes */}
+       <div>
+         <SizeManager
+           label="Available Sizes & Stock"
+           onSizesChange={setSizes}
+         />
+         <div id="sizes-error" aria-live="polite" aria-atomic="true">
+           {state.errors?.sizes &&
+             state.errors.sizes.map((error: string) => (
+               <p className="mt-2 text-sm text-red-500" key={error}>
+                 {error}
+               </p>
+             ))}
+         </div>
+       </div>
+      </div>
+
+
+        <div className="flex flex-col gap-4">
         {/* Main Image */}
         <div>
           <FileUpload
@@ -142,51 +206,6 @@ export default function ProductForm({ categories }: { categories: Category[] }) 
           </div>
         </div>
       </div>
-
-      {/* Description */}
-      <div>
-        <Label htmlFor="description">Description</Label>
-        <textarea
-          id="description"
-          name="description"
-          rows={3}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          placeholder="Product description..."
-          aria-describedby="description-error"
-        />
-        <div id="description-error" aria-live="polite" aria-atomic="true">
-          {state.errors?.description &&
-            state.errors.description.map((error: string) => (
-              <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-              </p>
-            ))}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Available Sizes */}
-        <div>
-          <Label htmlFor="available_sizes">Available Sizes</Label>
-          <Input
-            id="available_sizes"
-            name="available_sizes"
-            type="text"
-            placeholder="S, M, L, XL (comma-separated)"
-            className="mt-1"
-            aria-describedby="sizes-error"
-          />
-          <p className="mt-1 text-sm text-gray-500">Separate sizes with commas</p>
-          <div id="sizes-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.available_sizes &&
-              state.errors.available_sizes.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                  {error}
-                </p>
-              ))}
-          </div>
-        </div>
-
         {/* Additional Images */}
         <div className="md:col-span-2">
           <MultiImageUpload
