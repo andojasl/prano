@@ -28,15 +28,13 @@ export default async function CreateProductPage() {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Create New Product</h1>
-          <p className="mt-2 text-gray-600">Add a new product to your jewelry store</p>
+          <h1 className="text-3xl font-defonte text-gray-900">Create New Product</h1>
         </div>
 
         {/* Create Product Form */}
         <Card className="p-6">
           <div className="flex items-center mb-6">
-            <Plus className="h-6 w-6 text-gray-600 mr-2" />
-            <h2 className="text-xl font-semibold text-gray-900">Product Details</h2>
+            <h2 className="text-xl font-semibold text-gray-900">Details</h2>
           </div>
           
           <ProductForm categories={categories || []} />

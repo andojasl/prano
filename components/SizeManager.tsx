@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,10 +15,24 @@ interface Size {
 interface SizeManagerProps {
   onSizesChange: (sizes: Size[]) => void;
   label: string;
+  initialSizes?: any[];
 }
 
-export default function SizeManager({ onSizesChange, label }: SizeManagerProps) {
+export default function SizeManager({ onSizesChange, label, initialSizes }: SizeManagerProps) {
   const [sizes, setSizes] = useState<Size[]>([]);
+
+  // Initialize sizes from initialSizes prop
+  useEffect(() => {
+    if (initialSizes && initialSizes.length > 0) {
+      const formattedSizes = initialSizes.map((size, index) => ({
+        id: `${Date.now()}-${index}`,
+        size: size.size || '',
+        quantity: size.quantity || 0,
+      }));
+      setSizes(formattedSizes);
+      onSizesChange(formattedSizes);
+    }
+  }, [initialSizes, onSizesChange]);
 
   const addSize = () => {
     const newSize: Size = {

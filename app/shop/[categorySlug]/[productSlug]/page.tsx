@@ -6,12 +6,12 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
-const expandableSections = [
-  { id: "size-guide", title: "Size guide", content: "Ring sizing information and measurement guide." },
-  { id: "materials", title: "Materials", content: "High-quality niobium and certified diamonds used in all pieces." },
-  { id: "delivery", title: "Delivery & Return", content: "Free shipping worldwide. 30-day return policy." },
-  { id: "care", title: "Jewelry care & Warranty", content: "Care instructions and lifetime warranty information." }
-];
+// const expandableSections = [
+//   { id: "size-guide", title: "Size guide", content: "Ring sizing information and measurement guide." },
+//   { id: "materials", title: "Materials", content: "High-quality niobium and certified diamonds used in all pieces." },
+//   { id: "delivery", title: "Delivery & Return", content: "Free shipping worldwide. 30-day return policy." },
+//   { id: "care", title: "Jewelry care & Warranty", content: "Care instructions and lifetime warranty information." }
+// ];
 
 interface Product {
   id: number;
@@ -19,13 +19,17 @@ interface Product {
   slug: string;
   images: string[];
   description?: string;
-  specifications?: string;
-  craftsmanship?: string;
-  fromPrice?: string;
+  material_details?: string;
+  care_details?: string;
   price: string;
   availability?: string;
   availableSizes?: string[];
   category: string;
+}
+
+interface Size {
+  size: string;
+  quantity: number;
 }
 
 interface PageProps {
@@ -41,6 +45,7 @@ export default function ProductPage({ params }: PageProps) {
     productSlug: string;
   } | null>(null);
   const [product, setProduct] = useState<Product | null>(null);
+  const [sizes, setSizes] = useState<Size[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
@@ -127,6 +132,44 @@ export default function ProductPage({ params }: PageProps) {
     fetchProduct();
   }, [resolvedParams]);
 
+  // Fetch sizes from sizes table
+  useEffect(() => {
+    if (!product) return;
+
+    const fetchSizes = async () => {
+      try {
+        const supabase = createClient();
+        
+        const { data: sizesData, error } = await supabase
+          .from('sizes')
+          .select('size, quantity')
+          .eq('product_id', product.id);
+
+        if (error) {
+          console.error('Error fetching sizes:', error);
+          setSizes([]);
+        } else {
+          const sizeValues = sizesData.map(item => ({
+            size: item.size,
+            quantity: item.quantity || 0
+          }));
+          setSizes(sizeValues);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        setSizes([]);
+      }
+    };
+
+    fetchSizes();
+  }, [product]);
+
+  const expandableSections = [
+    { id: "size-guide", title: "Size guide", content: "sizing information and measurement guide." },
+    { id: "materials", title: "Materials", content: product?.material_details},
+    { id: "delivery", title: "Delivery & Return", content: "Free shipping worldwide. 30-day return policy." },
+    { id: "care", title: "Jewelry care & Warranty", content: product?.care_details}
+  ];
   const toggleSection = (sectionId: string) => {
     setExpandedSections(prev => 
       prev.includes(sectionId) 
@@ -209,24 +252,6 @@ export default function ProductPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Specifications */}
-            {product.specifications && (
-              <div className="space-y-2">
-                <p className="text-gray-700 text-sm leading-relaxed">
-                  {product.specifications}
-                </p>
-              </div>
-            )}
-
-            {/* Craftsmanship */}
-            {product.craftsmanship && (
-              <div className="space-y-2">
-                <p className="text-gray-700 text-sm leading-relaxed">
-                  {product.craftsmanship}
-                </p>
-              </div>
-            )}
-
             {/* Pricing */}
               <div className="flex items-center space-x-2">
                 <span className="text-sm text-gray-600">Price</span>
@@ -234,21 +259,25 @@ export default function ProductPage({ params }: PageProps) {
               </div>
 
             {/* Size Selection */}
-            {product.availableSizes && product.availableSizes.length > 0 && (
+            {sizes && sizes.length > 0 && (
               <div className="space-y-2">
-                <span className="text-sm flex flex-row items-center text-gray-600">Avalable sizes:
+                <span className="text-sm flex flex-row items-center text-gray-600">Available sizes:
                   <div className="pl-3">
-                  {product.availableSizes.map((size: string) => (
+                  {sizes.map((sizeObj: Size) => (
                     <button
-                      key={size}
-                      onClick={() => setSelectedSize(size)}
-                      className={`px-3 py-2 text-sm font-medium transition-all duration-200 hover:underline ${
-                        selectedSize === size
-                          ? 'underline text-black'
-                          : 'text-gray-700 hover:text-black'
+                      key={sizeObj.size}
+                      onClick={() => sizeObj.quantity > 0 ? setSelectedSize(sizeObj.size) : null}
+                      disabled={sizeObj.quantity === 0}
+                      className={`px-3 py-2 text-sm font-medium transition-all duration-200 ${
+                        sizeObj.quantity === 0 
+                          ? 'text-gray-400 cursor-not-allowed line-through'
+                          : selectedSize === sizeObj.size
+                            ? 'underline text-black'
+                            : 'text-gray-700 hover:text-black hover:underline'
                       }`}
+                      title={sizeObj.quantity === 0 ? 'Out of stock' : `${sizeObj.quantity} available`}
                       >
-                        {size}
+                        {sizeObj.size} {sizeObj.quantity === 0 && '(Out of stock)'}
                       </button>
                   ))}
                     </div>
@@ -271,6 +300,7 @@ export default function ProductPage({ params }: PageProps) {
                 price: parseFloat(product.price),
                 image: product.images[0],
                 size: selectedSize || undefined,
+                size_quantity: sizes.find(size => size.size === selectedSize)?.quantity || undefined,
               })} className="w-full py-3 rounded-lg px-6 bg-black text-white font-headline text-sm tracking-wider hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center flex-row gap-2">
                 Add to cart
                 <Image src="/add-to-cart.svg" alt="Add to cart" width={32} height={32} className="brightness-0 invert" />
