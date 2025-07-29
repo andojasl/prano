@@ -1,8 +1,8 @@
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return twMerge(clsx(inputs))
 }
 
 // This check can be removed, it is just for tutorial purposes
@@ -25,12 +25,13 @@ export function generateProductSlug(title: string): string {
     .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
 }
 
-/**
- * Generate product URL path
- * @param category The product category slug
- * @param productSlug The product slug
- * @returns The full URL path
- */
-export function getProductUrl(categorySlug: string, productSlug: string): string {
+export function getProductUrl(categorySlug: string, productSlug: string) {
   return `/shop/${categorySlug}/${productSlug}`;
+}
+
+export function getBaseUrl(): string {
+  return process.env.NEXT_PUBLIC_APP_URL || 
+    (process.env.NODE_ENV === 'development' 
+      ? "http://localhost:3000" 
+      : "https://prano.vercel.app");
 }
