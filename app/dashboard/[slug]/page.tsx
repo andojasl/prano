@@ -22,12 +22,13 @@ interface Product {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function EditProductPage({ params }: PageProps) {
+  const resolvedParams = await params;
   const supabase = await createClient();
 
   // Check authentication
@@ -54,7 +55,7 @@ export default async function EditProductPage({ params }: PageProps) {
       images,
       slug
     `)
-    .eq('slug', params.slug)
+    .eq('slug', resolvedParams.slug)
     .single();
 
   if (productError || !product) {
