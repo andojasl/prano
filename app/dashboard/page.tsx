@@ -29,7 +29,7 @@ export default async function DashboardPage() {
         </div>
         <div className="flex w-full flex-row justify-between gap-4 border-b border-gray-200 pb-6 pt-2">
           {linkComponent("/dashboard/create-product", "Create a text")}
-          {linkComponent("/dashboard/create-product", "Edit existing texts")}
+          {linkComponent("/dashboard/view-texts", "View texts")}
         </div>
         <div className="flex w-full flex-row justify-between gap-4 border-b border-gray-200 pb-6 pt-2 ">
           {linkComponent("/dashboard/create-product", "Create a category")}

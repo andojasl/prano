@@ -21,7 +21,7 @@ export default function ProductForm({ categories }: { categories: Category[] }) 
   const [mainImage, setMainImage] = useState('');
   const [hoverImage, setHoverImage] = useState('');
   const [additionalImages, setAdditionalImages] = useState<string[]>([]);
-  const [sizes, setSizes] = useState<any[]>([]);
+  const [, setSizes] = useState<Array<{ size: string; quantity: number }>>([]);
 
   const handleSubmit = (formData: FormData) => {
     if (!mainImage) {

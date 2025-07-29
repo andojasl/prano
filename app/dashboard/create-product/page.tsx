@@ -1,14 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Package, Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import ProductForm from "../../../components/ProductForm";
-
-interface Category {
-  id: number;
-  name: string;
-  slug: string;
-}
 
 export default async function CreateProductPage() {
   const supabase = await createClient();

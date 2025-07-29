@@ -58,7 +58,7 @@ export default function FileUpload({ onUpload, currentImage, label, required = f
     } else {
       setError('Please upload an image file');
     }
-  }, []);
+  }, [uploadFile]);
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();

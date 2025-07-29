@@ -101,7 +101,7 @@ export async function createProduct(prevState: State, formData: FormData): Promi
   if (sizes && sizes.trim()) {
     try {
       const parsedSizes = JSON.parse(sizes);
-      sizesData = parsedSizes.filter((s: any) => s.size && s.size.trim());
+      sizesData = parsedSizes.filter((s: {size?: string, quantity?: number}) => s.size && s.size.trim());
     } catch (error) {
       console.error('Failed to parse sizes data:', error);
     }
@@ -250,7 +250,7 @@ export async function updateProduct(productId: string, prevState: State, formDat
   if (sizes && sizes.trim()) {
     try {
       const parsedSizes = JSON.parse(sizes);
-      sizesData = parsedSizes.filter((s: any) => s.size && s.size.trim());
+      sizesData = parsedSizes.filter((s: {size?: string, quantity?: number}) => s.size && s.size.trim());
     } catch (error) {
       console.error('Failed to parse sizes data:', error);
     }

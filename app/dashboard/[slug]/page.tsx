@@ -4,12 +4,6 @@ import { Card } from "@/components/ui/card";
 import { Edit } from "lucide-react";
 import EditProductForm from "@/components/EditProductForm";
 
-interface Category {
-  id: number;
-  name: string;
-  slug: string;
-}
-
 interface Product {
   id: string;
   title: string;
@@ -23,7 +17,7 @@ interface Product {
   care_details?: string;
   deliver_details?: string;
   images?: string[];
-  available_sizes?: any;
+  available_sizes?: Array<{ size: string; quantity: number }>;
   slug: string;
 }
 

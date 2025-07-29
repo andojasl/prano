@@ -29,7 +29,7 @@ interface Product {
   care_details?: string;
   deliver_details?: string;
   images?: string[];
-  available_sizes?: any;
+  available_sizes?: Array<{ size: string; quantity: number }>;
 }
 
 interface EditProductFormProps {
@@ -45,7 +45,7 @@ export default function EditProductForm({ categories, product }: EditProductForm
   const [mainImage, setMainImage] = useState(product.image || '');
   const [hoverImage, setHoverImage] = useState(product.hover_image || '');
   const [additionalImages, setAdditionalImages] = useState<string[]>(product.images || []);
-  const [sizes, setSizes] = useState<any[]>([]);
+  const [sizes, setSizes] = useState<Array<{ size: string; quantity: number }>>([]);
 
   // Load sizes from product data
   useEffect(() => {

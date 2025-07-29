@@ -15,7 +15,7 @@ interface Size {
 interface SizeManagerProps {
   onSizesChange: (sizes: Size[]) => void;
   label: string;
-  initialSizes?: any[];
+  initialSizes?: Array<{ size: string; quantity: number }>;
 }
 
 export default function SizeManager({ onSizesChange, label, initialSizes }: SizeManagerProps) {
@@ -80,11 +80,11 @@ export default function SizeManager({ onSizesChange, label, initialSizes }: Size
       {sizes.length === 0 ? (
         <div className="text-center py-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
           <p className="text-gray-500 text-sm">No sizes added yet</p>
-          <p className="text-gray-400 text-xs mt-1">Click "Add Size" to get started</p>
+          <p className="text-gray-400 text-xs mt-1">Click &quot;Add Size&quot; to get started</p>
         </div>
       ) : (
         <div className="space-y-3">
-          {sizes.map((sizeItem, index) => (
+          {sizes.map((sizeItem) => (
             <div key={sizeItem.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
               <div className="flex-1">
                 <Label htmlFor={`size-${sizeItem.id}`} className="text-xs text-gray-600">

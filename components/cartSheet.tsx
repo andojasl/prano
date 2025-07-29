@@ -1,7 +1,6 @@
 'use client'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import useCartStore from "@/app/store/cartStore";
-import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
 

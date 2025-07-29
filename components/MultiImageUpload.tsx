@@ -82,7 +82,7 @@ export default function MultiImageUpload({
     const fileList = new DataTransfer();
     imageFiles.forEach(file => fileList.items.add(file));
     uploadFiles(fileList.files);
-  }, [uploadedImages.length, maxImages]);
+  }, [uploadedImages.length, maxImages, uploadFiles]);
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();

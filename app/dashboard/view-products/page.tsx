@@ -5,24 +5,6 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Edit, Package } from "lucide-react";
-import DeleteProductButton from "@/components/DeleteProductButton";
-
-interface Product {
-  id: string;
-  image: string;
-  hover_image: string | null;
-  title: string;
-  slug: string;
-  price: number;
-  category: number;
-  description: string | null;
-  ready: boolean | null;
-  available_sizes: any;
-  images: string[] | null;
-  categories?: {
-    slug: string;
-  };
-}
 
 export default async function ViewProductsPage() {
   const supabase = await createClient();

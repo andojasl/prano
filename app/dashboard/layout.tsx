@@ -1,8 +1,4 @@
 import { AuthButton } from "@/components/auth-button";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import Link from "next/link";
-import { Home, LayoutDashboard } from "lucide-react";
-import Image from "next/image";
 
 export default function DashboardLayout({
   children,

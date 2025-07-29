@@ -201,12 +201,12 @@ export default function ProductPage({ params }: PageProps) {
           
           {/* Product Images */}
           <div className="space-y-4 lg:col-span-4">
-            <div className="aspect-square bg-gray-50 rounded-lg overflow-hidden">
+            <div className="bg-gray-50 rounded-lg aspect-[1.5/1] overflow-hidden">
               <Image
                 src={product.images[selectedImage]}
                 alt={product.title}
                 width={600}
-                height={600}
+                height={400}
                 className="w-full h-full object-cover"
               />
             </div>
