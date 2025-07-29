@@ -56,7 +56,7 @@ export default async function CategoryPage({
   const { sort = "default" } = resolvedSearchParams;
 
   // Fetch data from separate API routes
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://prano.vercel.app";
 
   const [categoriesResponse, productsResponse, textResponse] = await Promise.all([
     fetch(`${baseUrl}/api/categories`, { cache: "no-store" }),
