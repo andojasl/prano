@@ -15,7 +15,7 @@ interface ProductProps {
   height: number; // Tailwind size like "64", "48", etc.
 }
 
-export default function Product({displayImage, hoverImage, title, slug, categorySlug, price, width, height}: ProductProps) {
+export default function Product({displayImage, hoverImage, title, slug, categorySlug, price}: ProductProps) {
   const [isHovered, setIsHovered] = useState(false);
   const productUrl = getProductUrl(categorySlug, slug);
 

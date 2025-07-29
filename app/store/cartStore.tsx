@@ -7,6 +7,7 @@ interface CartItem {
   quantity: number
   image?: string
   size?: string
+  size_quantity?: number
 }
 
 interface CartStore {
@@ -16,7 +17,7 @@ interface CartStore {
   addItem: (item: Omit<CartItem, 'quantity'>) => void
   removeItem: (id: string) => void
   updateQuantity: (id: string, quantity: number) => void
-  updateQuantityWithSize: (id: string, quantity: number, size: string) => void
+  updateQuantityWithSize: (id: string, quantity: number, size: string, size_quantity: number) => void
   clearCart: () => void
 }
 
@@ -79,7 +80,7 @@ const useCartStore = create<CartStore>((set, get) => ({
     }
   }),
   
-  updateQuantityWithSize: (id, quantity, size: string) => set((state) => {
+  updateQuantityWithSize: (id, quantity, size: string, size_quantity: number) => set((state) => {
     if (quantity <= 0) {
       const newItems = state.items.filter(item => !(item.id === id && item.size === size))
       return {
@@ -89,8 +90,11 @@ const useCartStore = create<CartStore>((set, get) => ({
       }
     }
     
+    // Cap the quantity at the maximum available stock for this size
+    const maxQuantity = Math.min(quantity, size_quantity)
+    
     const updatedItems = state.items.map(item =>
-      item.id === id && item.size === size ? { ...item, quantity } : item
+      item.id === id && item.size === size ? { ...item, quantity: maxQuantity } : item
     )
     return {
       items: updatedItems,

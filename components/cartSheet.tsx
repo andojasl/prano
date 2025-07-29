@@ -1,7 +1,6 @@
 'use client'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import useCartStore from "@/app/store/cartStore";
-import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
 
@@ -49,10 +48,10 @@ export function CartSheet() {
                                         <div>
                                             <p className="text-xs text-gray-500">Size: {item.size}</p>
                                             <p className="text-xs items-center flex flex-row gap-2 text-gray-500">Qty: {item.quantity}
-                                                <Button variant="ghost" size="icon" onClick={() => updateQuantityWithSize(item.id, item.quantity - 1, item.size!)}>
+                                                <Button variant="ghost" size="icon" onClick={() => updateQuantityWithSize(item.id, item.quantity - 1, item.size!, item.size_quantity || 999)}>
                                                     <Image src="/minus.svg" alt="-" width={12} height={12} />
                                                 </Button>
-                                                <Button variant="ghost" size="icon" onClick={() => updateQuantityWithSize(item.id, item.quantity + 1, item.size!)}>
+                                                <Button variant="ghost" size="icon" onClick={() => updateQuantityWithSize(item.id, item.quantity + 1, item.size!, item.size_quantity || 999)}>
                                                     <Image src="/plus.svg" alt="+" width={12} height={12} />
                                                 </Button>
                                             </p>

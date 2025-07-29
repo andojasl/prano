@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Product from "../components/product";
+import Link from "next/link";
 
 interface ProductData {
   id: string;
@@ -66,20 +66,11 @@ async function NewArrivals() {
     console.error('Failed to fetch latest products:', error);
   }
 
-  // Layout variations for visual appeal (similar to original hardcoded layout)
-  const layoutVariations = [
-    { width: 96, height: 48, justify: 'justify-end' },
-    { width: 112, height: 56, justify: '' },
-    { width: 104, height: 48, justify: 'justify-end' },
-  ];
-
-
-
   return (
     <section className="w-full max-w-5xl grid md:grid-cols-2 grid-cols-1 lg:grid-cols-7 flex-row max-h-screen items-center py-16 justify-between">
       <div className="flex left-0 w-full md:w-auto flex-col gap-6 col-span-1 md:col-span-2 lg:col-span-3">
         <h2 className="text-3xl font-defonte">NEW ARRIVALS</h2>
-        <a href="/shop" className="text-base font-serif underline mb-12">View shop</a>
+        <Link href="/shop" className="text-base font-serif underline mb-12">View shop</Link>
       </div>
       <div className="flex flex-col w-full md:w-auto gap-6 col-span-1 md:col-span-1 lg:col-span-4">
         {products.length > 0 ? (
@@ -154,7 +145,7 @@ async function NewArrivals() {
 
 function MeetMe() {
   return (
-    <section className="w-full max-w-5xl flex flex-col items-start py-32 md:px-14 px-4 gap-16">
+    <section className="w-full max-w-5xl flex flex-col items-start py-32 gap-16">
       <h2 className="text-3xl font-serif mb-8">MEET ME</h2>
       <div className="flex flex-col md:flex-row gap-8 w-full">
         {/* Event 1 */}
@@ -181,7 +172,7 @@ function MeetMe() {
 
 function AboutPrano() {
   return (
-    <section className="w-full max-w-5xl flex flex-col items-start py-32 px-14 gap-16">
+    <section className="w-full max-w-5xl flex flex-col items-start py-32 gap-16">
       <h2 className="text-3xl font-serif mb-8">ABOUT PRANO</h2>
     </section>
   );

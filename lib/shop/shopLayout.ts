@@ -13,7 +13,7 @@ interface Product {
   category: number;
   description: string | null;
   ready: boolean | null;
-  available_sizes: any;
+  available_sizes: Array<{ size: string; quantity: number }>;
   images: string[] | null;
   categories?: {
     slug: string;
@@ -48,14 +48,14 @@ export const layoutConfigs = {
 
   // Mobile layout (1 column)
   mobile: {
-    rows: ["P"], // This will be repeated for each product
+    rows: ["P P"], // This will be repeated for each product
     productSize: {
       width: 80,
       height: 48,
     },
     fixedGap: 16,
     betweenRows: 16,
-    columns: 1,
+    columns: 2,
   },
 };
 
@@ -67,16 +67,16 @@ export const createPatternLayout = (
   texts: Text[],
   config: typeof layoutConfig,
 ) => {
-  const layout: any[] = [];
+  const layout: Array<{ type: 'product'; product: Product; gridColumn: number; gridRow: number } | { type: 'text'; text: Text; gridColumn: number; gridRow: number }> = [];
   let productIndex = 0;
   let textIndex = 0;
 
   // For mobile layout, create a simple single-column layout
-  if (config.columns === 1) {
+  if (config.columns === 2) {
     return products.map((product, index) => ({
       type: "product",
       product,
-      gridColumn: 1,
+      gridColumn: 2,
       gridRow: index + 1,
     }));
   }

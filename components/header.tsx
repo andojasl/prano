@@ -9,7 +9,6 @@ import { CartSheet } from "./cartSheet";
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const supabase = createClient();
@@ -18,7 +17,6 @@ export default function Header() {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
-      setLoading(false);
     };
 
     getUser();
@@ -27,7 +25,6 @@ export default function Header() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setUser(session?.user ?? null);
-        setLoading(false);
       }
     );
 
@@ -35,7 +32,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full fixed top-0 bg-white/90 backdrop-blur-md px-4 md:px-16 sm:px-14 pt-8 pb-6 flex flex-col gap-2 z-50" style={{ boxShadow: '0 4px 32px rgba(0,0,0,0.04)' }}>
+    <header className="w-full fixed top-0 bg-white/80 backdrop-blur-md px-4 md:px-16 sm:px-14 pt-8 pb-6 flex flex-col gap-2 z-50" style={{ boxShadow: '0 4px 32px rgba(0,0,0,0.04)' }}>
       <div className="flex items-center justify-between w-full">
         {/* Desktop Nav */}
         <nav className="hidden sm:flex gap-10 items-center">
@@ -43,11 +40,14 @@ export default function Header() {
           <a className="text-base text-black font-serif" href="#custom">CUSTOM ORDER</a>
         </nav>
         {/* Logo */}
-        <div className="flex items-center justify-center">
+        <div className="flex items-center absolute left-1/2 -translate-x-1/2 justify-center">
           <Link href="/"><Image src="/logo-prano.svg" alt="Logo" width={40} height={56} /></Link>
         </div>
         {/* Desktop Right */}
         <div className="hidden sm:flex gap-10 text-black items-center">
+          {user && (
+            <Link href="/dashboard" className="text-base font-serif">DASHBOARD</Link>
+          )}
           <a className="text-base font-serif" href="#about">ABOUT</a>
           <div className="flex items-center gap-2">
             <CartSheet />

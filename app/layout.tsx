@@ -78,7 +78,7 @@ const argestaHeadline = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Prano Jewelry",
+  title: "Prano",
   description: "Handcrafted jewelry with contemporary forms",
 };
 

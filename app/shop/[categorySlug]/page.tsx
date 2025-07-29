@@ -9,7 +9,8 @@ import {
   createPatternLayout,
   layoutConfigs,
 } from "../../../lib/shop/shopLayout";
-interface Text {
+
+interface TextItem {
   id: string;
   text: string;
 }
@@ -29,7 +30,7 @@ interface Product {
   category: number;
   description: string | null;
   ready: boolean | null;
-  available_sizes: any;
+  available_sizes: Array<{ size: string; quantity: number }>;
   images: string[] | null;
   categories?: {
     slug: string;
@@ -79,7 +80,7 @@ export default async function CategoryPage({
   const { texts: rawTexts } = await textResponse.json();
 
   // Shuffle texts randomly using Fisher-Yates algorithm
-  const shuffleArray = (array: any[]) => {
+  const shuffleArray = (array: TextItem[]): TextItem[] => {
     const arr = [...array]; // Create a copy
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -224,7 +225,7 @@ export default async function CategoryPage({
                     {item.type === "product" && (
                       <Product
                         displayImage={item.product.image}
-                        hoverImage={item.product.hover_image}
+                        hoverImage={item.product.hover_image || undefined}
                         title={item.product.title}
                         slug={item.product.slug}
                         categorySlug={
@@ -235,7 +236,7 @@ export default async function CategoryPage({
                         height={layoutConfigs.desktop.productSize.height}
                       />
                     )}
-                    {item.type === "text" && item.text && (
+                    {item.type === "text" && "text" in item && (
                       <div className="flex items-center justify-center h-full">
                         <p className="text-center text-gray-700 font-argesta text-xs">
                           {item.text.text}
@@ -272,7 +273,7 @@ export default async function CategoryPage({
                     {item.type === "product" && (
                       <Product
                         displayImage={item.product.image}
-                        hoverImage={item.product.hover_image}
+                        hoverImage={item.product.hover_image || undefined}
                         title={item.product.title}
                         slug={item.product.slug}
                         categorySlug={
@@ -283,7 +284,7 @@ export default async function CategoryPage({
                         height={layoutConfigs.tablet.productSize.height}
                       />
                     )}
-                    {item.type === "text" && item.text && (
+                    {item.type === "text" && "text" in item && (
                       <div className="flex items-center justify-center h-full p-4">
                         <p className="text-center text-gray-700 font-argesta text-xs">
                           {item.text.text}
@@ -301,7 +302,7 @@ export default async function CategoryPage({
                     {item.type === "product" && (
                       <Product
                         displayImage={item.product.image}
-                        hoverImage={item.product.hover_image}
+                        hoverImage={item.product.hover_image || undefined}
                         title={item.product.title}
                         slug={item.product.slug}
                         categorySlug={
@@ -312,7 +313,7 @@ export default async function CategoryPage({
                         height={layoutConfigs.mobile.productSize.height}
                       />
                     )}
-                    {item.type === "text" && item.text && (
+                    {item.type === "text" && "text" in item && (
                       <div className="flex items-center justify-center h-full p-4">
                         <p className="text-center text-gray-700 font-argesta text-sm">
                           {item.text.text}
