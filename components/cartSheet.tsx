@@ -3,8 +3,10 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import useCartStore from "@/app/store/cartStore";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
 export function CartSheet() {
+    const router = useRouter()
     const items = useCartStore((state) => state.items);
     const totalItems = useCartStore(state => state.totalItems)
     const totalPrice = useCartStore(state => state.totalPrice)
@@ -90,7 +92,7 @@ export function CartSheet() {
                             <p>{totalPrice}€</p>
                             </div>
                         {items.length > 0 && (
-                            <Button className="w-full">Checkout</Button>
+                            <Button className="w-full" onClick={() => router.push('/checkout')}>Checkout</Button>
                         )}{
                             items.length === 0 && (
                                 <Button className="w-full" variant="inactive">Checkout</Button>
