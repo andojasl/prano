@@ -37,7 +37,7 @@ export default function Header() {
         {/* Desktop Nav */}
         <nav className="hidden sm:flex gap-10 items-center">
           <Link href="/shop" className="text-base text-black font-serif hover:text-gray-600 transition-colors">SHOP</Link>
-          <a className="text-base text-black font-serif" href="#custom">CUSTOM ORDER</a>
+          <Link href="/custom-order" className="text-base text-black font-serif hover:text-gray-600 transition-colors">CUSTOM ORDER</Link>
         </nav>
         {/* Logo */}
         <div className="flex items-center absolute left-1/2 -translate-x-1/2 justify-center">

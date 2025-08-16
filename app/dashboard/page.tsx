@@ -31,6 +31,14 @@ export default async function DashboardPage() {
           {linkComponent("/dashboard/create-product", "Create a text")}
           {linkComponent("/dashboard/view-texts", "View texts")}
         </div>
+        <div className="flex w-full flex-row justify-between gap-4 border-b border-gray-200 pb-6 pt-2">
+          {linkComponent("/dashboard/view-orders", "Manage Orders")}
+          {linkComponent("/dashboard/view-orders?status=pending", "Pending Orders")}
+        </div>
+        <div className="flex w-full flex-row justify-between gap-4 border-b border-gray-200 pb-6 pt-2">
+          {linkComponent("/dashboard/custom-orders", "Manage Custom Orders")}
+          {linkComponent("/dashboard/custom-orders?status=submitted", "New Custom Requests")}
+        </div>
         <div className="flex w-full flex-row justify-between gap-4 border-b border-gray-200 pb-6 pt-2 ">
           {linkComponent("/dashboard/create-product", "Create a category")}
           {linkComponent("/dashboard/create-product", "Edit existing categories")}

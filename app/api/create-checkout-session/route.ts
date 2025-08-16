@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
+import { createClient } from '@/lib/supabase/server'
 
 interface CartItem {
   id: string
@@ -11,22 +12,19 @@ interface CartItem {
 }
 
 interface CheckoutRequest {
+  orderId: number
   items: CartItem[]
   customerInfo: {
     firstName: string
     lastName: string
     email: string
-    phone: string
-    address: string
-    city: string
-    postalCode: string
-    country: string
+    phone?: string
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const { items, customerInfo }: CheckoutRequest = await request.json()
+    const { orderId, items, customerInfo }: CheckoutRequest = await request.json()
 
     console.log('Checkout request received:', { 
       itemsCount: items?.length, 
@@ -82,13 +80,16 @@ export async function POST(request: NextRequest) {
       quantity: item.quantity,
     }))
 
+        // Update order with Stripe session ID before creating session
+    const supabase = await createClient()
+    
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_DOMAIN}/checkout`,
+      success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/checkout/success?session_id={CHECKOUT_SESSION_ID}&order_id=${orderId}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_DOMAIN}/checkout?order_id=${orderId}`,
       customer_email: customerInfo.email,
       shipping_address_collection: {
         allowed_countries: ['LT', 'LV', 'EE', 'DE', 'PL', 'FI', 'SE', 'NO', 'DK'],
@@ -139,17 +140,29 @@ export async function POST(request: NextRequest) {
           },
         },
       ],
-
+      
       metadata: {
+        orderId: orderId.toString(),
         customerFirstName: customerInfo.firstName,
         customerLastName: customerInfo.lastName,
-        customerPhone: customerInfo.phone,
-        customerAddress: customerInfo.address,
-        customerCity: customerInfo.city,
-        customerPostalCode: customerInfo.postalCode,
-        customerCountry: customerInfo.country,
+        customerEmail: customerInfo.email,
+        customerPhone: customerInfo.phone || '',
       },
     })
+
+    // Update order with Stripe session ID
+    const { error: updateError } = await supabase
+      .from('orders')
+      .update({ 
+        stripe_session_id: session.id,
+        order_status: 'confirmed' // Order is confirmed when payment session is created
+      })
+      .eq('id', orderId)
+
+    if (updateError) {
+      console.error('Error updating order with session ID:', updateError)
+      // Continue anyway, as the session was created successfully
+    }
 
     return NextResponse.json({ 
       sessionId: session.id,

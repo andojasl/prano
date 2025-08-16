@@ -79,7 +79,9 @@ export default function CheckoutPage() {
     setProcessing(true)
     
     try {
-      const response = await fetch('/api/create-checkout-session', {
+      // Step 1: Create order in database
+      console.log('Creating order...')
+      const orderResponse = await fetch('/api/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,20 +92,49 @@ export default function CheckoutPage() {
         }),
       })
 
-      const { url, error } = await response.json()
+      if (!orderResponse.ok) {
+        const orderError = await orderResponse.json()
+        throw new Error(orderError.error || 'Failed to create order')
+      }
+
+      const { orderId, orderNumber } = await orderResponse.json()
+      console.log('Order created:', { orderId, orderNumber })
+
+      // Step 2: Create Stripe checkout session with order reference
+      console.log('Creating Stripe checkout session...')
+      const checkoutResponse = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          orderId,
+          items,
+          customerInfo,
+        }),
+      })
+
+      if (!checkoutResponse.ok) {
+        const checkoutError = await checkoutResponse.json()
+        throw new Error(checkoutError.error || 'Failed to create checkout session')
+      }
+
+      const { url, error } = await checkoutResponse.json()
 
       if (error) {
         throw new Error(error)
       }
 
       if (url) {
+        console.log('Redirecting to Stripe checkout...')
         // Redirect to Stripe Checkout
         window.location.href = url
       }
       
     } catch (error) {
-      console.error('Error creating checkout session:', error)
-      alert('There was an error processing your checkout. Please try again.')
+      console.error('Error in checkout process:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+      alert(`There was an error processing your checkout: ${errorMessage}. Please try again.`)
     } finally {
       setProcessing(false)
     }
