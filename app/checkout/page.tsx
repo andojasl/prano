@@ -24,7 +24,7 @@ interface CustomerInfo {
 export default function CheckoutPage() {
   const router = useRouter()
   const { items, totalPrice } = useCartStore()
-  const [loading, setLoading] = useState(false)
+  const [loading] = useState(false)
   const [processing, setProcessing] = useState(false)
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({
     firstName: '',
@@ -262,7 +262,7 @@ export default function CheckoutPage() {
                       placeholder="Enter email address"
                     />
                     <p className="text-xs text-muted-foreground mt-1">
-                      You'll receive order confirmation and tracking updates here
+                      You&apos;ll receive order confirmation and tracking updates here
                     </p>
                   </div>
                 </div>

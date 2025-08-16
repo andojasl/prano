@@ -46,7 +46,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const supabase = await createClient()
     const serviceSupabase = createServiceClient() // For secure order creation
 
     // Generate order number in application code

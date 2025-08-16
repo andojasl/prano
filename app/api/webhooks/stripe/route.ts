@@ -48,14 +48,14 @@ export async function POST(request: NextRequest) {
         }
 
         // Update order with payment success and shipping info
-        const updateData: any = {
+        const updateData: Record<string, unknown> = {
           payment_status: 'paid',
           order_status: 'processing',
           stripe_payment_intent_id: session.payment_intent,
         }
 
         // Extract shipping information if available
-        const shipping = (session as any).shipping_details
+        const shipping = (session as { shipping_details?: { name?: string; phone?: string; address?: { line1?: string; line2?: string; city?: string; state?: string; postal_code?: string; country?: string } } }).shipping_details
         if (shipping) {
           updateData.shipping_name = shipping.name
           updateData.shipping_phone = shipping.phone

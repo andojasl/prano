@@ -13,9 +13,7 @@ import {
   User, 
   Mail, 
   Phone, 
-  FileText,
   Gem,
-  Calendar,
   MessageSquare,
   CheckCircle,
   AlertCircle
@@ -154,7 +152,7 @@ export default function CustomOrderPage() {
                 Custom Order Submitted Successfully!
               </h1>
               <p className="text-gray-600 mb-6">
-                Thank you for your custom order request. We've received your submission and our team will review it shortly. 
+                Thank you for your custom order request. We&apos;ve received your submission and our team will review it shortly. 
                 You can expect to hear back from us within 2-3 business days with a quote and timeline.
               </p>
               <div className="space-y-3">
@@ -444,11 +442,11 @@ export default function CustomOrderPage() {
             <div className="space-y-2 text-gray-600">
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />
-                <span>We'll review your request within 2-3 business days</span>
+                <span>We&apos;ll review your request within 2-3 business days</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                <span>You'll receive a detailed quote and timeline via email</span>
+                <span>You&apos;ll receive a detailed quote and timeline via email</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />
@@ -456,7 +454,7 @@ export default function CustomOrderPage() {
               </div>
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
-                <span>Once approved, we'll begin crafting your unique piece</span>
+                <span>Once approved, we&apos;ll begin crafting your unique piece</span>
               </div>
             </div>
           </CardContent>

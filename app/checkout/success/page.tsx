@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import useCartStore from '@/app/store/cartStore'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -36,12 +36,11 @@ interface OrderItem {
   line_total: number
 }
 
-export default function CheckoutSuccessPage() {
+function CheckoutSuccessContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { clearCart } = useCartStore()
-  const [sessionId, setSessionId] = useState<string | null>(null)
-  const [orderId, setOrderId] = useState<string | null>(null)
+
   const [order, setOrder] = useState<Order | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -50,39 +49,37 @@ export default function CheckoutSuccessPage() {
     const orderIdParam = searchParams.get('order_id')
     
     if (sessionIdParam) {
-      setSessionId(sessionIdParam)
       // Clear the cart after successful payment
       clearCart()
     }
     
+    const fetchOrder = async (orderIdParam: string) => {
+      try {
+        const sessionIdParam = searchParams.get('session_id')
+        const url = sessionIdParam 
+          ? `/api/orders?id=${orderIdParam}&session_id=${sessionIdParam}`
+          : `/api/orders?id=${orderIdParam}`
+        
+        const response = await fetch(url)
+        if (response.ok) {
+          const orderData = await response.json()
+          setOrder(orderData)
+        } else {
+          console.error('Failed to fetch order')
+        }
+      } catch (error) {
+        console.error('Error fetching order:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
     if (orderIdParam) {
-      setOrderId(orderIdParam)
       fetchOrder(orderIdParam)
     } else {
       setLoading(false)
     }
   }, [searchParams, clearCart])
-
-  const fetchOrder = async (orderIdParam: string) => {
-    try {
-      const sessionIdParam = searchParams.get('session_id')
-      const url = sessionIdParam 
-        ? `/api/orders?id=${orderIdParam}&session_id=${sessionIdParam}`
-        : `/api/orders?id=${orderIdParam}`
-      
-      const response = await fetch(url)
-      if (response.ok) {
-        const orderData = await response.json()
-        setOrder(orderData)
-      } else {
-        console.error('Failed to fetch order')
-      }
-    } catch (error) {
-      console.error('Error fetching order:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -232,10 +229,10 @@ export default function CheckoutSuccessPage() {
                 </div>
 
                 <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                  <h4 className="font-medium text-blue-900 mb-2">What's Next?</h4>
+                  <h4 className="font-medium text-blue-900 mb-2">What&apos;s Next?</h4>
                   <ul className="text-sm text-blue-800 space-y-1">
-                    <li>• You'll receive an email confirmation shortly</li>
-                    <li>• We'll send tracking information when your order ships</li>
+                    <li>• You&apos;ll receive an email confirmation shortly</li>
+                    <li>• We&apos;ll send tracking information when your order ships</li>
                     <li>• Expected delivery: 3-7 business days</li>
                   </ul>
                 </div>
@@ -274,5 +271,13 @@ export default function CheckoutSuccessPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <CheckoutSuccessContent />
+    </Suspense>
   )
 } 

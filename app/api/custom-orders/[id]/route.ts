@@ -35,7 +35,7 @@ export async function GET(
 
     return NextResponse.json({ customOrder: data });
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error fetching custom order:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -65,7 +65,7 @@ export async function PATCH(
     const body = await request.json();
 
     // Prepare update data
-    const updateData: any = {};
+    const updateData: Record<string, unknown> = {};
     
     if (body.status) {
       updateData.status = body.status;
@@ -120,7 +120,7 @@ export async function PATCH(
       customOrder: data 
     });
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error updating custom order:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -164,7 +164,7 @@ export async function DELETE(
       message: 'Custom order deleted successfully' 
     });
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error deleting custom order:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
