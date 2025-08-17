@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
 interface CartItem {
   id: string
@@ -14,6 +15,8 @@ interface CartStore {
   items: CartItem[]
   totalItems: number
   totalPrice: number
+  isHydrated: boolean
+  setHydrated: () => void
   addItem: (item: Omit<CartItem, 'quantity'>) => void
   removeItem: (id: string) => void
   updateQuantity: (id: string, quantity: number) => void
@@ -21,93 +24,107 @@ interface CartStore {
   clearCart: () => void
 }
 
-const useCartStore = create<CartStore>((set, get) => ({
-  items: [],
-  totalItems: 0,
-  totalPrice: 0,
-  
-  addItem: (item) => set((state) => {
-    const existingItem = state.items.find(i => i.id === item.id && i.size === item.size)
-    
-    if (existingItem) {
-      const updatedItems = state.items.map(i =>
-        i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
-      )
-      return {
-        items: updatedItems,
-        totalItems: updatedItems.reduce((sum, i) => sum + i.quantity, 0),
-        totalPrice: updatedItems.reduce((sum, i) => sum + (i.price * i.quantity), 0)
-      }
-    } else {
-      const newItems = [...state.items, { ...item, quantity: 1 }]
-      return {
-        items: newItems,
-        totalItems: newItems.reduce((sum, i) => sum + i.quantity, 0),
-        totalPrice: newItems.reduce((sum, i) => sum + (i.price * i.quantity), 0)
-      }
-    }
-  }),
+const useCartStore = create<CartStore>()(
+  persist(
+    (set, get) => ({
+      items: [],
+      totalItems: 0,
+      totalPrice: 0,
+      isHydrated: false,
+      
+      setHydrated: () => set({ isHydrated: true }),
+      
+      addItem: (item) => set((state) => {
+        const existingItem = state.items.find(i => i.id === item.id && i.size === item.size)
+        
+        if (existingItem) {
+          const updatedItems = state.items.map(i =>
+            i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+          )
+          return {
+            items: updatedItems,
+            totalItems: updatedItems.reduce((sum, i) => sum + i.quantity, 0),
+            totalPrice: updatedItems.reduce((sum, i) => sum + (i.price * i.quantity), 0)
+          }
+        } else {
+          const newItems = [...state.items, { ...item, quantity: 1 }]
+          return {
+            items: newItems,
+            totalItems: newItems.reduce((sum, i) => sum + i.quantity, 0),
+            totalPrice: newItems.reduce((sum, i) => sum + (i.price * i.quantity), 0)
+          }
+        }
+      }),
 
-  getItems: () => get().items,
-  getTotalItems: () => get().totalItems,
-  getTotalPrice: () => get().totalPrice,
-  
-  removeItem: (id) => set((state) => {
-    const newItems = state.items.filter(item => item.id !== id)
-    return {
-      items: newItems,
-      totalItems: newItems.reduce((sum, i) => sum + i.quantity, 0),
-      totalPrice: newItems.reduce((sum, i) => sum + (i.price * i.quantity), 0)
+      getItems: () => get().items,
+      getTotalItems: () => get().totalItems,
+      getTotalPrice: () => get().totalPrice,
+      
+      removeItem: (id) => set((state) => {
+        const newItems = state.items.filter(item => item.id !== id)
+        return {
+          items: newItems,
+          totalItems: newItems.reduce((sum, i) => sum + i.quantity, 0),
+          totalPrice: newItems.reduce((sum, i) => sum + (i.price * i.quantity), 0)
+        }
+      }),
+      updateQuantity: (id, quantity) => set((state) => {
+        if (quantity <= 0) {
+          const newItems = state.items.filter(item => item.id !== id)
+          return {
+            items: newItems,
+            totalItems: newItems.reduce((sum, i) => sum + i.quantity, 0),
+            totalPrice: newItems.reduce((sum, i) => sum + (i.price * i.quantity), 0)
+          }
+        }
+        
+        const updatedItems = state.items.map(item =>
+          item.id === id ? { ...item, quantity } : item
+        )
+        return {
+          items: updatedItems,
+          totalItems: updatedItems.reduce((sum, i) => sum + i.quantity, 0),
+          totalPrice: updatedItems.reduce((sum, i) => sum + (i.price * i.quantity), 0)
+        }
+      }),
+      
+      updateQuantityWithSize: (id, quantity, size: string, size_quantity: number) => set((state) => {
+        if (quantity <= 0) {
+          const newItems = state.items.filter(item => !(item.id === id && item.size === size))
+          return {
+            items: newItems,
+            totalItems: newItems.reduce((sum, i) => sum + i.quantity, 0),
+            totalPrice: newItems.reduce((sum, i) => sum + (i.price * i.quantity), 0)
+          }
+        }
+        
+        // Cap the quantity at the maximum available stock for this size
+        const maxQuantity = Math.min(quantity, size_quantity)
+        
+        const updatedItems = state.items.map(item =>
+          item.id === id && item.size === size ? { ...item, quantity: maxQuantity } : item
+        )
+        return {
+          items: updatedItems,
+          totalItems: updatedItems.reduce((sum, i) => sum + i.quantity, 0),
+          totalPrice: updatedItems.reduce((sum, i) => sum + (i.price * i.quantity), 0)
+        }
+      }),
+      
+      clearCart: () => set({
+        items: [],
+        totalItems: 0,
+        totalPrice: 0
+      })
+    }),
+    {
+      name: 'cart-storage',
+      storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
+        state?.setHydrated()
+      },
     }
-  }),
-  updateQuantity: (id, quantity) => set((state) => {
-    if (quantity <= 0) {
-      const newItems = state.items.filter(item => item.id !== id)
-      return {
-        items: newItems,
-        totalItems: newItems.reduce((sum, i) => sum + i.quantity, 0),
-        totalPrice: newItems.reduce((sum, i) => sum + (i.price * i.quantity), 0)
-      }
-    }
-    
-    const updatedItems = state.items.map(item =>
-      item.id === id ? { ...item, quantity } : item
-    )
-    return {
-      items: updatedItems,
-      totalItems: updatedItems.reduce((sum, i) => sum + i.quantity, 0),
-      totalPrice: updatedItems.reduce((sum, i) => sum + (i.price * i.quantity), 0)
-    }
-  }),
-  
-  updateQuantityWithSize: (id, quantity, size: string, size_quantity: number) => set((state) => {
-    if (quantity <= 0) {
-      const newItems = state.items.filter(item => !(item.id === id && item.size === size))
-      return {
-        items: newItems,
-        totalItems: newItems.reduce((sum, i) => sum + i.quantity, 0),
-        totalPrice: newItems.reduce((sum, i) => sum + (i.price * i.quantity), 0)
-      }
-    }
-    
-    // Cap the quantity at the maximum available stock for this size
-    const maxQuantity = Math.min(quantity, size_quantity)
-    
-    const updatedItems = state.items.map(item =>
-      item.id === id && item.size === size ? { ...item, quantity: maxQuantity } : item
-    )
-    return {
-      items: updatedItems,
-      totalItems: updatedItems.reduce((sum, i) => sum + i.quantity, 0),
-      totalPrice: updatedItems.reduce((sum, i) => sum + (i.price * i.quantity), 0)
-    }
-  }),
-  
-  clearCart: () => set({
-    items: [],
-    totalItems: 0,
-    totalPrice: 0
-  })
-}))
+  )
+)
 
 export default useCartStore
