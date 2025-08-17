@@ -23,8 +23,8 @@ interface CustomerInfo {
 
 export default function CheckoutPage() {
   const router = useRouter()
-  const { items, totalPrice } = useCartStore()
-  const [loading, setLoading] = useState(false)
+  const { items, totalPrice, isHydrated } = useCartStore()
+  const [loading, setLoading] = useState(true)
   const [processing, setProcessing] = useState(false)
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({
     firstName: '',
@@ -38,11 +38,15 @@ export default function CheckoutPage() {
   })
 
   useEffect(() => {
-    // Redirect to cart if empty
-    if (items.length === 0) {
-      router.push('/cart')
+    // Wait for hydration to complete before making routing decisions
+    if (isHydrated) {
+      setLoading(false)
+      // Only redirect to cart if the cart is empty AND the store is hydrated
+      if (items.length === 0) {
+        router.push('/cart')
+      }
     }
-  }, [items, router])
+  }, [items, router, isHydrated])
 
   const handleCustomerInfoChange = (field: keyof CustomerInfo, value: string) => {
     setCustomerInfo(prev => ({
@@ -140,12 +144,13 @@ export default function CheckoutPage() {
     }
   }
 
-  if (loading) {
+  // Show loading state until cart is hydrated
+  if (loading || !isHydrated) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
-          <p className="mt-4">Loading...</p>
+          <p className="mt-4">Loading checkout...</p>
         </div>
       </div>
     )
@@ -262,7 +267,7 @@ export default function CheckoutPage() {
                       placeholder="Enter email address"
                     />
                     <p className="text-xs text-muted-foreground mt-1">
-                      You'll receive order confirmation and tracking updates here
+                      You&apos;ll receive order confirmation and tracking updates here
                     </p>
                   </div>
                 </div>

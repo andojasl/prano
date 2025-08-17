@@ -12,48 +12,18 @@ import {
   XCircle, 
   ArrowLeft,
   Calendar,
-  Euro,
   User,
   Mail,
   Phone,
   MapPin,
   CreditCard,
-  Edit,
-  Trash2,
   ExternalLink
 } from "lucide-react";
 import Image from "next/image";
 import { OrderStatusManager } from "./_components/OrderStatusManager";
 import { DeleteOrderButton } from "./_components/DeleteOrderButton";
 
-interface Order {
-  id: number;
-  order_number: string;
-  customer_email: string;
-  customer_first_name: string;
-  customer_last_name: string;
-  customer_phone: string;
-  subtotal: number;
-  shipping_cost: number;
-  tax_amount: number;
-  total_amount: number;
-  currency: string;
-  order_status: string;
-  payment_status: string;
-  created_at: string;
-  stripe_session_id: string;
-  stripe_payment_intent_id: string;
-  order_items: {
-    id: number;
-    product_id: string;
-    product_name: string;
-    product_price: number;
-    product_image: string;
-    size_name: string;
-    quantity: number;
-    line_total: number;
-  }[];
-}
+
 
 export default async function OrderDetailsPage({
   params,

@@ -10,13 +10,10 @@ import {
   Mail,
   Phone,
   Calendar,
-  Euro,
   Clock,
   Sparkles,
   FileText,
   MessageSquare,
-  Edit,
-  Trash2,
   Eye,
   TrendingUp,
   CheckCircle,
@@ -28,31 +25,7 @@ import { CustomOrderQuoteManager } from "./_components/CustomOrderQuoteManager";
 import { DeleteCustomOrderButton } from "./_components/DeleteCustomOrderButton";
 import { InteractiveImage } from "./_components/InteractiveImage";
 
-interface CustomOrder {
-  id: number;
-  created_at: string;
-  updated_at: string;
-  customer_first_name: string;
-  customer_last_name: string;
-  customer_email: string;
-  customer_phone: string;
-  order_title: string;
-  description: string;
-  materials: string;
-  budget_min: number;
-  budget_max: number;
-  timeline_weeks: number;
-  reference_images: string[];
-  special_requests: string;
-  status: string;
-  admin_notes: string;
-  quoted_price: number;
-  quoted_timeline_weeks: number;
-  reviewed_at: string;
-  quoted_at: string;
-  approved_at: string;
-  completed_at: string;
-}
+
 
 export default async function CustomOrderDetailsPage({
   params,
