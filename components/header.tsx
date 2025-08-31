@@ -40,7 +40,7 @@ export default function Header() {
     >
       <div className="flex items-center justify-between w-full">
         {/* Desktop Nav */}
-        <nav className="hidden sm:flex gap-10 items-center">
+        <nav className="hidden lg:flex gap-10 items-center">
           <Link
             href="/shop"
             className="text-base text-black font-serif hover:text-gray-600 transition-colors"
@@ -61,7 +61,7 @@ export default function Header() {
           </Link>
         </div>
         {/* Desktop Right */}
-        <div className="hidden sm:flex gap-10 text-black items-center">
+        <div className="hidden lg:flex gap-10 text-black items-center">
           {user && (
             <Link href="/dashboard" className="text-base font-serif">
               DASHBOARD
@@ -76,7 +76,7 @@ export default function Header() {
         </div>
         {/* Hamburger for mobile */}
         <button
-          className="sm:hidden flex flex-col justify-center items-center w-10 h-10"
+          className="lg:hidden flex flex-col justify-center items-center w-10 h-10"
           aria-label="Open menu"
           onClick={() => setMenuOpen(!menuOpen)}
         >
@@ -87,7 +87,7 @@ export default function Header() {
       </div>
       {/* Mobile Menu */}
       {menuOpen && (
-        <nav className="sm:hidden h-screen pt-48 w-screen flex flex-col gap-4 bg-white/95 p-6">
+        <nav className="lg:hidden h-screen pt-48 w-screen relative -mx-4 -md:mx-16 -sm:mx-14 flex flex-col gap-4 bg-white/95">
           <Link
             href="/shop"
             className="text-lg font-serif"
