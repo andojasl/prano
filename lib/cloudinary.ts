@@ -9,7 +9,7 @@ cloudinary.config({
 
 export default cloudinary;
 
-export const uploadToCloudinary = async (file: File): Promise<string> => {
+export const uploadToCloudinary = async (file: File, folder: string = 'products'): Promise<string> => {
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
 
@@ -17,7 +17,7 @@ export const uploadToCloudinary = async (file: File): Promise<string> => {
     cloudinary.uploader.upload_stream(
       {
         resource_type: 'auto',
-        folder: 'products', // Organize uploads in a folder
+        folder: folder, // Organize uploads in a folder
       },
       (error, result) => {
         if (error) {

@@ -43,6 +43,10 @@ export default async function DashboardPage() {
           {linkComponent("/dashboard/create-product", "Create a category")}
           {linkComponent("/dashboard/create-product", "Edit existing categories")}
         </div>
+        <div className="flex w-full flex-row justify-between gap-4 border-b border-gray-200 pb-6 pt-2 ">
+          {linkComponent("/dashboard/create-meet-location", "Add Meet Location")}
+          {linkComponent("/dashboard/view-meet-locations", "View Meet Locations")}
+        </div>
       </div>
     </div>
   );
