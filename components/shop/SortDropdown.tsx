@@ -17,8 +17,6 @@ export default function SortDropdown({ currentSort, categorySlug }: SortDropdown
     { value: 'default', label: 'Sort by: Default' },
     { value: 'price-low-high', label: 'Sort by: Price (Low to High)' },
     { value: 'price-high-low', label: 'Sort by: Price (High to Low)' },
-    { value: 'name-a-z', label: 'Sort by: Name (A-Z)' },
-    { value: 'name-z-a', label: 'Sort by: Name (Z-A)' },
   ];
 
   const currentOption = sortOptions.find(option => option.value === currentSort) || sortOptions[0];

@@ -267,17 +267,17 @@ export default function EditTextPage() {
               <div className="bg-gray-50 p-3 rounded-md mb-4">
                 <div className="text-xs text-gray-500 mb-1">Lithuanian Text:</div>
                 <p className="text-sm text-gray-700 italic">
-                  "{originalText?.text && originalText.text.length > 100 
+                  &quot;{originalText?.text && originalText.text.length > 100 
                     ? `${originalText.text.substring(0, 100)}...` 
-                    : originalText?.text}"
+                    : originalText?.text}&quot;
                 </p>
                 {originalText?.english && (
                   <>
                     <div className="text-xs text-blue-600 mb-1 mt-2">English Text:</div>
                     <p className="text-sm text-gray-700 italic">
-                      "{originalText.english.length > 100 
+                      &quot;{originalText.english.length > 100 
                         ? `${originalText.english.substring(0, 100)}...` 
-                        : originalText.english}"
+                        : originalText.english}&quot;
                     </p>
                   </>
                 )}

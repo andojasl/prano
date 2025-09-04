@@ -84,10 +84,13 @@ export default function Header() {
           <span className="block w-6 h-0.5 bg-black mb-1"></span>
           <span className="block w-6 h-0.5 bg-black"></span>
         </button>
+        <div className="lg:hidden">
+        <CartSheet />
+        </div>
       </div>
       {/* Mobile Menu */}
       {menuOpen && (
-        <nav className="lg:hidden h-screen pt-48 w-screen relative -mx-4 -md:mx-16 -sm:mx-14 flex flex-col gap-4 bg-white/95">
+        <nav className="lg:hidden h-screen pt-48 w-screen relative -mx-4 -md:mx-16 -sm:mx-14 flex flex-col px-4 gap-4 bg-white/95">
           <Link
             href="/shop"
             className="text-lg font-serif"
@@ -97,24 +100,17 @@ export default function Header() {
           </Link>
           <a
             className="text-lg font-serif"
-            href="#custom"
+            href="/custom-order"
             onClick={() => setMenuOpen(false)}
           >
             CUSTOM ORDER
           </a>
           <a
             className="text-lg font-serif"
-            href="#about"
+            href="/about"
             onClick={() => setMenuOpen(false)}
           >
             ABOUT
-          </a>
-          <a
-            className="text-lg font-serif"
-            href="#cart"
-            onClick={() => setMenuOpen(false)}
-          >
-            CART
           </a>
         </nav>
       )}

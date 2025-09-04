@@ -1,4 +1,5 @@
 'use client'
+import { useState } from "react";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import useCartStore from "@/app/store/cartStore";
 import Image from "next/image";
@@ -7,6 +8,7 @@ import { useRouter } from "next/navigation";
 
 export function CartSheet() {
     const router = useRouter()
+    const [isOpen, setIsOpen] = useState(false)
     const items = useCartStore((state) => state.items);
     const totalItems = useCartStore(state => state.totalItems)
     const totalPrice = useCartStore(state => state.totalPrice)
@@ -15,8 +17,13 @@ export function CartSheet() {
     const clearCart = useCartStore(state => state.clearCart)
     console.log(items.map(item => item.size).join(', '))
 
+    const handleCheckout = () => {
+        setIsOpen(false) // Close the sheet
+        router.push('/checkout')
+    }
+
     return (
-        <Sheet >
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTitle hidden>Cart</SheetTitle>
             <SheetTrigger asChild>
                 <Button variant="ghost" className="relative">
@@ -92,7 +99,7 @@ export function CartSheet() {
                             <p>{totalPrice}€</p>
                             </div>
                         {items.length > 0 && (
-                            <Button className="w-full" onClick={() => router.push('/checkout')}>Checkout</Button>
+                            <Button className="w-full" onClick={handleCheckout}>Checkout</Button>
                         )}{
                             items.length === 0 && (
                                 <Button className="w-full" variant="inactive">Checkout</Button>

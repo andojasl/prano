@@ -102,12 +102,6 @@ export default async function CategoryPage({
     case "price-high-low":
       filteredProducts.sort((a, b) => b.price - a.price);
       break;
-    case "name-a-z":
-      filteredProducts.sort((a, b) => a.title.localeCompare(b.title));
-      break;
-    case "name-z-a":
-      filteredProducts.sort((a, b) => b.title.localeCompare(a.title));
-      break;
     default:
       // Keep original order
       break;
@@ -175,11 +169,7 @@ export default async function CategoryPage({
                       ? "Price (Low to High)"
                       : sort === "price-high-low"
                         ? "Price (High to Low)"
-                        : sort === "name-a-z"
-                          ? "Name (A-Z)"
-                          : sort === "name-z-a"
-                            ? "Name (Z-A)"
-                            : "Default"}
+                        : "Default"}
                   </span>
                 )}
               </p>
