@@ -24,6 +24,15 @@ interface CheckoutRequest {
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if Stripe is properly configured
+    if (!process.env.STRIPE_SECRET_KEY) {
+      console.error('STRIPE_SECRET_KEY is not configured')
+      return NextResponse.json(
+        { error: 'Payment system is not configured' },
+        { status: 500 }
+      )
+    }
+
     const { orderId, items, customerInfo }: CheckoutRequest = await request.json()
 
     console.log('Checkout request received:', { 

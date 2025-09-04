@@ -11,41 +11,78 @@ export default async function DashboardPage() {
     redirect("/auth/login");
   }
 
-  const linkComponent = (href: string, text: string) => {
+  const dashboardCard = (title: string, description: string, viewAllHref: string, addNewHref?: string, addNewText?: string) => {
     return (
-      <Link href={href} className="w-full">
-        <div className="w-full h-32 bg-gray-200 rounded-lg flex items-center justify-center hover:bg-gray-300 transition-colors">{text}</div>
-      </Link>
+      <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow flex flex-col h-full">
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">{title}</h3>
+        <p className="text-gray-600 mb-4 flex-grow">{description}</p>
+        <div className="flex flex-col sm:flex-row gap-3 mt-auto">
+          {addNewHref && (
+            <Link href={addNewHref} className="flex-1">
+              <button className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                {addNewText || `Add ${title.slice(0, -1)}`}
+              </button>
+            </Link>
+          )}
+          <Link href={viewAllHref} className="flex-1">
+            <button className="w-full bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition-colors">
+              View All
+            </button>
+          </Link>
+        </div>
+      </div>
     )
-  } 
+  }
 
   return (
-    <div className="min-h-screen ">
-      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 flex flex-col gap-4">
-        <div className="flex w-full flex-row justify-between gap-4 border-b border-gray-200 pb-6 pt-2">
-      
-          {linkComponent("/dashboard/create-product", "Create a product")}
-          {linkComponent("/dashboard/view-products", "View products")}
-        </div>
-        <div className="flex w-full flex-row justify-between gap-4 border-b border-gray-200 pb-6 pt-2">
-          {linkComponent("/dashboard/create-product", "Create a text")}
-          {linkComponent("/dashboard/view-texts", "View texts")}
-        </div>
-        <div className="flex w-full flex-row justify-between gap-4 border-b border-gray-200 pb-6 pt-2">
-          {linkComponent("/dashboard/view-orders", "Manage Orders")}
-          {linkComponent("/dashboard/view-orders?status=pending", "Pending Orders")}
-        </div>
-        <div className="flex w-full flex-row justify-between gap-4 border-b border-gray-200 pb-6 pt-2">
-          {linkComponent("/dashboard/custom-orders", "Manage Custom Orders")}
-          {linkComponent("/dashboard/custom-orders?status=submitted", "New Custom Requests")}
-        </div>
-        <div className="flex w-full flex-row justify-between gap-4 border-b border-gray-200 pb-6 pt-2 ">
-          {linkComponent("/dashboard/create-product", "Create a category")}
-          {linkComponent("/dashboard/create-product", "Edit existing categories")}
-        </div>
-        <div className="flex w-full flex-row justify-between gap-4 border-b border-gray-200 pb-6 pt-2 ">
-          {linkComponent("/dashboard/create-meet-location", "Add Meet Location")}
-          {linkComponent("/dashboard/view-meet-locations", "View Meet Locations")}
+    <div className="min-h-screen">
+      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">Dashboard</h1>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {dashboardCard(
+            "Products", 
+            "Manage your product catalog, inventory, and pricing",
+            "/dashboard/products",
+            "/dashboard/create-product",
+            "Add Product"
+          )}
+          
+          {dashboardCard(
+            "Texts", 
+            "Manage website content and text elements",
+            "/dashboard/texts",
+            "/dashboard/create-text",
+            "Add Text"
+          )}
+          
+          {dashboardCard(
+            "Meet Locations", 
+            "Manage upcoming events and meeting locations",
+            "/dashboard/meet-locations",
+            "/dashboard/create-meet-location",
+            "Add Location"
+          )}
+          
+          {dashboardCard(
+            "Orders", 
+            "View and manage customer orders and fulfillment",
+            "/dashboard/orders"
+          )}
+          
+          {dashboardCard(
+            "Custom Requests", 
+            "Handle custom order requests from customers",
+            "/dashboard/custom-requests"
+          )}
+          
+          {dashboardCard(
+            "Categories", 
+            "Organize products into categories",
+            "/dashboard/categories",
+            "/dashboard/create-category",
+            "Add Category"
+          )}
         </div>
       </div>
     </div>

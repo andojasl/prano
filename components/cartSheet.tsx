@@ -37,8 +37,8 @@ export function CartSheet() {
                         {items.map((item) => (
                             <li key={item.id + item.size} className="flex flex-row justify-between items-center border-b border-gray-200 pb-4">
                                 {item.image && (
-                                    <div className="flex h-full w-32 flex-row items-center rounded-lg overflow-hidden gap-2">
-                                        <Image src={item.image} alt={item.name} width={96} height={80} />
+                                    <div className="flex h-32 w-32 flex-row items-center rounded-lg overflow-hidden gap-2">
+                                        <Image src={item.image} alt={item.name} width={96} height={96} />
                                     </div>
                                 )}
                                 <div className="pl-6 flex flex-col w-full gap-0">

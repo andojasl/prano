@@ -143,7 +143,7 @@ export default async function ViewOrdersPage({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -233,7 +233,7 @@ export default async function ViewOrdersPage({
 
               {/* Status Filter */}
               <div className="flex gap-2 flex-wrap">
-                <Link href="/dashboard/view-orders?status=all">
+                <Link href="/dashboard/orders?status=all">
                   <Button 
                     variant={!resolvedSearchParams.status || resolvedSearchParams.status === 'all' ? 'default' : 'outline'}
                     size="sm"
@@ -241,7 +241,7 @@ export default async function ViewOrdersPage({
                     All
                   </Button>
                 </Link>
-                <Link href="/dashboard/view-orders?status=pending">
+                <Link href="/dashboard/orders?status=pending">
                   <Button 
                     variant={resolvedSearchParams.status === 'pending' ? 'default' : 'outline'}
                     size="sm"
@@ -249,7 +249,7 @@ export default async function ViewOrdersPage({
                     Pending
                   </Button>
                 </Link>
-                <Link href="/dashboard/view-orders?status=processing">
+                <Link href="/dashboard/orders?status=processing">
                   <Button 
                     variant={resolvedSearchParams.status === 'processing' ? 'default' : 'outline'}
                     size="sm"
@@ -257,7 +257,7 @@ export default async function ViewOrdersPage({
                     Processing
                   </Button>
                 </Link>
-                <Link href="/dashboard/view-orders?status=shipped">
+                <Link href="/dashboard/orders?status=shipped">
                   <Button 
                     variant={resolvedSearchParams.status === 'shipped' ? 'default' : 'outline'}
                     size="sm"
@@ -265,7 +265,7 @@ export default async function ViewOrdersPage({
                     Shipped
                   </Button>
                 </Link>
-                <Link href="/dashboard/view-orders?status=delivered">
+                <Link href="/dashboard/orders?status=delivered">
                   <Button 
                     variant={resolvedSearchParams.status === 'delivered' ? 'default' : 'outline'}
                     size="sm"
@@ -354,7 +354,7 @@ export default async function ViewOrdersPage({
                       </div>
 
                       <div className="flex gap-2 justify-end">
-                        <Link href={`/dashboard/view-orders/${order.id}`}>
+                        <Link href={`/dashboard/orders/${order.id}`}>
                           <Button variant="outline" size="sm">
                             <Eye className="w-4 h-4 mr-1" />
                             View Details

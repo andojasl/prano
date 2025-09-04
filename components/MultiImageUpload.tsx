@@ -22,7 +22,7 @@ export default function MultiImageUpload({
   const [uploadedImages, setUploadedImages] = useState<string[]>(currentImages);
   const [error, setError] = useState<string>('');
 
-  const uploadFiles = async (files: FileList) => {
+  const uploadFiles = useCallback(async (files: FileList) => {
     if (uploadedImages.length + files.length > maxImages) {
       setError(`Maximum ${maxImages} images allowed`);
       return;
@@ -61,7 +61,7 @@ export default function MultiImageUpload({
     } finally {
       setIsUploading(false);
     }
-  };
+  }, [uploadedImages, maxImages, onImagesChange]);
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -82,7 +82,7 @@ export default function MultiImageUpload({
     const fileList = new DataTransfer();
     imageFiles.forEach(file => fileList.items.add(file));
     uploadFiles(fileList.files);
-  }, [uploadedImages.length, maxImages, uploadFiles]);
+  }, [uploadFiles]);
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();

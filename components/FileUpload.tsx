@@ -17,7 +17,7 @@ export default function FileUpload({ onUpload, currentImage, label, required = f
   const [uploadedImage, setUploadedImage] = useState<string>(currentImage || '');
   const [error, setError] = useState<string>('');
 
-  const uploadFile = async (file: File) => {
+  const uploadFile = useCallback(async (file: File) => {
     setIsUploading(true);
     setError('');
 
@@ -44,7 +44,7 @@ export default function FileUpload({ onUpload, currentImage, label, required = f
     } finally {
       setIsUploading(false);
     }
-  };
+  }, [onUpload]);
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();

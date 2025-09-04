@@ -183,7 +183,7 @@ export default async function CustomOrdersPage({ searchParams }: CustomOrdersPag
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -372,7 +372,7 @@ export default async function CustomOrdersPage({ searchParams }: CustomOrdersPag
                     </div>
 
                     <div className="ml-4">
-                      <Link href={`/dashboard/custom-orders/${customOrder.id}`}>
+                      <Link href={`/dashboard/custom-requests/${customOrder.id}`}>
                         <Button variant="outline" size="sm">
                           <Eye className="w-4 h-4 mr-2" />
                           View Details
