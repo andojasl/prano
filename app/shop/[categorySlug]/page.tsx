@@ -59,13 +59,14 @@ export default async function CategoryPage({
   // Fetch data from separate API routes
   const baseUrl = getBaseUrl();
 
-  const [categoriesResponse, productsResponse, textResponse] = await Promise.all([
-    fetch(`${baseUrl}/api/categories`, { cache: "no-store" }),
-    fetch(`${baseUrl}/api/products?category=${categorySlug}`, {
-      cache: "no-store",
-    }),
-    fetch(`${baseUrl}/api/texts`, { cache: "no-store" }),
-  ]);
+  const [categoriesResponse, productsResponse, textResponse] =
+    await Promise.all([
+      fetch(`${baseUrl}/api/categories`, { cache: "no-store" }),
+      fetch(`${baseUrl}/api/products?category=${categorySlug}`, {
+        cache: "no-store",
+      }),
+      fetch(`${baseUrl}/api/texts`, { cache: "no-store" }),
+    ]);
 
   if (!categoriesResponse.ok || !productsResponse.ok) {
     console.error("Failed to fetch data");
@@ -134,9 +135,9 @@ export default async function CategoryPage({
   );
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       {/* Navigation & Filters */}
-      <section className="w-full py-6 border-b border-gray-200">
+      <section className="w-full py-6 bg-white border-b border-gray-200">
         <div className="mx-auto">
           <div className="flex flex-row justify-between items-center gap-8">
             {/* Category Filter */}

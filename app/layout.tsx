@@ -7,74 +7,74 @@ import Footer from "../components/footer";
 const argestaText = localFont({
   src: [
     {
-      path: '../public/fonts/Argesta_Webfont/argestatext-regular-webfont.woff2',
-      weight: '400',
-      style: 'normal',
+      path: "../public/fonts/Argesta_Webfont/argestatext-regular-webfont.woff2",
+      weight: "400",
+      style: "normal",
     },
     {
-      path: '../public/fonts/Argesta_Webfont/argestatext-regularitalic-webfont.woff2',
-      weight: '400',
-      style: 'italic',
+      path: "../public/fonts/Argesta_Webfont/argestatext-regularitalic-webfont.woff2",
+      weight: "400",
+      style: "italic",
     },
     {
-      path: '../public/fonts/Argesta_Webfont/argestatext-bold-webfont.woff2',
-      weight: '700',
-      style: 'normal',
+      path: "../public/fonts/Argesta_Webfont/argestatext-bold-webfont.woff2",
+      weight: "700",
+      style: "normal",
     },
   ],
   variable: "--font-argesta",
-  display: 'swap',
+  display: "swap",
 });
 
 const defonteHeading = localFont({
   src: [
     {
-      path: '../public/fonts/defonte-plus-normale.woff',
-      weight: '400',
-      style: 'normal',
+      path: "../public/fonts/defonte-plus-normale.woff",
+      weight: "400",
+      style: "normal",
     },
     {
-      path: '../public/fonts/defonte-plus-normale.ttf',
-      weight: '400',
-      style: 'normal',
+      path: "../public/fonts/defonte-plus-normale.ttf",
+      weight: "400",
+      style: "normal",
     },
   ],
   variable: "--font-defonte-heading",
-  display: 'swap',
+  display: "swap",
 });
 
 const argestaDisplay = localFont({
   src: [
     {
-      path: '../public/fonts/Argesta_Webfont/argestadisplay-regular-webfont.woff2',
-      weight: '400',
-      style: 'normal',
+      path: "../public/fonts/Argesta_Webfont/argestadisplay-regular-webfont.woff2",
+      weight: "400",
+      style: "normal",
     },
     {
-      path: '../public/fonts/Argesta_Webfont/argestadisplay-regularitalic-webfont.woff2',
-      weight: '400',
-      style: 'italic',
+      path: "../public/fonts/Argesta_Webfont/argestadisplay-regularitalic-webfont.woff2",
+      weight: "400",
+      style: "italic",
     },
   ],
   variable: "--font-argesta-display",
-  display: 'swap',
+  display: "swap",
 });
 
 const argestaHeadline = localFont({
   src: [
     {
-      path: '../public/fonts/Argesta_Webfont/argestaheadline-regular-webfont.woff2',
-      weight: '400',
-      style: 'normal',
+      path: "../public/fonts/Argesta_Webfont/argestaheadline-regular-webfont.woff2",
+      weight: "400",
+      style: "normal",
     },
     {
-        path: '../public/fonts/Argesta_Webfont/argestaheadline-regularitalic-webfont.woff2',
-      weight: '400',
-      style: 'italic',
+      path: "../public/fonts/Argesta_Webfont/argestaheadline-regularitalic-webfont.woff2",
+      weight: "400",
+      style: "italic",
     },
   ],
   variable: "--font-argesta-headline",
-  display: 'swap',
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -88,13 +88,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${argestaText.variable} ${defonteHeading.variable} ${argestaDisplay.variable} ${argestaHeadline.variable}`}>
+    <html
+      lang="en"
+      className={`${argestaText.variable} ${defonteHeading.variable} ${argestaDisplay.variable} ${argestaHeadline.variable}`}
+    >
       <body className="font-sans antialiased">
         <Header />
 
-        <main className="max-full min-h-screen mx-auto px-4 md:px-16 bg-white pt-[120px]">{children}</main>
+        <main className="max-full min-h-screen mx-auto px-4 md:px-16 bg-white pt-[92px] homepage-background-playful">
+          {children}
+        </main>
         <Footer />
-  
       </body>
     </html>
   );

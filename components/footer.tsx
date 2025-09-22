@@ -8,11 +8,11 @@ export default function Footer() {
         <div className="flex gap-4 items-center">
           {/* Social icons placeholders */}
           <a href="mailto:info@prano.com">
-            <Image src="icons/mail.svg" alt="Mail" width={28} height={28} />
+            <Image src="/icons/mail.svg" alt="Mail" width={28} height={28} />
           </a>
           <a href="#">
             <Image
-              src="icons/facebook.svg"
+              src="/icons/facebook.svg"
               alt="Facebook"
               width={28}
               height={28}
@@ -20,7 +20,7 @@ export default function Footer() {
           </a>
           <a href="#">
             <Image
-              src="icons/instagram.svg"
+              src="/icons/instagram.svg"
               alt="Instagram"
               width={28}
               height={28}

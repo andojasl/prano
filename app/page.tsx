@@ -24,7 +24,7 @@ export default async function Home() {
   const hasMeetLocations = meetLocations.length > 0;
 
   return (
-    <div className="flex flex-col min-h-screen items-center w-full bg-white">
+    <div className="flex flex-col min-h-screen items-center w-full">
       <div className="pb-24 w-full">
         <Landing />
       </div>
