@@ -57,7 +57,12 @@ export default function Header() {
         {/* Logo */}
         <div className="flex items-center absolute left-1/2 -translate-x-1/2 justify-center">
           <Link href="/">
-            <Image src="/logo-prano.svg" alt="Logo" width={40} height={56} />
+            <Image
+              src="/icons/logo-prano.svg"
+              alt="Logo"
+              width={40}
+              height={56}
+            />
           </Link>
         </div>
         {/* Desktop Right */}
@@ -85,7 +90,7 @@ export default function Header() {
           <span className="block w-6 h-0.5 bg-black"></span>
         </button>
         <div className="lg:hidden">
-        <CartSheet />
+          <CartSheet />
         </div>
       </div>
       {/* Mobile Menu */}

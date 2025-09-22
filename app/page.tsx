@@ -3,7 +3,7 @@ import MeetMe, { fetchLocations } from "./_components/MeetMeSection.tsx";
 import AboutPrano from "./_components/AboutSection";
 
 // Force dynamic rendering for this page
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 function Landing() {
   return (
@@ -25,10 +25,18 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col min-h-screen items-center w-full bg-white">
-      <Landing />
-      <NewArrivals />
+      <div className="pb-24 w-full">
+        <Landing />
+      </div>
+      <div className="py-24 relative w-screen -mx-4 md:-mx-16">
+        <div className="px-4 items-center md:px-16">
+          <NewArrivals />
+        </div>
+      </div>
       {hasMeetLocations && <MeetMe />}
-      <AboutPrano />
+      <div className="py-24">
+        <AboutPrano />
+      </div>
     </div>
   );
 }

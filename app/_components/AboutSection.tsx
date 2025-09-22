@@ -1,6 +1,6 @@
 export default function AboutPrano() {
   return (
-    <section className="w-full max-w-5xl flex flex-col items-start py-32 gap-16">
+    <section className="w-full max-w-5xl flex flex-col items-start md:pb-32 pb-8 gap-8 md:gap-16">
       <h2 className="text-3xl font-serif mb-8">ABOUT PRANO</h2>
       <div
         className="w-full rounded-lg h-48"

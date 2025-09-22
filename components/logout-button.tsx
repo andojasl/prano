@@ -14,8 +14,16 @@ export function LogoutButton() {
     router.push("/");
   };
 
-  return <Button onClick={logout}>
-    <Image src="/account.svg" alt="Logo" className="invert" width={24} height={24} />
-    Logout
-  </Button>;
+  return (
+    <Button onClick={logout}>
+      <Image
+        src="/icons/account.svg"
+        alt="Logo"
+        className="invert"
+        width={24}
+        height={24}
+      />
+      Logout
+    </Button>
+  );
 }

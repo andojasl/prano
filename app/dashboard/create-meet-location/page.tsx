@@ -27,9 +27,11 @@ export default function CreateMeetLocationPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -37,7 +39,7 @@ export default function CreateMeetLocationPage() {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       image: file,
     }));
@@ -56,7 +58,7 @@ export default function CreateMeetLocationPage() {
       submitData.append("location", formData.location);
       submitData.append("link", formData.link);
       submitData.append("date", formData.date);
-      
+
       if (formData.image) {
         submitData.append("image", formData.image);
       }
@@ -81,12 +83,11 @@ export default function CreateMeetLocationPage() {
         date: "",
         image: null,
       });
-      
+
       // Redirect to view locations after 2 seconds
       setTimeout(() => {
-        router.push("/dashboard/view-meet-locations");
+        router.push("/dashboard/meet-locations");
       }, 2000);
-
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -100,7 +101,9 @@ export default function CreateMeetLocationPage() {
         <div className="bg-white shadow rounded-lg">
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold text-gray-900">Add New Meet Location</h1>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Add New Meet Location
+              </h1>
               <Link
                 href="/dashboard"
                 className="text-sm text-gray-500 hover:text-gray-700"
@@ -119,12 +122,16 @@ export default function CreateMeetLocationPage() {
 
             {success && (
               <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-                Meet location created successfully! Redirecting to view locations...
+                Meet location created successfully! Redirecting to view
+                locations...
               </div>
             )}
 
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Title *
               </label>
               <input
@@ -140,7 +147,10 @@ export default function CreateMeetLocationPage() {
             </div>
 
             <div>
-              <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="city"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 City *
               </label>
               <input
@@ -156,7 +166,10 @@ export default function CreateMeetLocationPage() {
             </div>
 
             <div>
-              <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="location"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Location *
               </label>
               <textarea
@@ -172,7 +185,10 @@ export default function CreateMeetLocationPage() {
             </div>
 
             <div>
-              <label htmlFor="link" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="link"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Link
               </label>
               <input
@@ -187,7 +203,10 @@ export default function CreateMeetLocationPage() {
             </div>
 
             <div>
-              <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="date"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Date *
               </label>
               <input
@@ -202,7 +221,10 @@ export default function CreateMeetLocationPage() {
             </div>
 
             <div>
-              <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="image"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Image
               </label>
               <input
@@ -218,7 +240,9 @@ export default function CreateMeetLocationPage() {
               </p>
               {formData.image && (
                 <div className="mt-2">
-                  <p className="text-sm text-gray-600">Selected: {formData.image.name}</p>
+                  <p className="text-sm text-gray-600">
+                    Selected: {formData.image.name}
+                  </p>
                 </div>
               )}
             </div>

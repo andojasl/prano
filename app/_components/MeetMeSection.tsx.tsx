@@ -35,13 +35,11 @@ export default async function MeetMe() {
   const cards: MeetCard[] = await fetchLocations();
 
   return (
-    <section className="w-full max-w-5xl flex flex-col items-start py-32 gap-16">
+    <section className="w-full max-w-5xl py-24 flex flex-col items-start gap-16">
       <h2 className="text-3xl font-serif mb-8">MEET ME</h2>
       <div className="flex flex-col md:flex-row gap-8 w-full">
         {cards.length > 0 ? (
-          cards.map((card, index) => (
-            <MeetMeCard key={index} card={card} />
-          ))
+          cards.map((card, index) => <MeetMeCard key={index} card={card} />)
         ) : (
           <div className="flex-1 bg-[#B7C5CE] rounded-lg flex flex-row gap-4">
             <div
