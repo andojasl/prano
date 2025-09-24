@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import Product from "../../../components/product";
 import SortDropdown from "../../../components/shop/SortDropdown";
 import CategoryFilter from "../../../components/shop/CategoryFilter";
@@ -10,6 +11,46 @@ import {
   layoutConfigs,
 } from "../../../lib/shop/shopLayout";
 import { getBaseUrl } from "../../../lib/utils";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ categorySlug: string }>;
+}): Promise<Metadata> {
+  const { categorySlug } = await params;
+
+  const categoryNames: { [key: string]: string } = {
+    all: "All Jewelry",
+    rings: "Rings",
+    necklaces: "Necklaces",
+    earrings: "Earrings",
+    bracelets: "Bracelets"
+  };
+
+  const categoryName = categoryNames[categorySlug] || "Jewelry";
+  const isAll = categorySlug === "all";
+
+  return {
+    title: isAll
+      ? "Shop All Handcrafted Jewelry - Prano"
+      : `${categoryName} - Handcrafted Contemporary Jewelry - Prano`,
+    description: isAll
+      ? "Browse Prano's complete collection of handcrafted contemporary jewelry. Discover unique rings, necklaces, earrings, and bracelets made with recycled materials."
+      : `Explore Prano's handcrafted ${categoryName.toLowerCase()} collection. Contemporary designs made with recycled silver and gold, responsibly sourced stones.`,
+    keywords: isAll
+      ? "handcrafted jewelry, contemporary jewelry, rings, necklaces, earrings, bracelets, recycled silver, sustainable jewelry"
+      : `handcrafted ${categoryName.toLowerCase()}, contemporary ${categoryName.toLowerCase()}, unique ${categoryName.toLowerCase()}, artisan jewelry, recycled materials`,
+    openGraph: {
+      title: isAll
+        ? "Shop All Handcrafted Jewelry - Prano"
+        : `${categoryName} - Prano`,
+      description: isAll
+        ? "Browse Prano's complete collection of handcrafted contemporary jewelry."
+        : `Explore Prano's handcrafted ${categoryName.toLowerCase()} collection.`,
+      type: "website",
+    },
+  };
+}
 
 interface TextItem {
   id: string;

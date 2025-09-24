@@ -1,9 +1,21 @@
 import NewArrivals from "./_components/NewArrivals";
 import MeetMe, { fetchLocations } from "./_components/MeetMeSection.tsx";
 import AboutPrano from "./_components/AboutSection";
+import { Metadata } from "next";
 
 // Force dynamic rendering for this page
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Prano - Handcrafted Contemporary Jewelry",
+  description: "Discover unique handcrafted jewelry with contemporary forms by Prano. Shop exclusive rings, necklaces, earrings and bracelets. Custom orders available.",
+  keywords: "handcrafted jewelry, contemporary jewelry, custom jewelry, rings, necklaces, earrings, bracelets, unique jewelry, artisan jewelry",
+  openGraph: {
+    title: "Prano - Handcrafted Contemporary Jewelry",
+    description: "Discover unique handcrafted jewelry with contemporary forms by Prano. Shop exclusive pieces and custom orders.",
+    type: "website",
+  },
+};
 
 function Landing() {
   return (

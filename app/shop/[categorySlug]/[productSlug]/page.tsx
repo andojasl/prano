@@ -220,41 +220,44 @@ export default function ProductPage({ params }: PageProps) {
       <div className="max-w-7xl mx-auto px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-7 gap-16">
           {/* Product Images */}
-          <div className="space-y-4 lg:col-span-4">
-            <div className="bg-gray-50 rounded-lg aspect-[1.5/1] overflow-hidden">
-              <Image
-                src={product.images[selectedImage]}
-                alt={product.title}
-                width={600}
-                height={400}
-                className="w-full h-full object-cover"
-              />
-            </div>
+          <div className="lg:col-span-4">
+            <div className="flex gap-4">
+              {/* Image thumbnails */}
+              {product.images.length > 1 && (
+                <div className="flex flex-col space-y-4">
+                  {product.images.map((image: string, index: number) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={`w-20 h-20 rounded-lg overflow-hidden border-2 flex-shrink-0 ${
+                        selectedImage === index
+                          ? "border-black"
+                          : "border-gray-200"
+                      }`}
+                    >
+                      <Image
+                        src={image}
+                        alt={`${product.title} view ${index + 1}`}
+                        width={80}
+                        height={80}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
 
-            {/* Image thumbnails */}
-            {product.images.length > 1 && (
-              <div className="flex space-x-4">
-                {product.images.map((image: string, index: number) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={`w-20 h-20 rounded-lg overflow-hidden border-2 ${
-                      selectedImage === index
-                        ? "border-black"
-                        : "border-gray-200"
-                    }`}
-                  >
-                    <Image
-                      src={image}
-                      alt={`${product.title} view ${index + 1}`}
-                      width={80}
-                      height={80}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
+              {/* Main Image */}
+              <div className="bg-gray-50 rounded-lg aspect-[1/1] overflow-hidden flex-1">
+                <Image
+                  src={product.images[selectedImage]}
+                  alt={product.title}
+                  width={600}
+                  height={600}
+                  className="w-full h-full object-cover"
+                />
               </div>
-            )}
+            </div>
           </div>
 
           {/* Product Information */}
@@ -323,17 +326,29 @@ export default function ProductPage({ params }: PageProps) {
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   disabled={quantity <= 1}
-                  className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  className="w-8 h-8 rounded border bg-white border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                 >
-                  -
+                  <Image
+                    src="/icons/minus.svg"
+                    alt="-"
+                    width={12}
+                    height={12}
+                  ></Image>
                 </button>
-                <span className="text-sm font-medium min-w-[2rem] text-center">{quantity}</span>
+                <span className="text-sm font-medium min-w-[2rem] text-center">
+                  {quantity}
+                </span>
                 <button
                   onClick={() => setQuantity(Math.min(10, quantity + 1))}
                   disabled={quantity >= 10}
-                  className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  className="w-8 h-8 rounded border bg-white border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                 >
-                  +
+                  <Image
+                    src="/icons/plus.svg"
+                    alt="+"
+                    width={12}
+                    height={12}
+                  ></Image>
                 </button>
               </div>
             </div>
@@ -349,16 +364,19 @@ export default function ProductPage({ params }: PageProps) {
             <div className="space-y-4 pt-4">
               <button
                 onClick={() => {
-                  addItem({
-                    id: product.id.toString(),
-                    name: product.title,
-                    price: parseFloat(product.price),
-                    image: product.images[0],
-                    size: selectedSize || undefined,
-                    size_quantity:
-                      sizes.find((size) => size.size === selectedSize)
-                        ?.quantity || undefined,
-                  }, quantity);
+                  addItem(
+                    {
+                      id: product.id.toString(),
+                      name: product.title,
+                      price: parseFloat(product.price),
+                      image: product.images[0],
+                      size: selectedSize || undefined,
+                      size_quantity:
+                        sizes.find((size) => size.size === selectedSize)
+                          ?.quantity || undefined,
+                    },
+                    quantity,
+                  );
                 }}
                 className="w-full py-3 rounded-lg px-6 bg-black text-white font-headline text-sm tracking-wider hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center flex-row gap-2"
               >

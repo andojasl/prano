@@ -21,6 +21,9 @@ export default function AboutPrano() {
           excess, and strive for lasting beauty rather than fleeting trends.
         </div>
       </div>
+      <a href="/about" className="underline">
+        Read more
+      </a>
     </section>
   );
 }

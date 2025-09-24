@@ -39,8 +39,9 @@ export default async function EditProductPage({ params }: PageProps) {
 
   // Fetch the product by slug
   const { data: product, error: productError } = await supabase
-    .from('products')
-    .select(`
+    .from("products")
+    .select(
+      `
       id,
       title,
       description,
@@ -54,25 +55,26 @@ export default async function EditProductPage({ params }: PageProps) {
       deliver_details,
       images,
       slug
-    `)
-    .eq('slug', resolvedParams.slug)
+    `,
+    )
+    .eq("slug", resolvedParams.slug)
     .single();
 
   if (productError || !product) {
-    console.error('Error fetching product:', productError);
+    console.error("Error fetching product:", productError);
     notFound();
   }
 
   // Fetch available sizes for this product
   const { data: sizes } = await supabase
-    .from('sizes')
-    .select('size, quantity')
-    .eq('product_id', product.id);
+    .from("sizes")
+    .select("size, quantity")
+    .eq("product_id", product.id);
 
   // Add sizes to product data
   const productWithSizes: Product = {
     ...product,
-    available_sizes: sizes || []
+    available_sizes: sizes || [],
   };
 
   // Fetch categories for the dropdown
@@ -82,11 +84,13 @@ export default async function EditProductPage({ params }: PageProps) {
     .order("name");
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Edit Product</h1>
-          <p className="text-gray-600 mt-2">Update product information and settings</p>
+          <p className="text-gray-600 mt-2">
+            Update product information and settings
+          </p>
         </div>
 
         {/* Edit Product Form */}
@@ -97,9 +101,9 @@ export default async function EditProductPage({ params }: PageProps) {
               Editing: {product.title}
             </h2>
           </div>
-          
-          <EditProductForm 
-            categories={categories || []} 
+
+          <EditProductForm
+            categories={categories || []}
             product={productWithSizes}
           />
         </Card>

@@ -1,3 +1,16 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Prano - Contemporary Jewelry Artist & Craftsperson",
+  description: "Learn about Prano's philosophy of perfect imperfection. Discover how traditional jewelry techniques meet contemporary forms using recycled materials and responsibly sourced stones.",
+  keywords: "jewelry artist, contemporary jewelry maker, recycled silver, recycled gold, sustainable jewelry, handcrafted jewelry, traditional techniques",
+  openGraph: {
+    title: "About Prano - Contemporary Jewelry Artist",
+    description: "Learn about Prano's philosophy of perfect imperfection and sustainable jewelry making practices.",
+    type: "website",
+  },
+};
+
 export default function About() {
   return (
     <div className="min-h-screen py-16 px-2 gap-8 flex flex-col ">
