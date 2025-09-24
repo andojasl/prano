@@ -35,7 +35,7 @@ export default function Header() {
 
   return (
     <header
-      className="w-full fixed top-0 bg-white/80 backdrop-blur-md px-4 md:px-16 sm:px-14 pt-8 pb-6 flex flex-col gap-2 z-50"
+      className={`w-full fixed top-0 ${menuOpen ? "bg-white" : "bg-white/80 backdrop-blur-md"} px-4 md:px-16 pt-8 pb-6 flex flex-col gap-2 z-50`}
       style={{ boxShadow: "0 4px 32px rgba(0,0,0,0.04)" }}
     >
       <div className="flex items-center justify-between w-full">
@@ -95,7 +95,7 @@ export default function Header() {
       </div>
       {/* Mobile Menu */}
       {menuOpen && (
-        <nav className="lg:hidden h-screen pt-48 w-screen relative -mx-4 -md:mx-16 -sm:mx-14 flex flex-col px-4 gap-4 bg-white/95">
+        <nav className="lg:hidden h-screen pt-48 w-screen relative -mx-4 -md:mx-16 -sm:mx-14  flex flex-col px-4 gap-4 bg-white ">
           <Link
             href="/shop"
             className="text-lg font-serif"

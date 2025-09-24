@@ -241,7 +241,7 @@ export default async function CategoryPage({
 
               {/* Tablet Layout (2 columns) */}
               <div
-                className="hidden md:grid lg:hidden gap-6 grid-cols-3"
+                className="hidden md:grid lg:hidden gap-6"
                 style={{
                   gridTemplateColumns: `repeat(${layoutConfigs.tablet.columns}, 1fr)`,
                   gridTemplateRows: `repeat(${Math.ceil(

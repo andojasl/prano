@@ -71,27 +71,30 @@ export const createPatternLayout = (
   let productIndex = 0;
   let textIndex = 0;
 
-  // For mobile layout, create a simple single-column layout
-  if (config.columns === 2) {
+  // For mobile layout only (simple P P pattern), create a simple two-column layout
+  if (config.columns === 2 && config.rows.length === 1 && config.rows[0] === "P P") {
     return products.map((product, index) => ({
       type: "product",
       product,
-      gridColumn: 2,
-      gridRow: index + 1,
+      gridColumn: (index % 2) + 1,
+      gridRow: Math.floor(index / 2) + 1,
     }));
   }
 
   // For desktop and tablet layouts, use the pattern system
-  const maxRows =
-    Math.ceil(products.length / config.columns) + config.rows.length;
+  const productsPerPattern = config.rows.reduce((sum, row) =>
+    sum + row.split(" ").filter(cell => cell === "P").length, 0
+  );
+  const maxRows = Math.ceil(products.length / productsPerPattern) * config.rows.length;
 
-  for (
-    let rowIndex = 0;
-    rowIndex < maxRows && productIndex < products.length;
-    rowIndex++
-  ) {
+  for (let rowIndex = 0; rowIndex < maxRows; rowIndex++) {
     const patternRowIndex = rowIndex % config.rows.length;
     const rowPattern = config.rows[patternRowIndex].split(" ");
+
+    // Check if this row would have any products
+    const wouldHaveProducts = productIndex < products.length;
+
+    if (!wouldHaveProducts) break;
 
     for (let colIndex = 0; colIndex < rowPattern.length; colIndex++) {
       const cellType = rowPattern[colIndex];
