@@ -49,6 +49,7 @@ export default function ProductPage({ params }: PageProps) {
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState(1);
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
   const addItem = useCartStore((state) => state.addItem);
 
@@ -214,7 +215,7 @@ export default function ProductPage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       {/* Main product content */}
       <div className="max-w-7xl mx-auto px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-7 gap-16">
@@ -315,6 +316,28 @@ export default function ProductPage({ params }: PageProps) {
               </div>
             )}
 
+            {/* Quantity Selector */}
+            <div className="space-y-2">
+              <span className="text-sm text-gray-600">Quantity:</span>
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  disabled={quantity <= 1}
+                  className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                >
+                  -
+                </button>
+                <span className="text-sm font-medium min-w-[2rem] text-center">{quantity}</span>
+                <button
+                  onClick={() => setQuantity(Math.min(10, quantity + 1))}
+                  disabled={quantity >= 10}
+                  className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
             {/* Availability */}
             {product.availability && (
               <div className="text-sm text-gray-600">
@@ -325,7 +348,7 @@ export default function ProductPage({ params }: PageProps) {
             {/* Action Buttons */}
             <div className="space-y-4 pt-4">
               <button
-                onClick={() =>
+                onClick={() => {
                   addItem({
                     id: product.id.toString(),
                     name: product.title,
@@ -335,18 +358,18 @@ export default function ProductPage({ params }: PageProps) {
                     size_quantity:
                       sizes.find((size) => size.size === selectedSize)
                         ?.quantity || undefined,
-                  })
-                }
+                  }, quantity);
+                }}
                 className="w-full py-3 rounded-lg px-6 bg-black text-white font-headline text-sm tracking-wider hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center flex-row gap-2"
               >
-                Add to cart
                 <Image
-                  src="/add-to-cart.svg"
+                  src="/icons/add-to-cart.svg"
                   alt="Add to cart"
                   width={32}
                   height={32}
                   className="brightness-0 invert"
-                />
+                />{" "}
+                Add to cart
               </button>
             </div>
 
@@ -360,7 +383,7 @@ export default function ProductPage({ params }: PageProps) {
                   >
                     <span>{section.title}</span>
                     <Image
-                      src="/arrow-down.svg"
+                      src="/icons/arrow-down.svg"
                       alt="Arrow"
                       width={16}
                       height={10}

@@ -17,7 +17,7 @@ interface CartStore {
   totalPrice: number
   isHydrated: boolean
   setHydrated: () => void
-  addItem: (item: Omit<CartItem, 'quantity'>) => void
+  addItem: (item: Omit<CartItem, 'quantity'>, quantity?: number) => void
   removeItem: (id: string) => void
   updateQuantity: (id: string, quantity: number) => void
   updateQuantityWithSize: (id: string, quantity: number, size: string, size_quantity: number) => void
@@ -34,12 +34,13 @@ const useCartStore = create<CartStore>()(
       
       setHydrated: () => set({ isHydrated: true }),
       
-      addItem: (item) => set((state) => {
+      addItem: (item, quantity = 1) => set((state) => {
         const existingItem = state.items.find(i => i.id === item.id && i.size === item.size)
-        
+
         if (existingItem) {
+          const newQuantity = Math.min(10, existingItem.quantity + quantity) // Cap at 10
           const updatedItems = state.items.map(i =>
-            i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+            i.id === item.id && i.size === item.size ? { ...i, quantity: newQuantity } : i
           )
           return {
             items: updatedItems,
@@ -47,7 +48,8 @@ const useCartStore = create<CartStore>()(
             totalPrice: updatedItems.reduce((sum, i) => sum + (i.price * i.quantity), 0)
           }
         } else {
-          const newItems = [...state.items, { ...item, quantity: 1 }]
+          const cappedQuantity = Math.min(10, quantity) // Cap initial quantity at 10
+          const newItems = [...state.items, { ...item, quantity: cappedQuantity }]
           return {
             items: newItems,
             totalItems: newItems.reduce((sum, i) => sum + i.quantity, 0),

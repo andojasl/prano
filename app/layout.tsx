@@ -95,7 +95,7 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <Header />
 
-        <main className="max-full min-h-screen mx-auto px-4 md:px-16 bg-white pt-[92px] homepage-background-playful">
+        <main className="max-full min-h-screen mx-auto px-4 md:px-16 bg-white pt-[96] md:pt-[92px] homepage-background-playful">
           {children}
         </main>
         <Footer />

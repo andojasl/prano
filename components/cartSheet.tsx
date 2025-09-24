@@ -95,6 +95,7 @@ export function CartSheet() {
                         <Button
                           variant="ghost"
                           size="icon"
+                          disabled={item.quantity >= 10}
                           onClick={() =>
                             updateQuantityWithSize(
                               item.id,
@@ -134,6 +135,7 @@ export function CartSheet() {
                       <Button
                         variant="ghost"
                         size="icon"
+                        disabled={item.quantity >= 10}
                         onClick={() =>
                           updateQuantity(item.id, item.quantity + 1)
                         }

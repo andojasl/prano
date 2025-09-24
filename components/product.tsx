@@ -44,7 +44,7 @@ export default function Product({
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover transition-all duration-300"
           />
-          <div className="absolute bottom-0 left-0 right-0 py-8 px-4 bg-black/40 flex items-center justify-between text-white text-m font-argesta">
+          <div className="absolute bottom-0 left-0 right-0 py-8 px-4 bg-black/40 backdrop-blur-sm flex items-center justify-between text-white text-m font-argesta">
             <p>{title}</p>
             <p>{price}€</p>
           </div>

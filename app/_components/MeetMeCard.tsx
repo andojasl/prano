@@ -24,7 +24,7 @@ export default function MeetMeCard({ card }: MeetMeCardProps) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover rounded-lg"
         />
-        <div className="w-full rounded-b-lg absolute bottom-0 left-0 right-0 py-8 px-4 bg-black/60 flex flex-col items-left justify-between text-white text-m font-argesta">
+        <div className="w-full rounded-b-lg absolute bottom-0 left-0 right-0 py-8 px-4 bg-black/60 backdrop-blur-sm flex flex-col items-left justify-between text-white text-m font-argesta">
           <p className="font-serif">{card.Title}</p>
           <p>
             {card.Location}, {card.City} ⋅ {formatDate(card.Date)}
