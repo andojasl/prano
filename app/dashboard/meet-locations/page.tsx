@@ -155,6 +155,12 @@ export default function ViewMeetLocationsPage() {
                     )}
                   </div>
                   <div className="mt-4 flex justify-end space-x-2">
+                    <Link
+                      href={`/dashboard/meet-locations/${location.id}/edit`}
+                      className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
+                    >
+                      Edit
+                    </Link>
                     <button
                       onClick={() => handleDelete(location.id)}
                       className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors"

@@ -15,8 +15,8 @@ export default function MeetMeCard({ card }: MeetMeCardProps) {
   };
 
   return (
-    <div className="flex-1 w-full md:max-w-[50%] bg-white rounded-lg flex flex-col gap-4 hover:shadow-lg transition-shadow duration-300 border border-gray-200">
-      <Link href={card.Link || "#"} className="rounded-t-lg overflow-hidden relative w-full h-64">
+    <div className="w-full bg-white rounded-lg flex flex-col hover:shadow-lg transition-shadow duration-300 border border-gray-200 h-full">
+      <Link href={card.Link || "#"} className="rounded-t-lg overflow-hidden relative w-full h-64 flex-shrink-0">
         <Image
           src={card.Image || "/placeholder.png"}
           alt={card.Title}
@@ -25,11 +25,13 @@ export default function MeetMeCard({ card }: MeetMeCardProps) {
           className="object-cover"
         />
       </Link>
-      <div className="px-4 pb-4">
-        <p className="font-serif text-black text-m font-argesta">{card.Title}</p>
-        <p className="text-black text-m font-argesta">
-          {card.Location}, {card.City} ⋅ {formatDate(card.Date)}
-        </p>
+      <div className="px-4 pb-4 pt-4 flex-grow flex flex-col justify-between">
+        <div>
+          <p className="font-serif text-black text-m font-argesta mb-2 break-words">{card.Title}</p>
+          <p className="text-black text-m font-argesta break-words leading-relaxed">
+            {card.Location}, {card.City} ⋅ {formatDate(card.Date)}
+          </p>
+        </div>
       </div>
     </div>
   );

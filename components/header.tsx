@@ -117,6 +117,11 @@ export default function Header() {
           >
             ABOUT
           </a>
+          {user && (
+            <Link href="/dashboard" className="text-base font-serif">
+              DASHBOARD
+            </Link>
+          )}
         </nav>
       )}
     </header>
