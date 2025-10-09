@@ -4,11 +4,13 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { User } from "@supabase/supabase-js";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { CartSheet } from "./cartSheet";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const supabase = createClient();
@@ -32,6 +34,33 @@ export default function Header() {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  // Close menu on route changes
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setMenuOpen(false);
+    };
+
+    // Listen for route changes
+    const originalPush = router.push;
+    const originalReplace = router.replace;
+
+    router.push = (...args) => {
+      handleRouteChange();
+      return originalPush.apply(router, args);
+    };
+
+    router.replace = (...args) => {
+      handleRouteChange();
+      return originalReplace.apply(router, args);
+    };
+
+    // Clean up by restoring original methods
+    return () => {
+      router.push = originalPush;
+      router.replace = originalReplace;
+    };
+  }, [router]);
 
   return (
     <header
@@ -118,7 +147,7 @@ export default function Header() {
             ABOUT
           </a>
           {user && (
-            <Link href="/dashboard" className="text-base font-serif">
+            <Link href="/dashboard" className="text-lg font-serif" onClick={() => setMenuOpen(false)}>
               DASHBOARD
             </Link>
           )}

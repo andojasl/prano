@@ -16,8 +16,7 @@ import {
   Calendar,
   Euro,
   User,
-  Mail,
-  ArrowLeft
+  Mail
 } from "lucide-react";
 
 interface Order {
@@ -148,14 +147,6 @@ export default async function ViewOrdersPage({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            <Link href="/dashboard">
-              <Button variant="outline" size="sm" className="flex items-center gap-2">
-                <ArrowLeft className="h-4 w-4" />
-                Back to Dashboard
-              </Button>
-            </Link>
-          </div>
           <h1 className="text-3xl font-bold text-gray-900">Order Management</h1>
           <p className="text-gray-600">Manage and track all customer orders</p>
         </div>

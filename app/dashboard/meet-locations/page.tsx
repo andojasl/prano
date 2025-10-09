@@ -4,8 +4,6 @@ import { useState, useEffect } from "react";
 // import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 
 interface MeetLocation {
   id: number;
@@ -74,26 +72,14 @@ export default function ViewMeetLocationsPage() {
   return (
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            <Link href="/dashboard">
-              <Button variant="outline" size="sm" className="flex items-center gap-2">
-                <ArrowLeft className="h-4 w-4" />
-                Back to Dashboard
-              </Button>
-            </Link>
-          </div>
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Meet Locations</h1>
-            </div>
-            <Link
-              href="/dashboard/create-meet-location"
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
-            >
-              Add New Location
-            </Link>
-          </div>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Meet Locations</h1>
+          <Link
+            href="/dashboard/create-meet-location"
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+          >
+            Add New Location
+          </Link>
         </div>
 
         {loading ? (

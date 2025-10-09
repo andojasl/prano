@@ -19,8 +19,7 @@ import {
   User,
   Mail,
   FileText,
-  TrendingUp,
-  ArrowLeft
+  TrendingUp
 } from "lucide-react";
 
 interface CustomOrder {
@@ -188,14 +187,6 @@ export default async function CustomOrdersPage({ searchParams }: CustomOrdersPag
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            <Link href="/dashboard">
-              <Button variant="outline" size="sm" className="flex items-center gap-2">
-                <ArrowLeft className="h-4 w-4" />
-                Back to Dashboard
-              </Button>
-            </Link>
-          </div>
           <div className="flex items-center gap-2 mb-4">
             <Sparkles className="w-8 h-8 text-amber-600" />
             <h1 className="text-3xl font-bold text-gray-900">Custom Orders</h1>

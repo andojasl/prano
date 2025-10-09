@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Edit, Package, ArrowLeft } from "lucide-react";
+import { Edit, Package } from "lucide-react";
 
 export default async function ViewProductsPage() {
   const supabase = await createClient();
@@ -42,14 +42,6 @@ export default async function ViewProductsPage() {
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            <Link href="/dashboard">
-              <Button variant="outline" size="sm" className="flex items-center gap-2">
-                <ArrowLeft className="h-4 w-4" />
-                Back to Dashboard
-              </Button>
-            </Link>
-          </div>
           <h1 className="text-3xl font-bold text-gray-900">View Products</h1>
           <p className="text-gray-600 mt-2">Manage your product catalog</p>
         </div>
