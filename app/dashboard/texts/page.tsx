@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Edit, FileText, Plus } from "lucide-react";
+import { Edit, FileText, Plus, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 interface TextItem {
@@ -34,6 +34,14 @@ export default async function ViewTextsPage() {
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
+          <div className="flex items-center gap-4 mb-4">
+            <Link href="/dashboard">
+              <Button variant="outline" size="sm" className="flex items-center gap-2">
+                <ArrowLeft className="h-4 w-4" />
+                Back to Dashboard
+              </Button>
+            </Link>
+          </div>
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Texts</h1>
