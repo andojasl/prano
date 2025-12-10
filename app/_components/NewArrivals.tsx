@@ -42,7 +42,6 @@ export default async function NewArrivals() {
       .limit(3);
 
     if (error) {
-      console.error("Error fetching latest products:", error);
     } else {
       // Transform the data to match our interface
       products = (productData || []).map((product) => ({
@@ -53,7 +52,6 @@ export default async function NewArrivals() {
       }));
     }
   } catch (error) {
-    console.error("Failed to fetch latest products:", error);
   }
 
   return (

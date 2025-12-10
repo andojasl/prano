@@ -1,5 +1,5 @@
 import NewArrivals from "./_components/NewArrivals";
-import MeetMe, { fetchLocations } from "./_components/MeetMeSection.tsx";
+import MeetMe, { fetchLocations } from "./_components/MeetMeSection";
 import AboutPrano from "./_components/AboutSection";
 import { Metadata } from "next";
 

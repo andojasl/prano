@@ -61,7 +61,6 @@ export default async function EditProductPage({ params }: PageProps) {
     .single();
 
   if (productError || !product) {
-    console.error("Error fetching product:", productError);
     notFound();
   }
 

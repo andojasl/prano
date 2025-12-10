@@ -27,7 +27,6 @@ export default async function ViewTextsPage() {
     .order('id');
 
   if (textsError) {
-    console.error('Error fetching texts:', textsError);
   }
 
   return (

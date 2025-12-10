@@ -18,7 +18,6 @@ export async function DELETE(
       .eq('order_id', resolvedParams.orderId)
 
     if (itemsError) {
-      console.error('Error deleting order items:', itemsError)
       return NextResponse.json(
         { error: 'Failed to delete order items' },
         { status: 500 }
@@ -32,7 +31,6 @@ export async function DELETE(
       .eq('id', resolvedParams.orderId)
 
     if (orderError) {
-      console.error('Error deleting order:', orderError)
       return NextResponse.json(
         { error: 'Failed to delete order' },
         { status: 500 }
@@ -44,7 +42,6 @@ export async function DELETE(
     })
 
   } catch (error) {
-    console.error('Error in order deletion API:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -82,7 +79,6 @@ export async function GET(
       .single()
 
     if (error) {
-      console.error('Error fetching order:', error)
       return NextResponse.json(
         { error: 'Order not found' },
         { status: 404 }
@@ -92,7 +88,6 @@ export async function GET(
     return NextResponse.json(order)
 
   } catch (error) {
-    console.error('Error in order fetch API:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -32,7 +32,6 @@ export default function DeleteTextButton({ textId, textPreview }: DeleteTextButt
       router.refresh()
       setShowConfirmation(false)
     } catch (error) {
-      console.error('Error deleting text:', error)
       alert('Failed to delete text. Please try again.')
     } finally {
       setIsDeleting(false)

@@ -8,9 +8,6 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { categorySlug, productSlug } = await params;
 
-  console.log('=== METADATA DEBUG ===');
-  console.log('Category Slug:', categorySlug);
-  console.log('Product Slug:', productSlug);
 
   try {
     const supabase = createClient();
@@ -22,11 +19,8 @@ export async function generateMetadata({
       .eq("slug", categorySlug)
       .single();
 
-    console.log('Category Data:', categoryData);
-    console.log('Category Error:', categoryError);
 
     if (!categoryData) {
-      console.log('No category found, returning fallback metadata');
       return { title: "Product Not Found - Prano" };
     }
 
@@ -38,11 +32,8 @@ export async function generateMetadata({
       .eq("category", categoryData.id)
       .single();
 
-    console.log('Product Data:', product);
-    console.log('Product Error:', productError);
 
     if (!product) {
-      console.log('No product found, returning fallback metadata');
       return { title: "Product Not Found - Prano" };
     }
 
@@ -52,11 +43,8 @@ export async function generateMetadata({
       .replace(/\s*-\s*Prano\s*/gi, '')
       .trim();
 
-    console.log('Original title:', product.title);
-    console.log('Cleaned title:', cleanTitle);
 
     const finalTitle = `${cleanTitle} - Handcrafted Jewelry - Prano`;
-    console.log('Final metadata title:', finalTitle);
 
     return {
       title: finalTitle,
@@ -72,8 +60,6 @@ export async function generateMetadata({
       },
     };
   } catch (error) {
-    console.error("Error generating metadata:", error);
-    console.error("Error details:", error);
     return {
       title: "Handcrafted Jewelry - Prano",
       description: "Discover unique handcrafted jewelry with contemporary forms by Prano.",

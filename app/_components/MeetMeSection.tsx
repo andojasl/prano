@@ -13,7 +13,6 @@ export async function fetchLocations() {
       .select("*")
       .order("Date", { ascending: true });
     if (error) {
-      console.error("Error fetching meet locations:", error);
     } else {
       // Transform the data to match our interface
       meetCards = (locationData || []).map((location) => ({
@@ -26,7 +25,6 @@ export async function fetchLocations() {
       }));
     }
   } catch (error) {
-    console.error("Failed to fetch meet locations:", error);
   }
   return meetCards;
 }

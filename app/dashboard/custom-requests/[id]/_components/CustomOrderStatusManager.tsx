@@ -36,7 +36,6 @@ export function CustomOrderStatusManager({ customOrderId, currentStatus }: Custo
         alert('Failed to update status');
       }
     } catch (error) {
-      console.error('Error updating status:', error);
       alert('An error occurred while updating the status');
     } finally {
       setIsUpdating(false);

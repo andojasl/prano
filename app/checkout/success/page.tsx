@@ -65,10 +65,8 @@ function CheckoutSuccessContent() {
           const orderData = await response.json()
           setOrder(orderData)
         } else {
-          console.error('Failed to fetch order')
         }
       } catch (error) {
-        console.error('Error fetching order:', error)
       } finally {
         setLoading(false)
       }

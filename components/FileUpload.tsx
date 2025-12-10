@@ -39,7 +39,6 @@ export default function FileUpload({ onUpload, currentImage, label, required = f
       setUploadedImage(imageUrl);
       onUpload(imageUrl);
     } catch (error) {
-      console.error('Upload error:', error);
       setError(error instanceof Error ? error.message : 'Upload failed');
     } finally {
       setIsUploading(false);

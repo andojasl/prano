@@ -30,7 +30,6 @@ export async function DELETE(
       .eq('id', id);
 
     if (deleteError) {
-      console.error('Database delete error:', deleteError);
       return NextResponse.json(
         { error: 'Failed to delete meet location' },
         { status: 500 }
@@ -43,7 +42,6 @@ export async function DELETE(
     });
 
   } catch (error) {
-    console.error('Meet location deletion error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -98,7 +96,6 @@ export async function PUT(
       .select();
 
     if (updateError) {
-      console.error('Database update error:', updateError);
       return NextResponse.json(
         { error: 'Failed to update meet location' },
         { status: 500 }
@@ -111,7 +108,6 @@ export async function PUT(
     });
 
   } catch (error) {
-    console.error('Meet location update error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

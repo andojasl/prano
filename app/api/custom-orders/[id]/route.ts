@@ -26,7 +26,6 @@ export async function GET(
       .single();
 
     if (error) {
-      console.error('Database error:', error);
       return NextResponse.json(
         { error: 'Custom order not found' },
         { status: 404 }
@@ -36,7 +35,6 @@ export async function GET(
     return NextResponse.json({ customOrder: data });
 
   } catch (error: unknown) {
-    console.error('Error fetching custom order:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -108,7 +106,6 @@ export async function PATCH(
       .single();
 
     if (error) {
-      console.error('Database error:', error);
       return NextResponse.json(
         { error: 'Failed to update custom order' },
         { status: 500 }
@@ -121,7 +118,6 @@ export async function PATCH(
     });
 
   } catch (error: unknown) {
-    console.error('Error updating custom order:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -153,7 +149,6 @@ export async function DELETE(
       .eq('id', resolvedParams.id);
 
     if (error) {
-      console.error('Database error:', error);
       return NextResponse.json(
         { error: 'Failed to delete custom order' },
         { status: 500 }
@@ -165,7 +160,6 @@ export async function DELETE(
     });
 
   } catch (error: unknown) {
-    console.error('Error deleting custom order:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

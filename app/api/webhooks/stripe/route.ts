@@ -10,7 +10,6 @@ export async function POST(request: NextRequest) {
     const signature = headersList.get('stripe-signature')
 
     if (!signature) {
-      console.error('Missing stripe-signature header')
       return NextResponse.json(
         { error: 'Missing stripe-signature header' },
         { status: 400 }
@@ -25,25 +24,20 @@ export async function POST(request: NextRequest) {
         process.env.STRIPE_WEBHOOK_SECRET!
       )
     } catch (err) {
-      console.error('Webhook signature verification failed:', err)
       return NextResponse.json(
         { error: 'Webhook signature verification failed' },
         { status: 400 }
       )
     }
 
-    console.log('Stripe webhook event:', event.type)
-
     const supabase = await createClient()
 
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object
-        console.log('Checkout session completed:', session.id)
 
         const orderId = session.metadata?.orderId
         if (!orderId) {
-          console.error('No orderId found in session metadata')
           break
         }
 
@@ -89,9 +83,7 @@ export async function POST(request: NextRequest) {
           .eq('id', parseInt(orderId))
 
         if (updateError) {
-          console.error('Error updating order after payment:', updateError)
-        } else {
-          console.log('Order updated successfully after payment:', orderId)
+          // Error updating order after payment
         }
 
         break
@@ -99,7 +91,6 @@ export async function POST(request: NextRequest) {
 
       case 'payment_intent.payment_failed': {
         const paymentIntent = event.data.object
-        console.log('Payment failed:', paymentIntent.id)
 
         // Find order by payment intent ID and update status
         const { error: updateError } = await supabase
@@ -111,7 +102,7 @@ export async function POST(request: NextRequest) {
           .eq('stripe_payment_intent_id', paymentIntent.id)
 
         if (updateError) {
-          console.error('Error updating order after payment failure:', updateError)
+          // Error updating order after payment failure
         }
 
         break
@@ -119,7 +110,6 @@ export async function POST(request: NextRequest) {
 
       case 'checkout.session.expired': {
         const session = event.data.object
-        console.log('Checkout session expired:', session.id)
 
         const orderId = session.metadata?.orderId
         if (orderId) {
@@ -132,7 +122,7 @@ export async function POST(request: NextRequest) {
             .eq('id', parseInt(orderId))
 
           if (updateError) {
-            console.error('Error updating order after session expiry:', updateError)
+            // Error updating order after session expiry
           }
         }
 
@@ -140,13 +130,12 @@ export async function POST(request: NextRequest) {
       }
 
       default:
-        console.log(`Unhandled event type: ${event.type}`)
+        // Unhandled event type
     }
 
     return NextResponse.json({ received: true })
 
   } catch (error) {
-    console.error('Webhook error:', error)
     return NextResponse.json(
       { error: 'Webhook handler failed' },
       { status: 500 }

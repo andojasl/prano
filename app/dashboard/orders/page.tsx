@@ -104,7 +104,6 @@ export default async function ViewOrdersPage({
   const { data: orders, error: ordersError } = await query;
 
   if (ordersError) {
-    console.error('Error fetching orders:', ordersError);
   }
 
 

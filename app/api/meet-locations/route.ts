@@ -56,7 +56,6 @@ export async function POST(request: NextRequest) {
         // Upload to Cloudinary
         imageUrl = await uploadToCloudinary(imageFile, 'meet-locations');
       } catch (uploadError) {
-        console.error('Image upload error:', uploadError);
         return NextResponse.json(
           { error: 'Failed to upload image' },
           { status: 500 }
@@ -80,7 +79,6 @@ export async function POST(request: NextRequest) {
       .select();
 
     if (insertError) {
-      console.error('Database insert error:', insertError);
       return NextResponse.json(
         { error: 'Failed to create meet location' },
         { status: 500 }
@@ -93,7 +91,6 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Meet location creation error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -112,7 +109,6 @@ export async function GET() {
       .order('Date', { ascending: true });
 
     if (error) {
-      console.error('Database fetch error:', error);
       return NextResponse.json(
         { error: 'Failed to fetch meet locations' },
         { status: 500 }
@@ -122,7 +118,6 @@ export async function GET() {
     return NextResponse.json({ data });
 
   } catch (error) {
-    console.error('Meet locations fetch error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

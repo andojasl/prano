@@ -23,7 +23,6 @@ export async function POST() {
     });
 
     if (alterError) {
-      console.error('Error adding slug column:', alterError);
       // If RPC doesn't work, we'll handle this differently
       // Most Supabase instances don't allow direct SQL execution via RPC for security
     }
@@ -82,7 +81,6 @@ export async function POST() {
     // Check for any errors
     const errors = updateResults.filter(result => result.error);
     if (errors.length > 0) {
-      console.error('Some updates failed:', errors);
       throw new Error('Some slug updates failed');
     }
 
@@ -93,7 +91,6 @@ export async function POST() {
     });
 
   } catch (error) {
-    console.error('Error in add-product-slugs:', error);
     return NextResponse.json(
       { error: 'Failed to add product slugs' },
       { status: 500 }

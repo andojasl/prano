@@ -132,7 +132,6 @@ export default function CustomOrderPage() {
         alert('Failed to submit custom order: ' + (errorData.error || 'Unknown error'));
       }
     } catch (error) {
-      console.error('Error submitting custom order:', error);
       alert('An error occurred while submitting your request. Please try again.');
     } finally {
       setIsSubmitting(false);

@@ -33,7 +33,6 @@ export function DeleteOrderButton({ orderId, orderNumber }: DeleteOrderButtonPro
         alert('Failed to delete order. Please try again.');
       }
     } catch (error) {
-      console.error('Error deleting order:', error);
       alert('An error occurred while deleting the order.');
     } finally {
       setIsDeleting(false);

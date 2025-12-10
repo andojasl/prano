@@ -103,7 +103,6 @@ export async function createProduct(prevState: State, formData: FormData): Promi
       const parsedSizes = JSON.parse(sizes);
       sizesData = parsedSizes.filter((s: {size?: string, quantity?: number}) => s.size && s.size.trim());
     } catch (error) {
-      console.error('Failed to parse sizes data:', error);
     }
   }
 
@@ -144,7 +143,6 @@ export async function createProduct(prevState: State, formData: FormData): Promi
       .single()
 
     if (productError) {
-      console.error('Database error:', productError)
       
       // Handle specific database errors
       if (productError.code === '23505') {
@@ -180,7 +178,6 @@ export async function createProduct(prevState: State, formData: FormData): Promi
         .insert(sizesToInsert);
 
       if (sizesError) {
-        console.error('Error inserting sizes:', sizesError);
         // Note: Product was created successfully, but sizes failed
         // We could decide to rollback or just log the error
         return {
@@ -190,7 +187,6 @@ export async function createProduct(prevState: State, formData: FormData): Promi
     }
 
   } catch (error) {
-    console.error('Server error:', error)
     return {
       message: 'Server Error: Failed to create product.',
     }
@@ -252,7 +248,6 @@ export async function updateProduct(productId: string, prevState: State, formDat
       const parsedSizes = JSON.parse(sizes);
       sizesData = parsedSizes.filter((s: {size?: string, quantity?: number}) => s.size && s.size.trim());
     } catch (error) {
-      console.error('Failed to parse sizes data:', error);
     }
   }
 
@@ -292,7 +287,6 @@ export async function updateProduct(productId: string, prevState: State, formDat
       .eq('id', productId)
 
     if (productError) {
-      console.error('Database error:', productError)
       
       // Handle specific database errors
       if (productError.code === '23505') {
@@ -334,7 +328,6 @@ export async function updateProduct(productId: string, prevState: State, formDat
         .insert(sizesToInsert);
 
       if (sizesError) {
-        console.error('Error updating sizes:', sizesError);
         return {
           message: 'Product updated but failed to save sizes. Please try again.',
         }
@@ -342,7 +335,6 @@ export async function updateProduct(productId: string, prevState: State, formDat
     }
 
   } catch (error) {
-    console.error('Server error:', error)
     return {
       message: 'Server Error: Failed to update product.',
     }
@@ -374,7 +366,6 @@ export async function deleteProduct(productId: string): Promise<{success: boolea
       .eq('product_id', productId);
 
     if (sizesError) {
-      console.error('Error deleting product sizes:', sizesError);
       return {
         success: false,
         message: 'Failed to delete product sizes.',
@@ -388,7 +379,6 @@ export async function deleteProduct(productId: string): Promise<{success: boolea
       .eq('id', productId);
 
     if (productError) {
-      console.error('Error deleting product:', productError);
       return {
         success: false,
         message: 'Failed to delete product.',
@@ -405,7 +395,6 @@ export async function deleteProduct(productId: string): Promise<{success: boolea
     }
 
   } catch (error) {
-    console.error('Server error:', error)
     return {
       success: false,
       message: 'Server Error: Failed to delete product.',

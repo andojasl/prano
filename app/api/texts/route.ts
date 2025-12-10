@@ -11,7 +11,6 @@ export async function GET() {
       .order("id");
 
     if (error) {
-      console.error("Error fetching texts:", error);
       return NextResponse.json(
         { error: "Failed to fetch texts" },
         { status: 500 },
@@ -21,7 +20,6 @@ export async function GET() {
       texts: texts,
     });
   } catch (error) {
-    console.error("Error in texts API:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },
@@ -64,7 +62,6 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
-      console.error("Error creating text:", error);
       return NextResponse.json(
         { error: "Failed to create text" },
         { status: 500 }
@@ -77,7 +74,6 @@ export async function POST(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error) {
-    console.error("Error in texts POST API:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

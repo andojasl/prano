@@ -52,7 +52,6 @@ export default function EditTextPage() {
           english: text.english || ''
         })
       } catch (error) {
-        console.error('Error fetching text:', error)
         setError('Failed to load text data')
       } finally {
         setIsLoading(false)
@@ -94,7 +93,6 @@ export default function EditTextPage() {
       router.push('/dashboard/texts')
       router.refresh()
     } catch (error) {
-      console.error('Error updating text:', error)
       setError(error instanceof Error ? error.message : 'An unexpected error occurred')
     } finally {
       setIsSubmitting(false)
@@ -119,7 +117,6 @@ export default function EditTextPage() {
       router.push('/dashboard/texts')
       router.refresh()
     } catch (error) {
-      console.error('Error deleting text:', error)
       setError(error instanceof Error ? error.message : 'An unexpected error occurred')
     } finally {
       setIsDeleting(false)

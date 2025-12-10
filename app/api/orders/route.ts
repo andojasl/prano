@@ -82,7 +82,6 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (orderError) {
-      console.error('Error creating order:', orderError)
       return NextResponse.json(
         { error: 'Failed to create order' },
         { status: 500 }
@@ -106,11 +105,9 @@ export async function POST(request: NextRequest) {
       .insert(orderItems)
 
     if (itemsError) {
-      console.error('Error creating order items:', itemsError)
-      
       // Rollback: delete the order if items creation failed
       await serviceSupabase.from('orders').delete().eq('id', orderData.id)
-      
+
       return NextResponse.json(
         { error: 'Failed to create order items' },
         { status: 500 }
@@ -126,7 +123,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(response)
 
   } catch (error) {
-    console.error('Error in orders API:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -196,7 +192,6 @@ export async function GET(request: NextRequest) {
     const { data: order, error } = await query.single()
 
     if (error) {
-      console.error('Error fetching order:', error)
       return NextResponse.json(
         { error: 'Order not found' },
         { status: 404 }
@@ -206,7 +201,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(order)
 
   } catch (error) {
-    console.error('Error in orders GET API:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -74,7 +74,6 @@ export default function ProductPage({ params }: PageProps) {
           .single();
 
         if (categoryError || !categoryData) {
-          console.error("Error fetching category:", categoryError);
           setProduct(null);
           return;
         }
@@ -88,7 +87,6 @@ export default function ProductPage({ params }: PageProps) {
           .single();
 
         if (error) {
-          console.error("Error fetching product:", error);
           setProduct(null);
         } else {
           // Combine all available images into one array
@@ -123,7 +121,6 @@ export default function ProductPage({ params }: PageProps) {
             availableSizes: data.available_sizes || data.availableSizes,
           };
 
-          console.log(
             "Available sizes:",
             data.available_sizes,
             data.availableSizes,
@@ -131,7 +128,6 @@ export default function ProductPage({ params }: PageProps) {
           setProduct(processedProduct);
         }
       } catch (error) {
-        console.error("Error:", error);
         setProduct(null);
       } finally {
         setLoading(false);
@@ -155,7 +151,6 @@ export default function ProductPage({ params }: PageProps) {
           .eq("product_id", product.id);
 
         if (error) {
-          console.error("Error fetching sizes:", error);
           setSizes([]);
         } else {
           const sizeValues = sizesData.map((item) => ({
@@ -165,7 +160,6 @@ export default function ProductPage({ params }: PageProps) {
           setSizes(sizeValues);
         }
       } catch (error) {
-        console.error("Error:", error);
         setSizes([]);
       }
     };

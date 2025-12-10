@@ -56,7 +56,6 @@ export default function MultiImageUpload({
       setUploadedImages(updatedImages);
       onImagesChange(updatedImages);
     } catch (error) {
-      console.error('Upload error:', error);
       setError(error instanceof Error ? error.message : 'Upload failed');
     } finally {
       setIsUploading(false);

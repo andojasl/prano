@@ -26,7 +26,6 @@ export async function GET(
       .single();
 
     if (error) {
-      console.error("Error fetching text:", error);
       return NextResponse.json(
         { error: "Text not found" },
         { status: 404 }
@@ -37,7 +36,6 @@ export async function GET(
       text: text,
     });
   } catch (error) {
-    console.error("Error in text GET API:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -95,7 +93,6 @@ export async function PUT(
       .single();
 
     if (error) {
-      console.error("Error updating text:", error);
       return NextResponse.json(
         { error: "Failed to update text" },
         { status: 500 }
@@ -108,7 +105,6 @@ export async function PUT(
     });
 
   } catch (error) {
-    console.error("Error in text PUT API:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -150,7 +146,6 @@ export async function DELETE(
       .eq("id", textId);
 
     if (error) {
-      console.error("Error deleting text:", error);
       return NextResponse.json(
         { error: "Failed to delete text" },
         { status: 500 }
@@ -162,7 +157,6 @@ export async function DELETE(
     });
 
   } catch (error) {
-    console.error("Error in text DELETE API:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

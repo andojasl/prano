@@ -84,7 +84,6 @@ export default function CheckoutPage() {
     
     try {
       // Step 1: Create order in database
-      console.log('Creating order...')
       const orderResponse = await fetch('/api/orders', {
         method: 'POST',
         headers: {
@@ -102,10 +101,8 @@ export default function CheckoutPage() {
       }
 
       const { orderId, orderNumber } = await orderResponse.json()
-      console.log('Order created:', { orderId, orderNumber })
 
       // Step 2: Create Stripe checkout session with order reference
-      console.log('Creating Stripe checkout session...')
       const checkoutResponse = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: {
@@ -130,13 +127,11 @@ export default function CheckoutPage() {
       }
 
       if (url) {
-        console.log('Redirecting to Stripe checkout...')
         // Redirect to Stripe Checkout
         window.location.href = url
       }
       
     } catch (error) {
-      console.error('Error in checkout process:', error)
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
       alert(`There was an error processing your checkout: ${errorMessage}. Please try again.`)
     } finally {

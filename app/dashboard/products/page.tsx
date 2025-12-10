@@ -35,7 +35,6 @@ export default async function ViewProductsPage() {
     .order('title');
 
   if (productsError) {
-    console.error('Error fetching products:', productsError);
   }
 
   return (

@@ -53,7 +53,6 @@ export function CustomOrderQuoteManager({
         alert('Failed to update quote');
       }
     } catch (error) {
-      console.error('Error updating quote:', error);
       alert('An error occurred while updating the quote');
     } finally {
       setIsUpdating(false);

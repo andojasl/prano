@@ -30,7 +30,6 @@ export function DeleteCustomOrderButton({ customOrderId, orderTitle }: DeleteCus
         alert('Failed to delete custom order');
       }
     } catch (error) {
-      console.error('Error deleting custom order:', error);
       alert('An error occurred while deleting the custom order');
     } finally {
       setIsDeleting(false);

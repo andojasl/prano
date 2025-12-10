@@ -52,7 +52,6 @@ export default function CreateTextPage() {
       router.push('/dashboard/texts')
       router.refresh()
     } catch (error) {
-      console.error('Error creating text:', error)
       setError(error instanceof Error ? error.message : 'An unexpected error occurred')
     } finally {
       setIsSubmitting(false)

@@ -22,7 +22,6 @@ export function CartSheet() {
     (state) => state.updateQuantityWithSize,
   );
   const clearCart = useCartStore((state) => state.clearCart);
-  console.log(items.map((item) => item.size).join(", "));
 
   const handleCheckout = () => {
     setIsOpen(false); // Close the sheet

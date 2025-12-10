@@ -52,7 +52,6 @@ export default function DeleteProductButton({
         alert(`Error: ${result.message}`);
       }
     } catch (error) {
-      console.error('Delete error:', error);
       alert('An unexpected error occurred while deleting the product.');
     } finally {
       setIsDeleting(false);

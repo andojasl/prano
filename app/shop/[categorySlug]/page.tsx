@@ -110,11 +110,9 @@ export default async function CategoryPage({
     ]);
 
   if (!categoriesResponse.ok || !productsResponse.ok) {
-    console.error("Failed to fetch data");
     notFound();
   }
   if (!textResponse.ok) {
-    console.error("Failed to fetch texts");
     notFound();
   }
 

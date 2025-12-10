@@ -26,7 +26,6 @@ export async function POST(request: NextRequest) {
   try {
     // Check if Stripe is properly configured
     if (!process.env.STRIPE_SECRET_KEY) {
-      console.error('STRIPE_SECRET_KEY is not configured')
       return NextResponse.json(
         { error: 'Payment system is not configured' },
         { status: 500 }
@@ -35,7 +34,6 @@ export async function POST(request: NextRequest) {
 
     const { orderId, items, customerInfo }: CheckoutRequest = await request.json()
 
-    console.log('Checkout request received:', { 
       itemsCount: items?.length, 
       customerEmail: customerInfo?.email,
       items: items?.map(item => ({ 
@@ -169,7 +167,6 @@ export async function POST(request: NextRequest) {
       .eq('id', orderId)
 
     if (updateError) {
-      console.error('Error updating order with session ID:', updateError)
       // Continue anyway, as the session was created successfully
     }
 
@@ -179,7 +176,6 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Error creating checkout session:', error)
     return NextResponse.json(
       { error: 'Failed to create checkout session' },
       { status: 500 }
