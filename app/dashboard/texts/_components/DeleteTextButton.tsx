@@ -31,7 +31,7 @@ export default function DeleteTextButton({ textId, textPreview }: DeleteTextButt
       // Refresh the page to show updated list
       router.refresh()
       setShowConfirmation(false)
-    } catch (error) {
+    } catch (_error) {
       alert('Failed to delete text. Please try again.')
     } finally {
       setIsDeleting(false)

@@ -13,7 +13,7 @@ export async function generateMetadata({
     const supabase = createClient();
 
     // Get category ID
-    const { data: categoryData, error: categoryError } = await supabase
+    const { data: categoryData, error: _categoryError } = await supabase
       .from("categories")
       .select("id, name")
       .eq("slug", categorySlug)
@@ -25,7 +25,7 @@ export async function generateMetadata({
     }
 
     // Get product data
-    const { data: product, error: productError } = await supabase
+    const { data: product, error: _productError } = await supabase
       .from("products")
       .select("*")
       .eq("slug", productSlug)
@@ -59,7 +59,7 @@ export async function generateMetadata({
         images: product.image ? [product.image] : [],
       },
     };
-  } catch (error) {
+  } catch (_error) {
     return {
       title: "Handcrafted Jewelry - Prano",
       description: "Discover unique handcrafted jewelry with contemporary forms by Prano.",

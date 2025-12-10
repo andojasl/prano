@@ -41,7 +41,7 @@ export async function DELETE(
       message: 'Order deleted successfully'
     })
 
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -87,7 +87,7 @@ export async function GET(
 
     return NextResponse.json(order)
 
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

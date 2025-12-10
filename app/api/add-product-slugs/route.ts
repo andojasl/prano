@@ -90,7 +90,7 @@ export async function POST() {
       slugs: uniqueUpdates.map(u => ({ id: u.id, slug: u.slug }))
     });
 
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Failed to add product slugs' },
       { status: 500 }

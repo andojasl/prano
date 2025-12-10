@@ -52,7 +52,7 @@ export function CustomOrderQuoteManager({
       } else {
         alert('Failed to update quote');
       }
-    } catch (error) {
+    } catch (_error) {
       alert('An error occurred while updating the quote');
     } finally {
       setIsUpdating(false);

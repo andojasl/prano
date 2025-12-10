@@ -51,8 +51,8 @@ export default function CreateTextPage() {
       // Redirect to texts page on success
       router.push('/dashboard/texts')
       router.refresh()
-    } catch (error) {
-      setError(error instanceof Error ? error.message : 'An unexpected error occurred')
+    } catch (_error) {
+      setError(_error instanceof Error ? _error.message : 'An unexpected error occurred')
     } finally {
       setIsSubmitting(false)
     }

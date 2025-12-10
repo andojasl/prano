@@ -36,7 +36,7 @@ export function OrderStatusManager({ orderId, currentStatus }: OrderStatusManage
       } else {
         alert('Failed to update order status');
       }
-    } catch (error) {
+    } catch (_error) {
       alert('An error occurred while updating the status');
     } finally {
       setIsUpdating(false);

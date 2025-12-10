@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
       try {
         // Upload to Cloudinary
         imageUrl = await uploadToCloudinary(imageFile, 'meet-locations');
-      } catch (uploadError) {
+      } catch (_uploadError) {
         return NextResponse.json(
           { error: 'Failed to upload image' },
           { status: 500 }
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
       data: data[0] 
     });
 
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -117,7 +117,7 @@ export async function GET() {
 
     return NextResponse.json({ data });
 
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

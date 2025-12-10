@@ -51,7 +51,7 @@ export default async function NewArrivals() {
           : product.categories,
       }));
     }
-  } catch (error) {
+  } catch (_error) {
   }
 
   return (

@@ -32,7 +32,7 @@ export function DeleteOrderButton({ orderId, orderNumber }: DeleteOrderButtonPro
       } else {
         alert('Failed to delete order. Please try again.');
       }
-    } catch (error) {
+    } catch (_error) {
       alert('An error occurred while deleting the order.');
     } finally {
       setIsDeleting(false);

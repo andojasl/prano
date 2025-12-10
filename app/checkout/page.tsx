@@ -100,7 +100,7 @@ export default function CheckoutPage() {
         throw new Error(orderError.error || 'Failed to create order')
       }
 
-      const { orderId, orderNumber } = await orderResponse.json()
+      const { orderId, orderNumber: _orderNumber } = await orderResponse.json()
 
       // Step 2: Create Stripe checkout session with order reference
       const checkoutResponse = await fetch('/api/create-checkout-session', {
@@ -131,8 +131,8 @@ export default function CheckoutPage() {
         window.location.href = url
       }
       
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+    } catch (_error) {
+      const errorMessage = _error instanceof Error ? _error.message : 'Unknown error occurred'
       alert(`There was an error processing your checkout: ${errorMessage}. Please try again.`)
     } finally {
       setProcessing(false)

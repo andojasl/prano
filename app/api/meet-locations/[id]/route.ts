@@ -31,7 +31,6 @@ export async function GET(
       .single();
 
     if (fetchError) {
-      console.error('Database fetch error:', fetchError);
       return NextResponse.json(
         { error: 'Failed to fetch meet location' },
         { status: 500 }
@@ -50,8 +49,7 @@ export async function GET(
       data
     });
 
-  } catch (error) {
-    console.error('Meet location fetch error:', error);
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -99,7 +97,7 @@ export async function DELETE(
       message: 'Meet location deleted successfully'
     });
 
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -165,7 +163,7 @@ export async function PUT(
       data: data[0]
     });
 
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

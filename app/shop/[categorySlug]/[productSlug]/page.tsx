@@ -121,13 +121,9 @@ export default function ProductPage({ params }: PageProps) {
             availableSizes: data.available_sizes || data.availableSizes,
           };
 
-            "Available sizes:",
-            data.available_sizes,
-            data.availableSizes,
-          ); // Debug log
           setProduct(processedProduct);
         }
-      } catch (error) {
+      } catch (_error) {
         setProduct(null);
       } finally {
         setLoading(false);
@@ -159,7 +155,7 @@ export default function ProductPage({ params }: PageProps) {
           }));
           setSizes(sizeValues);
         }
-      } catch (error) {
+      } catch (_error) {
         setSizes([]);
       }
     };

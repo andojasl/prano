@@ -24,7 +24,7 @@ export async function fetchLocations() {
         Date: new Date(location.Date),
       }));
     }
-  } catch (error) {
+  } catch (_error) {
   }
   return meetCards;
 }

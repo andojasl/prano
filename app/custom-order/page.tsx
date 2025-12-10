@@ -131,7 +131,7 @@ export default function CustomOrderPage() {
         const errorData = await response.json();
         alert('Failed to submit custom order: ' + (errorData.error || 'Unknown error'));
       }
-    } catch (error) {
+    } catch (_error) {
       alert('An error occurred while submitting your request. Please try again.');
     } finally {
       setIsSubmitting(false);

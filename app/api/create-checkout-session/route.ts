@@ -34,16 +34,6 @@ export async function POST(request: NextRequest) {
 
     const { orderId, items, customerInfo }: CheckoutRequest = await request.json()
 
-      itemsCount: items?.length, 
-      customerEmail: customerInfo?.email,
-      items: items?.map(item => ({ 
-        id: item.id, 
-        name: item.name, 
-        price: item.price, 
-        image: item.image 
-      }))
-    })
-
     if (!items || items.length === 0) {
       return NextResponse.json(
         { error: 'No items in cart' },
@@ -175,7 +165,7 @@ export async function POST(request: NextRequest) {
       url: session.url
     })
 
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Failed to create checkout session' },
       { status: 500 }

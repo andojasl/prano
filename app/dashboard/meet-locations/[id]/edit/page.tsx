@@ -64,8 +64,7 @@ export default function EditMeetLocationPage() {
           link: location.Link || '',
           date: location.Date.split('T')[0] // Format date for input
         })
-      } catch (error) {
-        console.error('Error fetching location:', error)
+      } catch (_error) {
         setError('Failed to load location data')
       } finally {
         setIsLoading(false)
@@ -112,9 +111,8 @@ export default function EditMeetLocationPage() {
       // Redirect to meet locations page on success
       router.push('/dashboard/meet-locations')
       router.refresh()
-    } catch (error) {
-      console.error('Error updating location:', error)
-      setError(error instanceof Error ? error.message : 'An unexpected error occurred')
+    } catch (_error) {
+      setError(_error instanceof Error ? _error.message : 'An unexpected error occurred')
     } finally {
       setIsSubmitting(false)
     }
@@ -137,9 +135,8 @@ export default function EditMeetLocationPage() {
       // Redirect to meet locations page on success
       router.push('/dashboard/meet-locations')
       router.refresh()
-    } catch (error) {
-      console.error('Error deleting location:', error)
-      setError(error instanceof Error ? error.message : 'An unexpected error occurred')
+    } catch (_error) {
+      setError(_error instanceof Error ? _error.message : 'An unexpected error occurred')
     } finally {
       setIsDeleting(false)
       setShowDeleteConfirmation(false)

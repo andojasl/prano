@@ -66,7 +66,7 @@ function CheckoutSuccessContent() {
           setOrder(orderData)
         } else {
         }
-      } catch (error) {
+      } catch (_error) {
       } finally {
         setLoading(false)
       }

@@ -29,7 +29,7 @@ export function DeleteCustomOrderButton({ customOrderId, orderTitle }: DeleteCus
       } else {
         alert('Failed to delete custom order');
       }
-    } catch (error) {
+    } catch (_error) {
       alert('An error occurred while deleting the custom order');
     } finally {
       setIsDeleting(false);

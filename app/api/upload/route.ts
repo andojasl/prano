@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     const imageUrl = await uploadToCloudinary(file);
 
     return NextResponse.json({ imageUrl });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Failed to upload image' },
       { status: 500 }

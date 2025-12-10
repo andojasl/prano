@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
       category: categorySlug
     });
 
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

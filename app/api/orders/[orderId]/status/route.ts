@@ -49,7 +49,7 @@ export async function PATCH(
       order: data
     })
 
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

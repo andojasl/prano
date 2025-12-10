@@ -66,7 +66,7 @@ export function InlineStatusManager({ orderId, currentStatus }: InlineStatusMana
       } else {
         alert('Failed to update order status');
       }
-    } catch (error) {
+    } catch (_error) {
       alert('An error occurred while updating the status');
     } finally {
       setIsUpdating(false);

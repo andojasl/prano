@@ -34,7 +34,7 @@ export async function GET(
 
     return NextResponse.json({ customOrder: data });
 
-  } catch (error: unknown) {
+  } catch (_error: unknown) {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -117,7 +117,7 @@ export async function PATCH(
       customOrder: data 
     });
 
-  } catch (error: unknown) {
+  } catch (_error: unknown) {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -159,7 +159,7 @@ export async function DELETE(
       message: 'Custom order deleted successfully' 
     });
 
-  } catch (error: unknown) {
+  } catch (_error: unknown) {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

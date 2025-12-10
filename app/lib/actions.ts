@@ -102,7 +102,7 @@ export async function createProduct(prevState: State, formData: FormData): Promi
     try {
       const parsedSizes = JSON.parse(sizes);
       sizesData = parsedSizes.filter((s: {size?: string, quantity?: number}) => s.size && s.size.trim());
-    } catch (error) {
+    } catch (_error) {
     }
   }
 
@@ -123,7 +123,7 @@ export async function createProduct(prevState: State, formData: FormData): Promi
     }
 
     // Insert product into database and get the ID
-    const { data: productData, error: productError } = await supabase
+    const { data: productData, error: _productError } = await supabase
       .from('products')
       .insert({
         title,
@@ -142,17 +142,17 @@ export async function createProduct(prevState: State, formData: FormData): Promi
       .select('id')
       .single()
 
-    if (productError) {
+    if (_productError) {
       
       // Handle specific database errors
-      if (productError.code === '23505') {
-        if (productError.message.includes('title')) {
+      if (_productError.code === '23505') {
+        if (_productError.message.includes('title')) {
           return {
             errors: { title: ['A product with this title already exists.'] },
             message: 'Failed to create product.',
           }
         }
-        if (productError.message.includes('slug')) {
+        if (_productError.message.includes('slug')) {
           return {
             errors: { title: ['A product with this title already exists (slug conflict).'] },
             message: 'Failed to create product.',
@@ -173,11 +173,11 @@ export async function createProduct(prevState: State, formData: FormData): Promi
         quantity: sizeItem.quantity || 0,
       }));
 
-      const { error: sizesError } = await supabase
+      const { error: _sizesError } = await supabase
         .from('sizes')
         .insert(sizesToInsert);
 
-      if (sizesError) {
+      if (_sizesError) {
         // Note: Product was created successfully, but sizes failed
         // We could decide to rollback or just log the error
         return {
@@ -186,7 +186,7 @@ export async function createProduct(prevState: State, formData: FormData): Promi
       }
     }
 
-  } catch (error) {
+  } catch (_error) {
     return {
       message: 'Server Error: Failed to create product.',
     }
@@ -247,7 +247,7 @@ export async function updateProduct(productId: string, prevState: State, formDat
     try {
       const parsedSizes = JSON.parse(sizes);
       sizesData = parsedSizes.filter((s: {size?: string, quantity?: number}) => s.size && s.size.trim());
-    } catch (error) {
+    } catch (_error) {
     }
   }
 
@@ -268,7 +268,7 @@ export async function updateProduct(productId: string, prevState: State, formDat
     }
 
     // Update product in database
-    const { error: productError } = await supabase
+    const { error: _productError } = await supabase
       .from('products')
       .update({
         title,
@@ -286,17 +286,17 @@ export async function updateProduct(productId: string, prevState: State, formDat
       })
       .eq('id', productId)
 
-    if (productError) {
+    if (_productError) {
       
       // Handle specific database errors
-      if (productError.code === '23505') {
-        if (productError.message.includes('title')) {
+      if (_productError.code === '23505') {
+        if (_productError.message.includes('title')) {
           return {
             errors: { title: ['A product with this title already exists.'] },
             message: 'Failed to update product.',
           }
         }
-        if (productError.message.includes('slug')) {
+        if (_productError.message.includes('slug')) {
           return {
             errors: { title: ['A product with this title already exists (slug conflict).'] },
             message: 'Failed to update product.',
@@ -323,18 +323,18 @@ export async function updateProduct(productId: string, prevState: State, formDat
         quantity: sizeItem.quantity || 0,
       }));
 
-      const { error: sizesError } = await supabase
+      const { error: _sizesError } = await supabase
         .from('sizes')
         .insert(sizesToInsert);
 
-      if (sizesError) {
+      if (_sizesError) {
         return {
           message: 'Product updated but failed to save sizes. Please try again.',
         }
       }
     }
 
-  } catch (error) {
+  } catch (_error) {
     return {
       message: 'Server Error: Failed to update product.',
     }
@@ -360,12 +360,12 @@ export async function deleteProduct(productId: string): Promise<{success: boolea
     }
 
     // Delete associated sizes first (due to foreign key constraint)
-    const { error: sizesError } = await supabase
+    const { error: _sizesError } = await supabase
       .from('sizes')
       .delete()
       .eq('product_id', productId);
 
-    if (sizesError) {
+    if (_sizesError) {
       return {
         success: false,
         message: 'Failed to delete product sizes.',
@@ -373,12 +373,12 @@ export async function deleteProduct(productId: string): Promise<{success: boolea
     }
 
     // Delete the product
-    const { error: productError } = await supabase
+    const { error: _productError } = await supabase
       .from('products')
       .delete()
       .eq('id', productId);
 
-    if (productError) {
+    if (_productError) {
       return {
         success: false,
         message: 'Failed to delete product.',
@@ -394,7 +394,7 @@ export async function deleteProduct(productId: string): Promise<{success: boolea
       message: 'Product deleted successfully.',
     }
 
-  } catch (error) {
+  } catch (_error) {
     return {
       success: false,
       message: 'Server Error: Failed to delete product.',

@@ -51,7 +51,7 @@ export default function EditTextPage() {
           text: text.text,
           english: text.english || ''
         })
-      } catch (error) {
+      } catch (_error) {
         setError('Failed to load text data')
       } finally {
         setIsLoading(false)
@@ -92,8 +92,8 @@ export default function EditTextPage() {
       // Redirect to texts page on success
       router.push('/dashboard/texts')
       router.refresh()
-    } catch (error) {
-      setError(error instanceof Error ? error.message : 'An unexpected error occurred')
+    } catch (_error) {
+      setError(_error instanceof Error ? _error.message : 'An unexpected error occurred')
     } finally {
       setIsSubmitting(false)
     }
@@ -116,8 +116,8 @@ export default function EditTextPage() {
       // Redirect to texts page on success
       router.push('/dashboard/texts')
       router.refresh()
-    } catch (error) {
-      setError(error instanceof Error ? error.message : 'An unexpected error occurred')
+    } catch (_error) {
+      setError(_error instanceof Error ? _error.message : 'An unexpected error occurred')
     } finally {
       setIsDeleting(false)
       setShowDeleteConfirmation(false)
