@@ -2,6 +2,7 @@ import NewArrivals from "./_components/NewArrivals";
 import MeetMe, { fetchLocations } from "./_components/MeetMeSection";
 import AboutPrano from "./_components/AboutSection";
 import { Metadata } from "next";
+import Image from "next/image";
 
 // Force dynamic rendering for this page
 export const dynamic = "force-dynamic";
@@ -19,14 +20,17 @@ export const metadata: Metadata = {
 
 function Landing() {
   return (
-    <div
-      className="w-full h-[calc(100vh-120px)] md:h-[calc(100vh-135px)] rounded-lg"
-      style={{
-        backgroundImage: "url(/hero-image.png)",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    ></div>
+    <div className="relative w-full h-[calc(100vh-120px)] md:h-[calc(100vh-135px)] rounded-lg overflow-hidden">
+      <Image
+        src="/hero-image.webp"
+        alt="Prano handcrafted jewelry showcase"
+        fill
+        priority
+        className="object-cover"
+        quality={85}
+        sizes="100vw"
+      />
+    </div>
   );
 }
 
