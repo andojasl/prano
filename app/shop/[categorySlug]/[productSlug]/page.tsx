@@ -1,5 +1,6 @@
 "use client";
 import useCartStore from "@/app/store/cartStore";
+import { ProductDetailSkeleton } from "@/components/ui/product-detail-skeleton";
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -190,14 +191,7 @@ export default function ProductPage({ params }: PageProps) {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading product...</p>
-        </div>
-      </div>
-    );
+    return <ProductDetailSkeleton />;
   }
 
   if (!product) {

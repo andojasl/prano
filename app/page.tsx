@@ -1,6 +1,9 @@
 import NewArrivals from "./_components/NewArrivals";
 import MeetMe, { fetchLocations } from "./_components/MeetMeSection";
 import AboutPrano from "./_components/AboutSection";
+import NewArrivalsSkeleton from "./_components/NewArrivalsSkeleton";
+import MeetMeSkeleton from "./_components/MeetMeSkeleton";
+import { Suspense } from "react";
 import { Metadata } from "next";
 import Image from "next/image";
 
@@ -46,10 +49,16 @@ export default async function Home() {
       </div>
       <div className="py-24 relative w-screen -mx-4 md:-mx-16">
         <div className="px-4 items-center md:px-16">
-          <NewArrivals />
+          <Suspense fallback={<NewArrivalsSkeleton />}>
+            <NewArrivals />
+          </Suspense>
         </div>
       </div>
-      {hasMeetLocations && <MeetMe />}
+      {hasMeetLocations && (
+        <Suspense fallback={<MeetMeSkeleton />}>
+          <MeetMe />
+        </Suspense>
+      )}
       <div className="py-24">
         <AboutPrano />
       </div>
