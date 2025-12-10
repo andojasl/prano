@@ -74,20 +74,12 @@ export default function ViewMeetLocationsPage() {
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Meet Locations</h1>
-          <div className="flex space-x-4">
-            <Link
-              href="/dashboard/create-meet-location"
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
-            >
-              Add New Location
-            </Link>
-            <Link
-              href="/dashboard"
-              className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors"
-            >
-              Back to Dashboard
-            </Link>
-          </div>
+          <Link
+            href="/dashboard/create-meet-location"
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+          >
+            Add New Location
+          </Link>
         </div>
 
         {loading ? (
@@ -155,6 +147,12 @@ export default function ViewMeetLocationsPage() {
                     )}
                   </div>
                   <div className="mt-4 flex justify-end space-x-2">
+                    <Link
+                      href={`/dashboard/meet-locations/${location.id}/edit`}
+                      className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
+                    >
+                      Edit
+                    </Link>
                     <button
                       onClick={() => handleDelete(location.id)}
                       className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors"
